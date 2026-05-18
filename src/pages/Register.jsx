@@ -1,51 +1,71 @@
 import { useState } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserPlus, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 export default function Register() {
   const { user, register, loading } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    nombre: '',
-    apellidos: '',
-    email: '',
-    nickname: '',
-    password: '',
-    passwordRepeat: '',
+    nombre: '', apellidos: '', email: '', nickname: '', password: '', passwordRepeat: '',
   });
-  const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [generalError, setGeneralError] = useState('');
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   if (loading) return <div className="spinner-wrap"><div className="spinner" /></div>;
   if (user) return <Navigate to="/clasificacion" replace />;
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setError('');
+  const validateField = (name, value, currentForm) => {
+    const f = currentForm || form;
+    switch (name) {
+      case 'nombre':    return value.trim() ? '' : 'El nombre es obligatorio';
+      case 'apellidos': return value.trim() ? '' : 'Los apellidos son obligatorios';
+      case 'email':
+        if (!value.trim()) return 'El email es obligatorio';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'El email no es válido';
+        return '';
+      case 'nickname':
+        if (!value.trim()) return 'El nickname es obligatorio';
+        if (value.trim().length < 3) return 'Mínimo 3 caracteres';
+        return '';
+      case 'password':
+        if (!value) return 'La contraseña es obligatoria';
+        if (value.length < 4) return 'Mínimo 4 caracteres';
+        return '';
+      case 'passwordRepeat':
+        if (!value) return 'Repite la contraseña';
+        if (value !== f.password) return 'Las contraseñas no coinciden';
+        return '';
+      default: return '';
+    }
   };
 
-  const validate = () => {
-    if (!form.nombre.trim()) return 'El nombre es obligatorio.';
-    if (!form.apellidos.trim()) return 'Los apellidos son obligatorios.';
-    if (!form.email.trim()) return 'El email es obligatorio.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return 'El email no es válido.';
-    if (!form.nickname.trim()) return 'El nickname es obligatorio.';
-    if (form.nickname.trim().length < 3) return 'El nickname debe tener al menos 3 caracteres.';
-    if (!form.password) return 'La contraseña es obligatoria.';
-    if (form.password.length < 4) return 'La contraseña debe tener al menos 4 caracteres.';
-    if (form.password !== form.passwordRepeat) return 'Las contraseñas no coinciden.';
-    return null;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updated = { ...form, [name]: value };
+    setForm(updated);
+    if (fieldErrors[name] !== undefined) {
+      setFieldErrors((prev) => ({ ...prev, [name]: validateField(name, value, updated) }));
+    }
+    setGeneralError('');
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setFieldErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationError = validate();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+    const errors = {};
+    Object.keys(form).forEach((name) => {
+      errors[name] = validateField(name, form[name]);
+    });
+    setFieldErrors(errors);
+    if (Object.values(errors).some(Boolean)) return;
+
     setSubmitting(true);
     try {
       await register({
@@ -57,157 +77,170 @@ export default function Register() {
       });
       setSuccess(true);
     } catch (err) {
-      setError(err.message || 'Error al crear la cuenta.');
+      setGeneralError(err.message || 'Error al crear la cuenta');
     } finally {
       setSubmitting(false);
     }
   };
 
+  const fieldErr = (name) =>
+    fieldErrors[name] ? <p className="field-error">{fieldErrors[name]}</p> : null;
+
   if (success) {
     return (
-      <div className="auth-page">
-        <div className="auth-card" style={{ textAlign: 'center' }}>
-          <CheckCircle size={48} color="var(--green)" style={{ margin: '0 auto 1rem' }} />
-          <h2 style={{ marginBottom: '0.75rem' }}>¡Cuenta creada!</h2>
-          <p style={{ color: 'var(--text-2)', marginBottom: '2rem', lineHeight: 1.6 }}>
-            Tu cuenta ha sido creada correctamente. Ya puedes iniciar sesión con tu
-            nickname y contraseña.
-          </p>
-          <button
-            className="btn btn-primary btn-full btn-lg"
-            onClick={() => navigate('/')}
-          >
-            Aceptar e iniciar sesión
-          </button>
+      <div className="auth-page-light">
+        <div className="pub-blob pub-blob-1" />
+        <div className="pub-blob pub-blob-2" />
+        <div className="auth-card-light">
+          <div className="register-success-wrap">
+            <div className="register-success-icon">
+              <CheckCircle size={32} color="#059669" />
+            </div>
+            <h2 className="register-success-title">¡Cuenta creada!</h2>
+            <p className="register-success-sub">
+              Ya puedes iniciar sesión. Guarda tus credenciales de acceso:
+            </p>
+            <div className="credentials-box">
+              <div className="credentials-box-label">Tus datos de acceso</div>
+              <div className="credential-row">
+                <span className="credential-key">Nickname</span>
+                <span className="credential-val">{form.nickname}</span>
+              </div>
+              <div className="credential-row">
+                <span className="credential-key">Contraseña</span>
+                <span className="credential-val">{form.password}</span>
+              </div>
+            </div>
+            <button className="btn-pub-primary" onClick={() => navigate('/login')}>
+              Aceptar
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-card" style={{ maxWidth: 520 }}>
-        <div className="auth-header">
-          <div className="auth-logo">⚽</div>
-          <h2>Crear cuenta</h2>
-          <p>Únete a la porra del Mundial 2026</p>
+    <div className="auth-page-light">
+      <div className="pub-blob pub-blob-1" />
+      <div className="pub-blob pub-blob-2" />
+
+      <div className="auth-card-light wide">
+        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
+          <div className="auth-logo-light">⚽</div>
+          <h2 className="auth-title-light">Crear cuenta</h2>
+          <p className="auth-sub-light">Únete a la porra del Mundial 2026</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          {error && (
-            <div className="alert alert-error" style={{ marginBottom: '1.25rem' }}>
-              {error}
-            </div>
-          )}
+        {generalError && <div className="alert-error-light">{generalError}</div>}
 
-          {/* Información personal */}
-          <p className="section-label">Información personal</p>
+        <form onSubmit={handleSubmit} noValidate>
+          <span className="section-label-light">Información personal</span>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 1rem' }}>
-            <div className="form-group">
-              <label className="form-label">Nombre</label>
+          <div className="pub-two-col">
+            <div className="form-group-light">
+              <label className="form-label-light">Nombre</label>
               <input
-                className="form-input"
+                className={`form-input-light${fieldErrors.nombre ? ' has-error' : ''}`}
                 type="text"
                 name="nombre"
                 value={form.nombre}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Tu nombre"
                 autoFocus
               />
+              {fieldErr('nombre')}
             </div>
-            <div className="form-group">
-              <label className="form-label">Apellidos</label>
+            <div className="form-group-light">
+              <label className="form-label-light">Apellidos</label>
               <input
-                className="form-input"
+                className={`form-input-light${fieldErrors.apellidos ? ' has-error' : ''}`}
                 type="text"
                 name="apellidos"
                 value={form.apellidos}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Tus apellidos"
               />
+              {fieldErr('apellidos')}
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Email</label>
+          <div className="form-group-light">
+            <label className="form-label-light">Email</label>
             <input
-              className="form-input"
+              className={`form-input-light${fieldErrors.email ? ' has-error' : ''}`}
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="tu@email.com"
             />
+            {fieldErr('email')}
           </div>
 
-          <hr className="section-divider" />
+          <hr className="section-divider-light" />
+          <span className="section-label-light">Datos de acceso</span>
 
-          {/* Acceso */}
-          <p className="section-label">Datos de acceso</p>
-
-          <div className="form-group">
-            <label className="form-label">Nickname</label>
+          <div className="form-group-light">
+            <label className="form-label-light">Nickname</label>
             <input
-              className="form-input"
+              className={`form-input-light${fieldErrors.nickname ? ' has-error' : ''}`}
               type="text"
               name="nickname"
               value={form.nickname}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Ej: Tigre2026"
               autoComplete="username"
             />
-            <p className="form-hint">Este será tu nombre visible en la clasificación.</p>
+            {fieldErr('nickname') || <p className="form-hint-light">Nombre visible en la clasificación</p>}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 1rem' }}>
-            <div className="form-group">
-              <label className="form-label">Contraseña</label>
+          <div className="pub-two-col">
+            <div className="form-group-light">
+              <label className="form-label-light">Contraseña</label>
               <input
-                className="form-input"
+                className={`form-input-light${fieldErrors.password ? ' has-error' : ''}`}
                 type="password"
                 name="password"
                 value={form.password}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Mínimo 4 caracteres"
                 autoComplete="new-password"
               />
+              {fieldErr('password')}
             </div>
-            <div className="form-group">
-              <label className="form-label">Repetir contraseña</label>
+            <div className="form-group-light">
+              <label className="form-label-light">Repetir contraseña</label>
               <input
-                className="form-input"
+                className={`form-input-light${fieldErrors.passwordRepeat ? ' has-error' : ''}`}
                 type="password"
                 name="passwordRepeat"
                 value={form.passwordRepeat}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Repite la contraseña"
                 autoComplete="new-password"
               />
+              {fieldErr('passwordRepeat')}
             </div>
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary btn-full btn-lg"
+            className="btn-pub-primary"
             disabled={submitting}
-            style={{ marginTop: '0.5rem' }}
+            style={{ marginTop: '1rem' }}
           >
-            {submitting ? (
-              <>
-                <span style={{ width: 16, height: 16, border: '2px solid rgba(0,0,0,0.3)', borderTopColor: '#000', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />
-                Creando cuenta...
-              </>
-            ) : (
-              <>
-                <UserPlus size={16} />
-                Crear cuenta
-              </>
-            )}
+            {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
           </button>
         </form>
 
-        <div className="auth-footer">
+        <div className="auth-footer-light">
           ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
         </div>
       </div>

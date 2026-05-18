@@ -10,23 +10,21 @@ function getResult(real, id) {
   return r;
 }
 
-function ResultBadge({ g1, g2, local, visitante }) {
+function ResultBadge({ g1, g2 }) {
   if (g1 === undefined || g1 === null || g1 === '') {
     return <span style={{ color: 'var(--text-3)', fontSize: '0.875rem' }}>— : —</span>;
   }
-  const n1 = Number(g1);
-  const n2 = Number(g2);
-  const winner = n1 > n2 ? 'local' : n2 > n1 ? 'visitante' : 'empate';
   return (
     <span style={{
       fontWeight: 800,
       fontSize: '1rem',
       color: 'var(--text)',
-      background: 'var(--bg-2)',
-      border: '1px solid var(--border)',
+      background: 'var(--bg-card)',
+      border: '1.5px solid var(--border)',
       borderRadius: 'var(--r-sm)',
-      padding: '0.2rem 0.625rem',
+      padding: '0.2rem 0.75rem',
       display: 'inline-block',
+      boxShadow: 'var(--shadow-sm)',
     }}>
       {g1} <span style={{ color: 'var(--text-3)' }}>–</span> {g2}
     </span>
@@ -156,11 +154,11 @@ export default function GroupResults() {
                       <tr key={row.eq}>
                         <td>
                           <span style={{
-                            width: 20, height: 20, borderRadius: '50%',
-                            background: idx < 2 ? 'var(--gold)' : idx === 2 ? 'rgba(59,130,246,0.3)' : 'transparent',
-                            color: idx < 2 ? '#000' : 'var(--text-2)',
+                            width: 22, height: 22, borderRadius: '50%',
+                            background: idx < 2 ? 'var(--gold)' : idx === 2 ? 'rgba(59,130,246,0.15)' : 'transparent',
+                            color: idx < 2 ? '#fff' : idx === 2 ? 'var(--blue)' : 'var(--text-3)',
                             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '0.75rem', fontWeight: 700,
+                            fontSize: '0.75rem', fontWeight: 800,
                           }}>
                             {idx + 1}
                           </span>

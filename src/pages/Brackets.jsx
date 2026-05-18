@@ -19,9 +19,10 @@ function MatchCard({ match, label }) {
       border: '1px solid var(--border)',
       borderRadius: 'var(--r-md)',
       overflow: 'hidden',
+      boxShadow: 'var(--shadow-sm)',
     }}>
       {label && (
-        <div style={{ padding: '0.3rem 0.875rem', background: 'var(--bg-card-hover)', fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <div style={{ padding: '0.25rem 0.875rem', background: 'var(--bg-2)', fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           {label}
         </div>
       )}
@@ -36,13 +37,12 @@ function MatchCard({ match, label }) {
           padding: '0.5rem 0.875rem',
           borderBottom: i === 0 ? '1px solid var(--border-2)' : 'none',
           background: isWinner ? 'var(--gold-light)' : 'transparent',
-          transition: 'background 0.15s',
         }}>
           <span style={{ fontSize: '1rem' }}>{team ? getBandera(team) : '🏳️'}</span>
           <span style={{
             flex: 1,
             fontSize: '0.875rem',
-            fontWeight: isWinner ? 700 : 400,
+            fontWeight: isWinner ? 700 : 500,
             color: team ? 'var(--text)' : 'var(--text-3)',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -53,7 +53,7 @@ function MatchCard({ match, label }) {
           <span style={{
             fontWeight: 800,
             fontSize: '0.9375rem',
-            color: isWinner ? 'var(--gold)' : 'var(--text-2)',
+            color: isWinner ? 'var(--gold)' : 'var(--text-3)',
             minWidth: '1.25rem',
             textAlign: 'right',
           }}>
@@ -167,10 +167,10 @@ export default function Brackets() {
               <div className="bracket-round">
                 <div className="bracket-round-title">🏆 Final</div>
                 <div style={{
-                  border: '1px solid rgba(245,177,0,0.3)',
+                  border: '1.5px solid rgba(124,58,237,0.25)',
                   borderRadius: 'var(--r-lg)',
                   overflow: 'hidden',
-                  background: 'linear-gradient(135deg, rgba(245,177,0,0.06), var(--bg-card))',
+                  background: 'linear-gradient(135deg, rgba(124,58,237,0.04), var(--bg-card))',
                 }}>
                   <MatchCard match={resultados?.final || config?.final || {}} />
                 </div>
