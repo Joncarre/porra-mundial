@@ -15,7 +15,8 @@ export default function Welcome() {
 
       <div className="glass-card welcome-glass">
         <h1 className="welcome-glass-title">
-          Porra del<br />Mundial 2026
+          Porra del
+          <span className="title-accent">Mundial 2026</span>
         </h1>
 
         <p className="welcome-glass-sub">
@@ -58,7 +59,9 @@ export default function Welcome() {
         </div>
 
         <div className="welcome-dates-footer">
-          11 de junio — 19 de julio de 2026
+          <span className="date-pill">11 junio</span>
+          <span className="date-sep">—</span>
+          <span className="date-pill">19 julio</span>
         </div>
       </div>
     </div>

@@ -136,3 +136,23 @@ export const TODOS_LOS_EQUIPOS = Object.values(GRUPOS).flatMap((g) => g.equipos)
 export function getBandera(equipo) {
   return BANDERAS[equipo] || '🏳️';
 }
+
+// Acrónimos FIFA por equipo
+export const ACRONIMOS = {
+  México: 'MEX', Sudáfrica: 'RSA', 'Corea del Sur': 'KOR', Chequia: 'CZE',
+  Canadá: 'CAN', 'Bosnia-Herzegovina': 'BIH', Catar: 'QAT', Suiza: 'SUI',
+  Brasil: 'BRA', Marruecos: 'MAR', Haití: 'HAI', Escocia: 'SCO',
+  'Estados Unidos': 'USA', Paraguay: 'PAR', Australia: 'AUS', Turquía: 'TUR',
+  Alemania: 'GER', Curazao: 'CUW', 'Costa de Marfil': 'CIV', Ecuador: 'ECU',
+  'Países Bajos': 'NED', Japón: 'JPN', Suecia: 'SWE', Túnez: 'TUN',
+  Bélgica: 'BEL', Egipto: 'EGY', Irán: 'IRN', 'Nueva Zelanda': 'NZL',
+  España: 'ESP', 'Cabo Verde': 'CPV', 'Arabia Saudí': 'KSA', Uruguay: 'URU',
+  Francia: 'FRA', Senegal: 'SEN', Irak: 'IRQ', Noruega: 'NOR',
+  Argentina: 'ARG', Argelia: 'ALG', Austria: 'AUT', Jordania: 'JOR',
+  Portugal: 'POR', 'Congo DR': 'COD', Uzbekistán: 'UZB', Colombia: 'COL',
+  Inglaterra: 'ENG', Croacia: 'CRO', Ghana: 'GHA', Panamá: 'PAN',
+};
+
+export function getAcronimo(equipo) {
+  return ACRONIMOS[equipo] || equipo.substring(0, 3).toUpperCase();
+}

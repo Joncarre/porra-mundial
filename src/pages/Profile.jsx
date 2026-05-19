@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
-import { GRUPOS, PARTIDOS_POR_GRUPO, getBandera } from '../data/worldcup2026';
+import { GRUPOS, PARTIDOS_POR_GRUPO, getAcronimo } from '../data/worldcup2026';
 import { getGanadorEquipo, getPerdedorEquipo } from '../utils/scoring';
 import { Save, Lock, Trophy, Star, User } from 'lucide-react';
 
@@ -82,48 +82,55 @@ function propagateBracket(bracket) {
 // ────────────────────────────────────────────────────────────────────────────────
 // Score input para partidos de grupos
 // ────────────────────────────────────────────────────────────────────────────────
+const MONO = "'IBM Plex Mono', 'Courier New', monospace";
+const TEAM_COLOR = '#2a7a8c';
+
+const ACR = { fontFamily: MONO, color: '#ef8354', fontWeight: 700, fontSize: '0.6875rem', flexShrink: 0 };
+
 function MatchInput({ partido, value = {}, onChange, locked }) {
   const { local, visitante } = partido;
   const g1 = value.g1 ?? '';
   const g2 = value.g2 ?? '';
 
   const update = (field, val) => {
-    const num = val === '' ? '' : Math.max(0, parseInt(val, 10) || 0);
+    const stripped = val.replace(/\D/g, '');
+    if (stripped === '') { onChange({ ...value, [field]: '' }); return; }
+    const num = parseInt(stripped, 10);
+    if (num > 99) return;
     onChange({ ...value, [field]: num });
   };
 
   return (
-    <div className="match-row">
+    <div className="match-row" style={{ padding: '0.35rem 0' }}>
       <div className="match-team">
-        <span className="match-flag">{getBandera(local)}</span>
-        <span className="match-team-name">{local}</span>
+        <span style={ACR}>{getAcronimo(local)}</span>
+        <span className="match-team-name" style={{ fontFamily: MONO, color: TEAM_COLOR, fontSize: '0.8125rem' }}>{local}</span>
       </div>
-      <div className="match-score-center">
+      <div className="match-score-center" style={{ gap: '0.25rem' }}>
         <input
           className="score-input"
-          type="number"
-          min="0"
-          max="99"
+          type="text"
+          inputMode="numeric"
+          maxLength={2}
           value={g1}
           onChange={(e) => update('g1', e.target.value)}
           disabled={locked}
-          placeholder="—"
         />
-        <span className="score-separator">:</span>
+        <span style={{ fontSize: '0.625rem', color: '#94a3b8', fontWeight: 600, letterSpacing: '0.02em', padding: '0 0.1rem' }}>vs.</span>
         <input
           className="score-input"
-          type="number"
-          min="0"
-          max="99"
+          type="text"
+          inputMode="numeric"
+          maxLength={2}
           value={g2}
           onChange={(e) => update('g2', e.target.value)}
           disabled={locked}
-          placeholder="—"
         />
       </div>
       <div className="match-team right">
-        <span className="match-flag">{getBandera(visitante)}</span>
-        <span className="match-team-name">{visitante}</span>
+        {/* row-reverse: primer elemento queda a la derecha (exterior) */}
+        <span style={ACR}>{getAcronimo(visitante)}</span>
+        <span className="match-team-name" style={{ fontFamily: MONO, color: TEAM_COLOR, fontSize: '0.8125rem' }}>{visitante}</span>
       </div>
     </div>
   );
@@ -144,9 +151,9 @@ function BracketMatchInput({ match, onChange, locked, isFirst }) {
     <div className={`bracket-match ${locked ? 'locked' : ''}`}>
       <div className="match-row" style={{ padding: '0.5rem 0', borderBottom: '1px solid var(--border-2)' }}>
         <div className="match-team">
-          <span className="match-flag">{getBandera(team1)}</span>
-          <span className="match-team-name" style={{ fontSize: '0.8125rem' }}>
-            {team1 || <span style={{ color: 'var(--text-3)' }}>Por determinar</span>}
+          {team1 && <span style={ACR}>{getAcronimo(team1)}</span>}
+          <span className="match-team-name" style={{ fontSize: '0.8125rem', fontFamily: MONO, color: TEAM_COLOR }}>
+            {team1 || <span style={{ color: 'var(--text-3)', fontFamily: 'inherit' }}>Por determinar</span>}
           </span>
         </div>
         <div className="match-score-center">
@@ -155,8 +162,9 @@ function BracketMatchInput({ match, onChange, locked, isFirst }) {
               <input
                 className="score-input"
                 style={{ width: '2.25rem' }}
-                type="number"
-                min="0"
+                type="text"
+                inputMode="numeric"
+                maxLength={2}
                 value={g1}
                 onChange={(e) => update('g1', e.target.value)}
                 disabled={locked || !team1 || !team2}
@@ -166,8 +174,9 @@ function BracketMatchInput({ match, onChange, locked, isFirst }) {
               <input
                 className="score-input"
                 style={{ width: '2.25rem' }}
-                type="number"
-                min="0"
+                type="text"
+                inputMode="numeric"
+                maxLength={2}
                 value={g2}
                 onChange={(e) => update('g2', e.target.value)}
                 disabled={locked || !team1 || !team2}
@@ -179,9 +188,9 @@ function BracketMatchInput({ match, onChange, locked, isFirst }) {
           )}
         </div>
         <div className="match-team right">
-          <span className="match-flag">{getBandera(team2)}</span>
-          <span className="match-team-name" style={{ fontSize: '0.8125rem' }}>
-            {team2 || <span style={{ color: 'var(--text-3)' }}>Por determinar</span>}
+          {team2 && <span style={ACR}>{getAcronimo(team2)}</span>}
+          <span className="match-team-name" style={{ fontSize: '0.8125rem', fontFamily: MONO, color: TEAM_COLOR }}>
+            {team2 || <span style={{ color: 'var(--text-3)', fontFamily: 'inherit' }}>Por determinar</span>}
           </span>
         </div>
       </div>
@@ -248,6 +257,19 @@ export default function Profile() {
   const saveFase1 = async () => {
     setSaving1(true);
     setMsg1('');
+
+    const allPartidos = Object.values(PARTIDOS_POR_GRUPO).flat();
+    const hasEmpty = allPartidos.some(({ id }) => {
+      const p = fase1.partidos?.[id];
+      return !p || p.g1 === '' || p.g1 === undefined || p.g1 === null
+                || p.g2 === '' || p.g2 === undefined || p.g2 === null;
+    });
+    if (hasEmpty) {
+      setMsg1('Rellena todos los resultados antes de guardar.');
+      setSaving1(false);
+      return;
+    }
+
     try {
       await setDoc(doc(db, 'predicciones_fase1', user.id), {
         ...fase1,
@@ -323,30 +345,50 @@ export default function Profile() {
     { key: 'sf', label: 'Semifinales', count: 2 },
   ];
 
+  const btnSave = {
+    display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+    padding: '0.625rem 1.25rem', borderRadius: '10px',
+    background: '#f4a87c', color: '#fff', border: 'none',
+    fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer',
+    transition: '0.2s ease', fontFamily: 'inherit',
+    boxShadow: '0 2px 10px rgba(244, 168, 124, 0.3)',
+  };
+
+  const sectionTitle = {
+    fontFamily: "'Playfair Display', Georgia, serif",
+    fontWeight: 700, fontSize: '1.0625rem', color: '#2d3142',
+    display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: 0,
+  };
+
   return (
-    <div className="page">
+    <div className="page" style={{ background: 'linear-gradient(150deg, #faf9f7 0%, #f5ede6 45%, #edf0f5 100%)' }}>
       <div className="container">
         {/* ── Cabecera del perfil ─────────────────────────────────────────── */}
-        <div className="page-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.375rem' }}>
-              <User size={20} color="var(--gold)" />
-              <h1 style={{ fontSize: '1.875rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-                {user.nombre} {user.apellidos}
-              </h1>
-            </div>
-            <p style={{ color: 'var(--text-2)' }}>
-              <span style={{ color: 'var(--gold)', fontWeight: 700 }}>@{user.nickname}</span>
-              &nbsp;&mdash;&nbsp;{user.email}
-            </p>
+        <div className="page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <User size={22} color="#ef8354" strokeWidth={1.5} />
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: '1.875rem', fontWeight: 600, fontStyle: 'italic',
+              color: '#2d3142', display: 'flex', alignItems: 'baseline',
+              gap: '0.45rem', flexWrap: 'wrap',
+            }}>
+              {user.nombre} {user.apellidos}
+              <span style={{ color: '#ccc5b9', fontStyle: 'normal', fontWeight: 300 }}>—</span>
+              <span style={{ color: '#ef8354' }}>@{user.nickname}</span>
+            </h1>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {user.pagado ? (
-              <span className="badge badge-green">✓ Cuota pagada</span>
-            ) : (
-              <span className="badge badge-red">⚠ Cuota pendiente</span>
-            )}
-          </div>
+          <span style={{
+            fontFamily: "'Inter', system-ui, sans-serif",
+            fontSize: '0.875rem', fontWeight: 600, letterSpacing: '0.02em',
+            color: user.pagado ? '#059669' : '#dc2626',
+            padding: '0.3rem 0.75rem',
+            background: user.pagado ? 'rgba(5,150,105,0.08)' : 'rgba(220,38,38,0.08)',
+            borderRadius: '6px',
+            border: `1px solid ${user.pagado ? 'rgba(5,150,105,0.2)' : 'rgba(220,38,38,0.2)'}`,
+          }}>
+            {user.pagado ? 'Cuota pagada' : 'Cuota pendiente'}
+          </span>
         </div>
 
         {/* ══════════════════════════════════════════════════════════════════ */}
@@ -354,11 +396,13 @@ export default function Profile() {
         {/* ══════════════════════════════════════════════════════════════════ */}
         <div className="card" style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <div className="card-title" style={{ marginBottom: 0 }}>
-              <span className="icon">⚽</span>
-              Fase de Grupos — Plantilla de Predicciones
+            <div style={sectionTitle}>
+              Fase de Grupos
+              <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', color: '#ef8354', fontWeight: 600 }}>
+                — Plantilla de Predicciones
+              </span>
               {fase1Cerrada && (
-                <span className="badge badge-red" style={{ marginLeft: '0.5rem' }}>
+                <span className="badge badge-red" style={{ marginLeft: '0.25rem' }}>
                   <Lock size={11} /> Cerrada
                 </span>
               )}
@@ -366,17 +410,12 @@ export default function Profile() {
             {!fase1Cerrada && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 {msg1 && (
-                  <span style={{ fontSize: '0.8125rem', color: msg1.includes('Error') ? 'var(--red)' : 'var(--green)' }}>
+                  <span style={{ fontSize: '0.8125rem', color: msg1.includes('Error') ? '#dc2626' : '#059669' }}>
                     {msg1}
                   </span>
                 )}
-                <button
-                  className="btn btn-primary"
-                  onClick={saveFase1}
-                  disabled={saving1}
-                >
-                  <Save size={15} />
-                  {saving1 ? 'Guardando…' : 'Guardar Fase 1'}
+                <button style={btnSave} onClick={saveFase1} disabled={saving1}>
+                  {saving1 ? 'Guardando…' : 'Guardar respuestas'}
                 </button>
               </div>
             )}
@@ -391,31 +430,59 @@ export default function Profile() {
 
           {/* Tabs de grupos */}
           <div className="tabs" style={{ marginBottom: '1.25rem' }}>
-            {Object.keys(GRUPOS).map((letra) => (
-              <button
-                key={letra}
-                className={`tab ${activeGroup === letra ? 'active' : ''}`}
-                onClick={() => setActiveGroup(letra)}
-              >
-                Grupo {letra}
-              </button>
-            ))}
+            {Object.keys(GRUPOS).map((letra) => {
+              const isActive = activeGroup === letra;
+              return (
+                <button
+                  key={letra}
+                  className="tab"
+                  style={{
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    fontSize: '0.6875rem', letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    padding: '0.375rem 0.75rem',
+                    fontWeight: isActive ? 700 : 500,
+                    ...(isActive ? {
+                      color: '#5b8db8',
+                      background: 'rgba(91, 141, 184, 0.07)',
+                      borderColor: 'rgba(91, 141, 184, 0.22)',
+                      boxShadow: '0 2px 8px rgba(91, 141, 184, 0.1)',
+                    } : {}),
+                  }}
+                  onClick={() => setActiveGroup(letra)}
+                >
+                  Grupo {letra}
+                </button>
+              );
+            })}
           </div>
 
           {/* Partidos del grupo activo */}
-          <div className="group-card">
-            <div className="group-card-header">
-              {GRUPOS[activeGroup].nombre} &mdash;&nbsp;
-              {GRUPOS[activeGroup].equipos.join(' · ')}
+          <div className="group-card" style={{ maxWidth: 680, margin: '0 auto' }}>
+            <div className="group-card-header" style={{
+              fontFamily: MONO,
+              textTransform: 'none', letterSpacing: '0.01em',
+              fontWeight: 500, fontSize: '0.8125rem',
+              display: 'flex', flexWrap: 'wrap', gap: '0 0.375rem',
+              justifyContent: 'center', textAlign: 'center',
+            }}>
+              {GRUPOS[activeGroup].equipos.map((eq, i) => (
+                <span key={eq}>
+                  {i > 0 && <span style={{ color: '#ccc5b9' }}>,&nbsp;</span>}
+                  <span style={{ fontFamily: MONO, color: '#ef8354', fontWeight: 700, fontSize: '0.625rem' }}>{getAcronimo(eq)}</span>
+                  {' '}
+                  <span style={{ color: '#7ab5cc' }}>{eq}</span>
+                </span>
+              ))}
             </div>
-            <div className="group-card-body">
+            <div className="group-card-body" style={{ paddingBottom: '0.75rem' }}>
               {PARTIDOS_POR_GRUPO[activeGroup].map((partido, idx) => {
                 const jornada = partido.jornada;
                 const isFirstOfJornada = idx === 0 || PARTIDOS_POR_GRUPO[activeGroup][idx - 1].jornada !== jornada;
                 return (
                   <div key={partido.id}>
                     {isFirstOfJornada && (
-                      <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '0.75rem 0 0.25rem' }}>
+                      <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#ccc5b9', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '0.5rem 0 0.125rem', textAlign: 'center' }}>
                         Jornada {jornada}
                       </p>
                     )}
@@ -433,15 +500,15 @@ export default function Profile() {
 
           {/* Premios individuales */}
           <div style={{ marginTop: '1.75rem' }}>
-            <div className="card-title">
-              <Star size={16} color="var(--gold)" />
+            <div style={{ ...sectionTitle, marginBottom: '1rem' }}>
+              <Star size={16} color="#ef8354" />
               Premios individuales
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Máximo goleador (+4 pts)</label>
+              <div className="form-group-light" style={{ marginBottom: 0 }}>
+                <label className="form-label-light" style={{ textAlign: 'center', display: 'block' }}>Máximo goleador</label>
                 <input
-                  className="form-input"
+                  className="form-input-light"
                   type="text"
                   placeholder="Nombre del jugador"
                   value={fase1.maxGoleador || ''}
@@ -449,10 +516,10 @@ export default function Profile() {
                   disabled={fase1Cerrada}
                 />
               </div>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Balón de Oro (+3 pts)</label>
+              <div className="form-group-light" style={{ marginBottom: 0 }}>
+                <label className="form-label-light" style={{ textAlign: 'center', display: 'block' }}>🥇 Balón de Oro</label>
                 <input
-                  className="form-input"
+                  className="form-input-light"
                   type="text"
                   placeholder="Nombre del jugador"
                   value={fase1.balonOro || ''}
@@ -460,10 +527,10 @@ export default function Profile() {
                   disabled={fase1Cerrada}
                 />
               </div>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Balón de Plata (+2 pts)</label>
+              <div className="form-group-light" style={{ marginBottom: 0 }}>
+                <label className="form-label-light" style={{ textAlign: 'center', display: 'block' }}>🥈 Balón de Plata</label>
                 <input
-                  className="form-input"
+                  className="form-input-light"
                   type="text"
                   placeholder="Nombre del jugador"
                   value={fase1.balonPlata || ''}
@@ -471,10 +538,10 @@ export default function Profile() {
                   disabled={fase1Cerrada}
                 />
               </div>
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label">Balón de Bronce (+1 pt)</label>
+              <div className="form-group-light" style={{ marginBottom: 0 }}>
+                <label className="form-label-light" style={{ textAlign: 'center', display: 'block' }}>🥉 Balón de Bronce</label>
                 <input
-                  className="form-input"
+                  className="form-input-light"
                   type="text"
                   placeholder="Nombre del jugador"
                   value={fase1.balonBronce || ''}
@@ -485,113 +552,8 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Botón guardar abajo también */}
-          {!fase1Cerrada && (
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-              <button className="btn btn-primary" onClick={saveFase1} disabled={saving1}>
-                <Save size={15} />
-                {saving1 ? 'Guardando…' : 'Guardar Fase 1'}
-              </button>
-            </div>
-          )}
         </div>
 
-        {/* ══════════════════════════════════════════════════════════════════ */}
-        {/* FASE 2: Eliminatoria                                              */}
-        {/* ══════════════════════════════════════════════════════════════════ */}
-        {!fase2Habilitada ? (
-          <div className="card">
-            <div className="card-title">
-              <Trophy size={16} color="var(--gold)" />
-              Fase Eliminatoria — Disponible el 28 de junio
-            </div>
-            <div className="alert alert-info">
-              La plantilla de la fase eliminatoria se abrirá el <strong>28 de junio de 2026</strong>, una
-              vez que el administrador haya confirmado los 32 equipos que han pasado de la fase de grupos.
-            </div>
-          </div>
-        ) : (
-          <div className="card">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-              <div className="card-title" style={{ marginBottom: 0 }}>
-                <Trophy size={16} color="var(--gold)" />
-                Fase Eliminatoria — Plantilla de Predicciones
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                {msg2 && (
-                  <span style={{ fontSize: '0.8125rem', color: msg2.includes('Error') ? 'var(--red)' : 'var(--green)' }}>
-                    {msg2}
-                  </span>
-                )}
-                <button className="btn btn-primary" onClick={saveFase2} disabled={saving2}>
-                  <Save size={15} />
-                  {saving2 ? 'Guardando…' : 'Guardar Fase 2'}
-                </button>
-              </div>
-            </div>
-
-            <div className="alert alert-info" style={{ marginBottom: '1.5rem' }}>
-              Rellena los resultados de cada partido. Los equipos de las rondas posteriores se irán
-              calculando automáticamente a partir de tus predicciones anteriores.
-            </div>
-
-            {bracket && (
-              <>
-                {RONDAS_BRACKET.map(({ key, label, count }) => (
-                  <div key={key} className="bracket-round">
-                    <div className="bracket-round-title">
-                      <Trophy size={14} />
-                      {label}
-                    </div>
-                    <div className="bracket-matches-grid">
-                      {Array.from({ length: count }).map((_, idx) => {
-                        const match = bracket[key]?.[idx] || {};
-                        return (
-                          <BracketMatchInput
-                            key={idx}
-                            match={match}
-                            onChange={(val) => updateBracketMatch(key, idx, val)}
-                            locked={false}
-                            isFirst
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-
-                {/* Tercer puesto y Final */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  <div className="bracket-round">
-                    <div className="bracket-round-title">🥉 Tercer y Cuarto Puesto</div>
-                    <BracketMatchInput
-                      match={bracket.tercerPuesto}
-                      onChange={(val) => updateBracketMatch('tercerPuesto', 0, val)}
-                      locked={false}
-                      isFirst
-                    />
-                  </div>
-                  <div className="bracket-round">
-                    <div className="bracket-round-title">🏆 Final</div>
-                    <BracketMatchInput
-                      match={bracket.final}
-                      onChange={(val) => updateBracketMatch('final', 0, val)}
-                      locked={false}
-                      isFirst
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-                  <button className="btn btn-primary" onClick={saveFase2} disabled={saving2}>
-                    <Save size={15} />
-                    {saving2 ? 'Guardando…' : 'Guardar Fase 2'}
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

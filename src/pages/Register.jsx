@@ -94,14 +94,14 @@ export default function Register() {
         <div className="auth-card-light">
           <div className="register-success-wrap">
             <div className="register-success-icon">
-              <CheckCircle size={32} color="#059669" />
+              <CheckCircle size={32} color="#4f5d75" />
             </div>
             <h2 className="register-success-title">¡Cuenta creada!</h2>
             <p className="register-success-sub">
-              Ya puedes iniciar sesión. Guarda tus credenciales de acceso:
+              Ya puedes iniciar sesión.<br />Guarda tus credenciales de acceso
             </p>
+            <div className="credentials-box-label" style={{ textAlign: 'left', marginBottom: '0.5rem' }}>Tus datos de acceso</div>
             <div className="credentials-box">
-              <div className="credentials-box-label">Tus datos de acceso</div>
               <div className="credential-row">
                 <span className="credential-key">Nickname</span>
                 <span className="credential-val">{form.nickname}</span>
@@ -127,7 +127,6 @@ export default function Register() {
 
       <div className="auth-card-light wide">
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div className="auth-logo-light">⚽</div>
           <h2 className="auth-title-light">Crear cuenta</h2>
           <p className="auth-sub-light">Únete a la porra del Mundial 2026</p>
         </div>
@@ -135,98 +134,105 @@ export default function Register() {
         {generalError && <div className="alert-error-light">{generalError}</div>}
 
         <form onSubmit={handleSubmit} noValidate>
-          <span className="section-label-light">Información personal</span>
+          <div className="form-section-light warm">
+            <div className="form-section-heading">
+              <span className="form-section-name">Información personal</span>
+            </div>
 
-          <div className="pub-two-col">
+            <div className="pub-two-col">
+              <div className="form-group-light">
+                <label className="form-label-light">Nombre</label>
+                <input
+                  className={`form-input-light${fieldErrors.nombre ? ' has-error' : ''}`}
+                  type="text"
+                  name="nombre"
+                  value={form.nombre}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Tu nombre"
+                  autoFocus
+                />
+                {fieldErr('nombre')}
+              </div>
+              <div className="form-group-light">
+                <label className="form-label-light">Apellidos</label>
+                <input
+                  className={`form-input-light${fieldErrors.apellidos ? ' has-error' : ''}`}
+                  type="text"
+                  name="apellidos"
+                  value={form.apellidos}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Tus apellidos"
+                />
+                {fieldErr('apellidos')}
+              </div>
+            </div>
+
             <div className="form-group-light">
-              <label className="form-label-light">Nombre</label>
+              <label className="form-label-light">Email</label>
               <input
-                className={`form-input-light${fieldErrors.nombre ? ' has-error' : ''}`}
+                className={`form-input-light${fieldErrors.email ? ' has-error' : ''}`}
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="tu@email.com"
+              />
+              {fieldErr('email')}
+            </div>
+          </div>
+
+          <div className="form-section-light cool">
+            <div className="form-section-heading">
+              <span className="form-section-name">Datos de acceso</span>
+            </div>
+
+            <div className="form-group-light">
+              <label className="form-label-light">Nickname</label>
+              <input
+                className={`form-input-light${fieldErrors.nickname ? ' has-error' : ''}`}
                 type="text"
-                name="nombre"
-                value={form.nombre}
+                name="nickname"
+                value={form.nickname}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="Tu nombre"
-                autoFocus
+                placeholder="Ej: Tigre2026"
+                autoComplete="username"
               />
-              {fieldErr('nombre')}
+              {fieldErr('nickname') || <p className="form-hint-light">Nombre visible en la clasificación</p>}
             </div>
-            <div className="form-group-light">
-              <label className="form-label-light">Apellidos</label>
-              <input
-                className={`form-input-light${fieldErrors.apellidos ? ' has-error' : ''}`}
-                type="text"
-                name="apellidos"
-                value={form.apellidos}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Tus apellidos"
-              />
-              {fieldErr('apellidos')}
-            </div>
-          </div>
 
-          <div className="form-group-light">
-            <label className="form-label-light">Email</label>
-            <input
-              className={`form-input-light${fieldErrors.email ? ' has-error' : ''}`}
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="tu@email.com"
-            />
-            {fieldErr('email')}
-          </div>
-
-          <hr className="section-divider-light" />
-          <span className="section-label-light">Datos de acceso</span>
-
-          <div className="form-group-light">
-            <label className="form-label-light">Nickname</label>
-            <input
-              className={`form-input-light${fieldErrors.nickname ? ' has-error' : ''}`}
-              type="text"
-              name="nickname"
-              value={form.nickname}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Ej: Tigre2026"
-              autoComplete="username"
-            />
-            {fieldErr('nickname') || <p className="form-hint-light">Nombre visible en la clasificación</p>}
-          </div>
-
-          <div className="pub-two-col">
-            <div className="form-group-light">
-              <label className="form-label-light">Contraseña</label>
-              <input
-                className={`form-input-light${fieldErrors.password ? ' has-error' : ''}`}
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Mínimo 4 caracteres"
-                autoComplete="new-password"
-              />
-              {fieldErr('password')}
-            </div>
-            <div className="form-group-light">
-              <label className="form-label-light">Repetir contraseña</label>
-              <input
-                className={`form-input-light${fieldErrors.passwordRepeat ? ' has-error' : ''}`}
-                type="password"
-                name="passwordRepeat"
-                value={form.passwordRepeat}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Repite la contraseña"
-                autoComplete="new-password"
-              />
-              {fieldErr('passwordRepeat')}
+            <div className="pub-two-col">
+              <div className="form-group-light">
+                <label className="form-label-light">Contraseña</label>
+                <input
+                  className={`form-input-light${fieldErrors.password ? ' has-error' : ''}`}
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Mínimo 4 caracteres"
+                  autoComplete="new-password"
+                />
+                {fieldErr('password')}
+              </div>
+              <div className="form-group-light">
+                <label className="form-label-light">Repetir contraseña</label>
+                <input
+                  className={`form-input-light${fieldErrors.passwordRepeat ? ' has-error' : ''}`}
+                  type="password"
+                  name="passwordRepeat"
+                  value={form.passwordRepeat}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Repite la contraseña"
+                  autoComplete="new-password"
+                />
+                {fieldErr('passwordRepeat')}
+              </div>
             </div>
           </div>
 
@@ -234,13 +240,13 @@ export default function Register() {
             type="submit"
             className="btn-pub-primary"
             disabled={submitting}
-            style={{ marginTop: '1rem' }}
+            style={{ marginTop: '0.5rem' }}
           >
             {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
           </button>
         </form>
 
-        <div className="auth-footer-light">
+        <div className="how-link-row" style={{ marginTop: '1.25rem' }}>
           ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
         </div>
       </div>

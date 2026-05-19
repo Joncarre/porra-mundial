@@ -49,7 +49,6 @@ export default function Login() {
 
       <div className="auth-card-light">
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div className="auth-logo-light">⚽</div>
           <h2 className="auth-title-light">Bienvenido de vuelta</h2>
           <p className="auth-sub-light">Inicia sesión para acceder a tu porra</p>
         </div>
@@ -95,7 +94,7 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="auth-footer-light">
+        <div className="how-link-row" style={{ marginTop: '1.25rem' }}>
           ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
         </div>
       </div>
