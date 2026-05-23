@@ -74,18 +74,40 @@
   flex: 1;
 }
 
-.profile-role-pill {
-  align-self: flex-start;
+.profile-hero-pills {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.profile-pill {
   display: inline-block;
   padding: 4px 12px;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.10em;
   text-transform: uppercase;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+}
+
+.profile-pill--admin {
   color: var(--gold-700);
   background: var(--grad-gold-soft);
-  border: 1px solid var(--border-gold);
-  border-radius: var(--radius-full);
+  border-color: var(--border-gold);
+}
+
+.profile-pill--paid {
+  color: var(--success);
+  background: var(--success-bg);
+  border-color: rgba(111, 156, 114, 0.30);
+}
+
+.profile-pill--unpaid {
+  color: var(--warning);
+  background: var(--warning-bg);
+  border-color: rgba(201, 168, 93, 0.35);
 }
 
 .profile-hero-name {
@@ -116,7 +138,7 @@
     text-align: center;
     padding: var(--space-xl) var(--space-lg);
   }
-  .profile-role-pill { align-self: center; }
+  .profile-hero-pills { justify-content: center; }
 }
 
 /* -------- Grid de secciones -------- */
@@ -212,6 +234,16 @@
   border-left-color: var(--gold-400);
 }
 
+.profile-check.is-locked {
+  background: var(--surface-2);
+  border-left-color: var(--border-default);
+  opacity: 0.75;
+}
+
+.profile-check.is-locked .profile-check-title {
+  color: var(--text-muted);
+}
+
 .profile-check-body {
   display: flex;
   flex-direction: column;
@@ -247,6 +279,18 @@
   background: var(--success);
   color: white;
   border-color: var(--success);
+}
+
+.profile-check.is-pending .profile-check-status {
+  background: var(--surface-1);
+  color: var(--gold-700);
+  border-color: var(--border-gold);
+}
+
+.profile-check.is-locked .profile-check-status {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border-default);
 }
 
 /* -------- Modal -------- */

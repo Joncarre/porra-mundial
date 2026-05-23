@@ -5,6 +5,72 @@ import Avatar from '../components/Avatar.jsx';
 import { AVATARS, buscarAvatar } from '../data/avatars.js';
 import './Profile.css';
 
+/**
+ * Construye el checklist con dependencias secuenciales.
+ * Flujo: pago → fase grupos → eliminatoria → otras apuestas.
+ * Cada plantilla está bloqueada hasta que la anterior esté completada.
+ */
+function buildChecklist(user) {
+  const pago = !!user.pagado;
+  const grupos = !!user.plantillaGruposCompletada;
+  const elim = !!user.plantillaEliminatoriaCompletada;
+  const otras = !!user.plantillaOtrasApuestasCompletada;
+
+  const stateOf = (done, prevDone) => {
+    if (done) return 'done';
+    if (!prevDone) return 'locked';
+    return 'pending';
+  };
+
+  return [
+    {
+      key: 'pago',
+      title: 'Pago de la porra',
+      state: pago ? 'done' : 'pending',
+      copy: {
+        done: 'Confirmado por el administrador.',
+        pending: 'Habla con el admin para pagar tu cuota.',
+      },
+    },
+    {
+      key: 'grupos',
+      title: 'Plantilla fase de grupos',
+      state: stateOf(grupos, pago),
+      copy: {
+        done: 'Pronósticos guardados.',
+        pending: 'Lista para rellenar.',
+        locked: 'Se desbloquea al confirmar el pago.',
+      },
+    },
+    {
+      key: 'eliminatoria',
+      title: 'Plantilla eliminatoria',
+      state: stateOf(elim, grupos),
+      copy: {
+        done: 'Bracket completado.',
+        pending: 'Lista para rellenar.',
+        locked: 'Se desbloquea al completar la fase de grupos.',
+      },
+    },
+    {
+      key: 'apuestas',
+      title: 'Plantilla otras apuestas',
+      state: stateOf(otras, elim),
+      copy: {
+        done: 'Máximo goleador, balones y ganador guardados.',
+        pending: 'Lista para rellenar.',
+        locked: 'Se desbloquea al completar el bracket eliminatorio.',
+      },
+    },
+  ];
+}
+
+const STATE_LABEL = {
+  done: 'Completado',
+  pending: 'Pendiente',
+  locked: 'Bloqueado',
+};
+
 export default function Profile() {
   const { user, patchUser } = useAuth();
   const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
@@ -33,38 +99,7 @@ export default function Profile() {
   };
 
   const currentAvatar = buscarAvatar(user.avatarId);
-
-  /** Resumen del estado: pago + 3 plantillas. */
-  const checklist = [
-    {
-      key: 'pago',
-      title: 'Pago de la porra',
-      detail: 'Confirmado por el administrador al recibir tu aportación.',
-      done: !!user.pagado,
-      pendingHint: 'Pendiente — habla con el admin para pagar tu cuota.',
-    },
-    {
-      key: 'grupos',
-      title: 'Plantilla fase de grupos',
-      detail: 'Pronósticos de los 72 partidos de la fase de grupos.',
-      done: !!user.plantillaGruposCompletada,
-      pendingHint: 'Disponible próximamente.',
-    },
-    {
-      key: 'eliminatoria',
-      title: 'Plantilla eliminatoria',
-      detail: 'Bracket completo desde dieciseisavos hasta la final.',
-      done: !!user.plantillaEliminatoriaCompletada,
-      pendingHint: 'Se desbloquea al completar la fase de grupos.',
-    },
-    {
-      key: 'apuestas',
-      title: 'Plantilla otras apuestas',
-      detail: 'Máximo goleador, balones de oro/plata/bronce, 3.º y 4.º puesto y ganador.',
-      done: !!user.plantillaOtrasApuestasCompletada,
-      pendingHint: 'Disponible próximamente.',
-    },
-  ];
+  const checklist = buildChecklist(user);
 
   return (
     <div className="profile-page">
@@ -76,7 +111,7 @@ export default function Profile() {
           <section className="profile-hero">
             <div
               className="profile-hero-bg"
-              style={{ backgroundImage: currentAvatar.gradient }}
+              style={{ background: currentAvatar.bg }}
             />
             <div className="profile-hero-content">
               <button
@@ -89,9 +124,16 @@ export default function Profile() {
                 <span className="profile-avatar-hint">Cambiar avatar</span>
               </button>
               <div className="profile-hero-info">
-                <span className="profile-role-pill">
-                  {user.isAdmin ? 'Administrador' : 'Participante'}
-                </span>
+                <div className="profile-hero-pills">
+                  {user.isAdmin && (
+                    <span className="profile-pill profile-pill--admin">Administrador</span>
+                  )}
+                  <span
+                    className={`profile-pill ${user.pagado ? 'profile-pill--paid' : 'profile-pill--unpaid'}`}
+                  >
+                    {user.pagado ? 'Pagado' : 'Pago pendiente'}
+                  </span>
+                </div>
                 <h1 className="profile-hero-name">
                   {user.nombre} {user.apellidos}
                 </h1>
@@ -138,17 +180,13 @@ export default function Profile() {
                 {checklist.map((item) => (
                   <div
                     key={item.key}
-                    className={`profile-check ${item.done ? 'is-done' : 'is-pending'}`}
+                    className={`profile-check is-${item.state}`}
                   >
                     <div className="profile-check-body">
                       <div className="profile-check-title">{item.title}</div>
-                      <div className="profile-check-detail">
-                        {item.done ? item.detail : item.pendingHint}
-                      </div>
+                      <div className="profile-check-detail">{item.copy[item.state]}</div>
                     </div>
-                    <span className="profile-check-status">
-                      {item.done ? 'Completado' : 'Pendiente'}
-                    </span>
+                    <span className="profile-check-status">{STATE_LABEL[item.state]}</span>
                   </div>
                 ))}
               </div>

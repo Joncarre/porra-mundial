@@ -221,16 +221,34 @@ export default function Register() {
             <span className="auth-modal-eyebrow">¡Bienvenido!</span>
             <h2>Tu cuenta está lista</h2>
             <p>
-              Hemos creado tu perfil correctamente. Ya puedes iniciar sesión con{' '}
-              <strong>{form.nickname}</strong> y tu contraseña.
+              Hemos creado tu perfil correctamente. Necesitarás estas credenciales
+              para iniciar sesión en la porra.
             </p>
+
+            <div className="auth-credentials">
+              <div className="auth-credentials-row">
+                <span className="auth-credentials-label">Nickname</span>
+                <span className="auth-credentials-value">{form.nickname}</span>
+              </div>
+              <div className="auth-credentials-divider" />
+              <div className="auth-credentials-row">
+                <span className="auth-credentials-label">Contraseña</span>
+                <span className="auth-credentials-value">{form.password}</span>
+              </div>
+            </div>
+
+            <div className="auth-warning">
+              <strong>Importante:</strong> apunta estas credenciales antes de continuar.
+              Una vez cierres esta ventana no podrás volver a verlas y no se podrán recuperar.
+            </div>
+
             <button
               type="button"
               className="btn btn-primary btn-lg"
               style={{ width: '100%' }}
               onClick={() => navigate('/')}
             >
-              Aceptar
+              Las he apuntado, continuar
             </button>
           </div>
         </div>
