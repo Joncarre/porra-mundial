@@ -44,6 +44,12 @@ export default function AppHeader() {
           >
             Perfil
           </NavLink>
+          <NavLink
+            to="/grupos"
+            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+          >
+            Grupos
+          </NavLink>
           {user?.isAdmin && (
             <NavLink
               to="/admin"

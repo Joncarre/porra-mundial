@@ -4,9 +4,10 @@ import { useAuth } from '../context/AuthContext.jsx';
 /**
  * Envoltorio para rutas privadas.
  * Si no hay usuario logueado, redirige a /login conservando el destino
- * original en la querystring para poder volver tras autenticarse.
+ * original en el estado para poder volver tras autenticarse.
+ * Con `requireAdmin`, redirige a /perfil si el usuario no es admin.
  */
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children, requireAdmin = false }) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -20,6 +21,10 @@ export default function ProtectedRoute({ children }) {
 
   if (!user) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+
+  if (requireAdmin && !user.isAdmin) {
+    return <Navigate to="/perfil" replace />;
   }
 
   return children;

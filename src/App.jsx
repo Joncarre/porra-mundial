@@ -4,6 +4,8 @@ import HowItWorks from './pages/HowItWorks.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
+import ResultadosGrupos from './pages/ResultadosGrupos.jsx';
+import Admin from './pages/Admin.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 export default function App() {
@@ -21,6 +23,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/grupos"
+        element={
+          <ProtectedRoute>
+            <ResultadosGrupos />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute requireAdmin>
+            <Admin />
           </ProtectedRoute>
         }
       />
