@@ -1,6 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import { Trophy, ChevronDown, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import Avatar from './Avatar.jsx';
 import './AppHeader.css';
@@ -35,21 +34,22 @@ export default function AppHeader() {
     <header className="app-header">
       <div className="container app-header-inner">
         <Link to="/perfil" className="app-brand">
-          <div className="app-brand-mark">
-            <Trophy size={18} strokeWidth={2.5} />
-          </div>
-          <span className="app-brand-text">
-            Porra <span className="text-gold">Mundial</span>
-          </span>
+          Porra <span className="text-gold">Mundial</span>
         </Link>
 
         <nav className="app-nav">
-          <NavLink to="/perfil" className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}>
+          <NavLink
+            to="/perfil"
+            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+          >
             Perfil
           </NavLink>
           {user?.isAdmin && (
-            <NavLink to="/admin" className={({ isActive }) => `app-nav-link app-nav-link--admin ${isActive ? 'is-active' : ''}`}>
-              <Settings size={14} /> Admin
+            <NavLink
+              to="/admin"
+              className={({ isActive }) => `app-nav-link app-nav-link--admin ${isActive ? 'is-active' : ''}`}
+            >
+              Admin
             </NavLink>
           )}
         </nav>
@@ -62,19 +62,25 @@ export default function AppHeader() {
           >
             <Avatar id={user?.avatarId} size="sm" />
             <div className="app-user-info">
-              <span className="app-user-nick">{user?.nickname}</span>
+              <span className="app-user-nick">@{user?.nickname}</span>
               {user?.isAdmin && <span className="app-user-role">Admin</span>}
             </div>
-            <ChevronDown size={16} className={`app-user-chev ${menuOpen ? 'is-open' : ''}`} />
           </button>
 
           {menuOpen && (
             <div className="app-user-dropdown">
-              <Link to="/perfil" className="app-user-dropdown-item" onClick={() => setMenuOpen(false)}>
-                <User size={15} /> Mi perfil
+              <Link
+                to="/perfil"
+                className="app-user-dropdown-item"
+                onClick={() => setMenuOpen(false)}
+              >
+                Mi perfil
               </Link>
-              <button className="app-user-dropdown-item app-user-dropdown-item--danger" onClick={handleLogout}>
-                <LogOut size={15} /> Cerrar sesión
+              <button
+                className="app-user-dropdown-item app-user-dropdown-item--danger"
+                onClick={handleLogout}
+              >
+                Cerrar sesión
               </button>
             </div>
           )}

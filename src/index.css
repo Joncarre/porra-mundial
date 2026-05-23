@@ -1,47 +1,56 @@
 /* ============================================================
    Porra Mundial 2026 — Global design system
-   Dark premium theme with gold accents
+   Light pastel premium theme · antique gold + warm ivory
    ============================================================ */
 
 :root {
   /* -------- Color palette -------- */
-  --bg-base: #0a0e1a;
-  --bg-soft: #0f1424;
-  --surface-1: #131829;
-  --surface-2: #1a2038;
-  --surface-3: #222949;
-  --surface-elevated: #2a3354;
+  --bg-base: #fbf8f1;          /* warm ivory */
+  --bg-soft: #f6f0e2;          /* slightly deeper warm */
+  --surface-1: #ffffff;         /* pure white cards */
+  --surface-2: #faf5ea;
+  --surface-3: #f0e8d6;
+  --surface-elevated: #ffffff;
 
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --border-gold: rgba(212, 175, 55, 0.35);
+  --border-subtle: rgba(40, 30, 15, 0.05);
+  --border-default: rgba(40, 30, 15, 0.09);
+  --border-strong: rgba(40, 30, 15, 0.15);
+  --border-gold: rgba(184, 148, 90, 0.35);
 
-  --gold-50: #fdf7e3;
-  --gold-100: #f7e9b3;
-  --gold-300: #ecd47a;
-  --gold-400: #e8c468;
-  --gold-500: #d4af37;
-  --gold-600: #b8932a;
-  --gold-700: #8c6f1f;
+  --gold-50: #faf3df;
+  --gold-100: #f0dfb0;
+  --gold-300: #d8b67a;
+  --gold-400: #c9a25a;
+  --gold-500: #b8945a;          /* main gold accent */
+  --gold-600: #9b7838;
+  --gold-700: #7c5e2a;
 
-  --text-primary: #f5f7fa;
-  --text-secondary: #a8b1c5;
-  --text-muted: #6b7387;
-  --text-on-gold: #1a1407;
+  /* Pastel accents — used very subtly */
+  --pastel-rose: #f3d8d4;
+  --pastel-sage: #d4ddc7;
+  --pastel-blue: #cad8e2;
+  --pastel-lavender: #dcd5e6;
 
-  --success: #22c55e;
-  --success-bg: rgba(34, 197, 94, 0.12);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.12);
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.12);
-  --info: #3b82f6;
-  --info-bg: rgba(59, 130, 246, 0.12);
+  --charcoal: #2a2e3f;          /* deep navy charcoal */
+  --charcoal-light: #3d4257;
+
+  --text-primary: #2a2e3f;
+  --text-secondary: #5d6275;
+  --text-muted: #8d92a5;
+  --text-on-dark: #fdfbf5;
+
+  --success: #6f9c72;
+  --success-bg: rgba(111, 156, 114, 0.12);
+  --warning: #c9a85d;
+  --warning-bg: rgba(201, 168, 93, 0.14);
+  --danger: #b85c52;
+  --danger-bg: rgba(184, 92, 82, 0.10);
+  --info: #6b94b8;
+  --info-bg: rgba(107, 148, 184, 0.12);
 
   /* -------- Typography -------- */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Fraunces', 'Space Grotesk', 'Inter', serif;
 
   /* -------- Spacing -------- */
   --space-xs: 4px;
@@ -60,20 +69,23 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* -------- Shadows -------- */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
-  --shadow-gold: 0 0 40px rgba(212, 175, 55, 0.20);
-  --shadow-gold-strong: 0 8px 32px rgba(212, 175, 55, 0.35);
+  /* -------- Shadows (light theme) -------- */
+  --shadow-sm: 0 1px 2px rgba(40, 30, 15, 0.04), 0 1px 3px rgba(40, 30, 15, 0.05);
+  --shadow-md: 0 4px 12px rgba(40, 30, 15, 0.06), 0 2px 4px rgba(40, 30, 15, 0.04);
+  --shadow-lg: 0 16px 48px rgba(40, 30, 15, 0.08), 0 4px 12px rgba(40, 30, 15, 0.05);
+  --shadow-xl: 0 24px 64px rgba(40, 30, 15, 0.12);
+  --shadow-gold: 0 6px 20px rgba(184, 148, 90, 0.20);
+  --shadow-gold-strong: 0 10px 32px rgba(184, 148, 90, 0.35);
 
   /* -------- Gradients -------- */
-  --grad-gold: linear-gradient(135deg, #e8c468 0%, #d4af37 50%, #a8862a 100%);
-  --grad-gold-soft: linear-gradient(135deg, rgba(232, 196, 104, 0.18) 0%, rgba(212, 175, 55, 0.08) 100%);
-  --grad-surface: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
-  --grad-hero: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
-               radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
-               var(--bg-base);
+  --grad-gold: linear-gradient(135deg, #d8b67a 0%, #b8945a 50%, #9b7838 100%);
+  --grad-gold-soft: linear-gradient(135deg, rgba(216, 182, 122, 0.20) 0%, rgba(184, 148, 90, 0.06) 100%);
+  --grad-charcoal: linear-gradient(135deg, #2a2e3f 0%, #1d2030 100%);
+  --grad-surface: linear-gradient(180deg, #ffffff 0%, #fdfaf2 100%);
+  --grad-hero:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(216, 182, 122, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 85%, rgba(220, 213, 230, 0.22) 0%, transparent 60%),
+    var(--bg-base);
 
   /* -------- Transitions -------- */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,9 +133,9 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
   color: var(--text-primary);
 }
 
@@ -138,13 +150,13 @@ p {
 }
 
 a {
-  color: var(--gold-400);
+  color: var(--gold-600);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--gold-300);
+  color: var(--gold-700);
 }
 
 button {
@@ -167,8 +179,8 @@ img, svg {
 }
 
 ::selection {
-  background: var(--gold-500);
-  color: var(--text-on-gold);
+  background: var(--gold-100);
+  color: var(--charcoal);
 }
 
 /* ============================================================
@@ -195,44 +207,64 @@ img, svg {
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  padding: 14px 28px;
+  padding: 13px 28px;
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.95rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   border-radius: var(--radius-md);
   transition: all var(--transition);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
+  border: 1px solid transparent;
 }
 
 .btn-primary {
-  background: var(--grad-gold);
-  color: var(--text-on-gold);
-  box-shadow: var(--shadow-gold);
+  background: var(--grad-charcoal);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-gold-strong);
+  box-shadow: var(--shadow-md);
+  color: var(--text-on-dark);
 }
 
 .btn-primary:active {
   transform: translateY(0);
 }
 
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .btn-secondary {
-  background: transparent;
+  background: var(--surface-1);
   color: var(--text-primary);
-  border: 1px solid var(--border-strong);
-  backdrop-filter: blur(8px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-  background: var(--surface-2);
-  border-color: var(--border-gold);
-  color: var(--gold-300);
+  background: var(--bg-soft);
+  border-color: var(--charcoal);
+  color: var(--text-primary);
+}
+
+.btn-gold {
+  background: var(--grad-gold);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-gold-strong);
+  color: var(--text-on-dark);
 }
 
 .btn-ghost {
@@ -242,26 +274,27 @@ img, svg {
 }
 
 .btn-ghost:hover {
-  color: var(--gold-300);
-  background: rgba(212, 175, 55, 0.06);
+  color: var(--charcoal);
+  background: var(--bg-soft);
 }
 
 .btn-lg {
-  padding: 16px 36px;
+  padding: 15px 36px;
   font-size: 1rem;
 }
 
 /* -------- Cards -------- */
 .card {
-  background: var(--grad-surface);
+  background: var(--surface-1);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
   transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-elevated {
-  background: var(--surface-2);
+  background: var(--surface-1);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
@@ -283,13 +316,13 @@ img, svg {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
   border-radius: var(--radius-full);
-  background: rgba(212, 175, 55, 0.10);
-  color: var(--gold-300);
+  background: var(--grad-gold-soft);
+  color: var(--gold-700);
   border: 1px solid var(--border-gold);
 }
 
@@ -300,11 +333,24 @@ img, svg {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
 }
 
 .text-muted { color: var(--text-muted); }
 .text-secondary { color: var(--text-secondary); }
 .text-center { text-align: center; }
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+}
 
 /* -------- Forms -------- */
 .input {
@@ -316,13 +362,23 @@ img, svg {
   color: var(--text-primary);
   font-size: 0.95rem;
   transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
 }
 
 .input:focus {
   outline: none;
   border-color: var(--gold-500);
-  background: var(--surface-2);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+  background: var(--surface-1);
+  box-shadow: 0 0 0 3px rgba(184, 148, 90, 0.12), var(--shadow-sm);
+}
+
+.input.is-invalid {
+  border-color: var(--danger);
+}
+
+.input.is-invalid:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(184, 92, 82, 0.12), var(--shadow-sm);
 }
 
 .input::placeholder {
@@ -335,7 +391,15 @@ img, svg {
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+}
+
+.field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--danger);
+  line-height: 1.4;
 }
 
 /* ============================================================
@@ -356,11 +420,6 @@ img, svg {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-@keyframes shine {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
 }
 
 .animate-fade-in {
@@ -389,7 +448,7 @@ img, svg {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--surface-elevated);
+  background: var(--gold-300);
 }
 
 /* ============================================================

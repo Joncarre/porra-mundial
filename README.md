@@ -6,15 +6,15 @@ Aplicación web para organizar una porra entre amigos del Mundial de Fútbol 202
 
 - **React 18** + **Vite** + **React Router v6**
 - **Firebase Firestore** (sin Firebase Auth — sesión vía localStorage)
-- **CSS** puro con variables custom (tema dark premium con acentos dorados)
-- **lucide-react** para iconografía
+- **CSS** puro con variables custom (tema light pastel premium con acentos dorados antiguos)
+- **lucide-react** únicamente para los iconos interiores de los avatares predefinidos
 
 ## Funcionalidades principales
 
 - Registro y login sencillos (datos guardados en texto plano por petición explícita).
 - Pantalla de bienvenida y guía "¿Cómo funciona esta porra?".
 - Plantilla de apuestas para fase de grupos (resultado de los 72 partidos + máximo goleador + balones oro/plata/bronce).
-- Plantilla de eliminatoria con bracket guiado: el sistema solo permite seleccionar equipos compatibles con los cruces posibles del Mundial 2026.
+- Plantilla de eliminatoria con bracket guiado: a partir de los pronósticos del usuario en la fase de grupos, el sistema solo permite seleccionar equipos compatibles con los cruces oficiales.
 - Pantalla pública de resultados de la fase de grupos con cálculo automático de clasificaciones.
 - Tabla de clasificación de la porra con cálculo de puntos según ponderación.
 - Panel de administración para gestionar resultados, pagos y premios.
@@ -41,7 +41,7 @@ Aplicación web para organizar una porra entre amigos del Mundial de Fútbol 202
 2. **Autenticación y perfil** — registro, login y perfil con avatares premium.
 3. **Admin y resultados de grupos** — pantalla pública de grupos + panel admin mínimo.
 4. **Apuestas fase de grupos** — plantilla y simulación personal de clasificación.
-5. **Bracket eliminatorio** — selección guiada según los cruces oficiales.
+5. **Bracket eliminatorio** — selección guiada a partir de los propios pronósticos de grupos del usuario.
 6. **Clasificación** — tabla con puntos calculados y bote total.
 
 ## Cómo arrancar el proyecto

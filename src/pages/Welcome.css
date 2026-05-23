@@ -1,5 +1,5 @@
 /* ============================================================
-   Welcome page
+   Welcome page — light pastel premium
    ============================================================ */
 
 .welcome {
@@ -9,367 +9,144 @@
   flex-direction: column;
 }
 
-/* -------- Header -------- */
-.welcome-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(10, 14, 26, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.welcome-header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--space-md);
-  padding-bottom: var(--space-md);
-}
-
-.welcome-brand {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  color: var(--text-primary);
-  font-weight: 700;
-}
-
-.welcome-brand:hover {
-  color: var(--text-primary);
-}
-
-.welcome-brand-mark {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: var(--radius-md);
-  background: var(--grad-gold);
-  color: var(--text-on-gold);
-  box-shadow: var(--shadow-gold);
-}
-
-.welcome-brand-text {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: -0.01em;
-}
-
-.welcome-nav {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-@media (max-width: 540px) {
-  .welcome-nav .btn-ghost {
-    display: none;
-  }
-}
-
-/* Logged-in user chip in header */
-.welcome-nav-user {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 4px 14px 4px 4px;
-  background: var(--surface-2);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-full);
-  color: var(--text-primary);
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all var(--transition-fast);
-}
-
-.welcome-nav-user:hover {
-  background: var(--surface-3);
-  border-color: var(--border-gold);
-  color: var(--text-primary);
-}
-
-.welcome-nav-nick {
-  font-family: var(--font-display);
-}
-
-@media (max-width: 540px) {
-  .welcome-nav-nick { display: none; }
-}
-
 /* -------- Hero -------- */
 .welcome-hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
 }
 
 .welcome-hero-inner {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: var(--space-2xl);
-  align-items: center;
-}
-
-.welcome-hero-content {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: var(--space-lg);
-  max-width: 620px;
 }
 
 .welcome-hero-title {
-  font-size: clamp(2.5rem, 6vw, 4.25rem);
-  font-weight: 800;
+  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  font-weight: 500;
   line-height: 1.05;
+  color: var(--charcoal);
+  max-width: 800px;
 }
 
 .welcome-hero-subtitle {
   font-size: 1.125rem;
   color: var(--text-secondary);
-  max-width: 540px;
+  max-width: 580px;
+  line-height: 1.6;
 }
 
 .welcome-hero-actions {
   display: flex;
   gap: var(--space-md);
   flex-wrap: wrap;
-  margin-top: var(--space-sm);
+  justify-content: center;
+  margin-top: var(--space-md);
 }
 
 .welcome-hero-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   margin-top: var(--space-sm);
   font-weight: 500;
   font-size: 0.95rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--border-default);
+  transition: all var(--transition-fast);
 }
 
 .welcome-hero-link:hover {
-  gap: 10px;
+  color: var(--charcoal);
+  border-bottom-color: var(--gold-500);
 }
 
-/* Decorative trophy */
-.welcome-hero-deco {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 420px;
+/* Logged-in user chip */
+.welcome-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 8px 24px 8px 8px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
 }
 
-.welcome-hero-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center,
-    rgba(212, 175, 55, 0.30) 0%,
-    rgba(212, 175, 55, 0.05) 40%,
-    transparent 70%);
-  filter: blur(20px);
-  animation: pulse 4s ease-in-out infinite;
+.welcome-user-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--charcoal);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.08); opacity: 1; }
-}
-
-.welcome-hero-trophy {
-  position: relative;
-  width: 240px;
-  height: 240px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.10), transparent 70%);
-  color: var(--gold-400);
-  filter: drop-shadow(0 8px 32px rgba(212, 175, 55, 0.35));
-}
-
-@media (max-width: 900px) {
-  .welcome-hero-inner {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-    text-align: center;
-  }
-  .welcome-hero-content {
-    align-items: center;
-    margin: 0 auto;
-  }
-  .welcome-hero-deco {
-    min-height: 280px;
-    order: -1;
-  }
-  .welcome-hero-trophy {
-    width: 180px;
-    height: 180px;
-  }
-  .welcome-hero-trophy svg {
-    width: 100px;
-    height: 100px;
-  }
+.welcome-user-text strong {
+  font-weight: 600;
+  color: var(--charcoal);
 }
 
 /* -------- Stats -------- */
 .welcome-stats-section {
-  padding-bottom: var(--space-3xl);
+  padding: 0 0 var(--space-4xl);
 }
 
 .welcome-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl) var(--space-2xl);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .welcome-stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  flex: 1;
   text-align: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.welcome-stat::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--grad-gold-soft);
-  opacity: 0;
-  transition: opacity var(--transition);
-  pointer-events: none;
-}
-
-.welcome-stat:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-gold);
-}
-
-.welcome-stat:hover::before {
-  opacity: 1;
-}
-
-.welcome-stat-icon {
-  color: var(--gold-400);
-  margin-bottom: var(--space-xs);
-  position: relative;
-  z-index: 1;
+  padding: var(--space-sm) 0;
 }
 
 .welcome-stat-value {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 600;
+  color: var(--charcoal);
   letter-spacing: -0.02em;
-  position: relative;
-  z-index: 1;
+  line-height: 1;
+  margin-bottom: var(--space-xs);
 }
 
 .welcome-stat-label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  position: relative;
-  z-index: 1;
-}
-
-@media (max-width: 768px) {
-  .welcome-stats {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* -------- Features -------- */
-.welcome-features {
-  padding: var(--space-3xl) 0;
-  background: var(--bg-soft);
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.welcome-features-header {
-  text-align: center;
-  margin-bottom: var(--space-2xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  align-items: center;
-}
-
-.welcome-features-sub {
-  max-width: 600px;
-}
-
-.welcome-features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-}
-
-.welcome-feature {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  position: relative;
-  transition: all var(--transition);
-}
-
-.welcome-feature:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-gold);
-  box-shadow: var(--shadow-md);
-}
-
-.welcome-feature-num {
-  font-family: var(--font-display);
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--gold-500);
-  letter-spacing: 0.1em;
-}
-
-.welcome-feature-icon {
-  color: var(--gold-400);
-}
-
-.welcome-feature h3 {
-  color: var(--text-primary);
-}
-
-.welcome-feature p {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-@media (max-width: 900px) {
-  .welcome-features-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* -------- Footer -------- */
-.welcome-footer {
-  padding: var(--space-xl) 0;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: auto;
-}
-
-.welcome-footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-md);
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-}
-
-.welcome-footer-link {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-.welcome-footer-link:hover {
-  color: var(--gold-300);
+.welcome-stat-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-default);
+}
+
+@media (max-width: 720px) {
+  .welcome-stats {
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-xl);
+  }
+  .welcome-stat-divider {
+    width: 60%;
+    height: 1px;
+  }
 }

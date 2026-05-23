@@ -1,16 +1,5 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Trophy,
-  UserPlus,
-  Mail,
-  User,
-  AtSign,
-  Lock,
-  AlertCircle,
-  CheckCircle2,
-  ArrowLeft,
-} from 'lucide-react';
 import { createUser } from '../services/users.js';
 import './auth.css';
 
@@ -26,33 +15,40 @@ const INITIAL = {
 export default function Register() {
   const navigate = useNavigate();
   const [form, setForm] = useState(INITIAL);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const updateField = (field) => (e) => {
     setForm((f) => ({ ...f, [field]: e.target.value }));
+    if (errors[field]) setErrors((er) => ({ ...er, [field]: '' }));
   };
 
-  const validate = () => {
-    if (!form.nombre.trim()) return 'El nombre es obligatorio.';
-    if (!form.apellidos.trim()) return 'Los apellidos son obligatorios.';
-    if (!form.email.trim()) return 'El email es obligatorio.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return 'El email no tiene un formato válido.';
-    if (form.nickname.trim().length < 3) return 'El nickname debe tener al menos 3 caracteres.';
-    if (form.password.length < 6) return 'La contraseña debe tener al menos 6 caracteres.';
-    if (form.password !== form.passwordConfirm) return 'Las contraseñas no coinciden.';
-    return null;
+  const validateAll = () => {
+    const e = {};
+    if (!form.nombre.trim()) e.nombre = 'Introduce tu nombre.';
+    if (!form.apellidos.trim()) e.apellidos = 'Introduce tus apellidos.';
+    if (!form.email.trim()) e.email = 'Introduce tu email.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      e.email = 'Formato de email no válido.';
+    if (!form.nickname.trim()) e.nickname = 'Elige un nickname.';
+    else if (form.nickname.trim().length < 3)
+      e.nickname = 'Debe tener al menos 3 caracteres.';
+    if (!form.password) e.password = 'Crea una contraseña.';
+    else if (form.password.length < 6)
+      e.password = 'Debe tener al menos 6 caracteres.';
+    if (!form.passwordConfirm) e.passwordConfirm = 'Repite la contraseña.';
+    else if (form.password !== form.passwordConfirm)
+      e.passwordConfirm = 'Las contraseñas no coinciden.';
+    return e;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    const validationError = validate();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+    const newErrors = validateAll();
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
     setSubmitting(true);
     try {
       await createUser({
@@ -64,7 +60,13 @@ export default function Register() {
       });
       setSuccess(true);
     } catch (err) {
-      setError(err.message || 'No se pudo completar el registro.');
+      // Errores del servidor que afectan a un campo concreto (nick duplicado)
+      const msg = err.message || 'No se pudo completar el registro.';
+      if (msg.toLowerCase().includes('nickname')) {
+        setErrors({ nickname: msg });
+      } else {
+        setErrors({ _global: msg });
+      }
     } finally {
       setSubmitting(false);
     }
@@ -72,24 +74,14 @@ export default function Register() {
 
   return (
     <div className="auth-page">
-      {/* Top bar */}
-      <div className="auth-topbar">
-        <div className="container auth-topbar-inner">
-          <Link to="/" className="btn btn-ghost">
-            <ArrowLeft size={16} /> Volver
-          </Link>
-          <Link to="/" className="auth-brand">
-            <div className="auth-brand-mark"><Trophy size={16} strokeWidth={2.5} /></div>
-            <span className="auth-brand-text">Porra <span className="text-gold">Mundial</span></span>
-          </Link>
-          <div style={{ width: '90px' }} />
-        </div>
+      <div className="container auth-back-wrap">
+        <Link to="/" className="auth-back">&larr; Volver al inicio</Link>
       </div>
 
       <div className="auth-container">
         <div className="auth-card auth-card--wide">
           <div className="auth-card-header">
-            <div className="auth-card-icon"><UserPlus size={26} /></div>
+            <span className="auth-card-eyebrow">Nueva cuenta</span>
             <h1 className="auth-card-title">Crea tu cuenta</h1>
             <p className="auth-card-sub">
               Únete a la porra del Mundial 2026 en menos de un minuto.
@@ -110,54 +102,48 @@ export default function Register() {
               <div className="auth-row">
                 <div className="auth-field">
                   <label className="label" htmlFor="nombre">Nombre</label>
-                  <div className="auth-field-with-icon">
-                    <User size={16} className="auth-field-icon" />
-                    <input
-                      id="nombre"
-                      className="input"
-                      type="text"
-                      placeholder="Tu nombre"
-                      value={form.nombre}
-                      onChange={updateField('nombre')}
-                      autoComplete="given-name"
-                    />
-                  </div>
+                  <input
+                    id="nombre"
+                    className={`input ${errors.nombre ? 'is-invalid' : ''}`}
+                    type="text"
+                    placeholder="Tu nombre"
+                    value={form.nombre}
+                    onChange={updateField('nombre')}
+                    autoComplete="given-name"
+                  />
+                  {errors.nombre && <span className="field-error">{errors.nombre}</span>}
                 </div>
                 <div className="auth-field">
                   <label className="label" htmlFor="apellidos">Apellidos</label>
-                  <div className="auth-field-with-icon">
-                    <User size={16} className="auth-field-icon" />
-                    <input
-                      id="apellidos"
-                      className="input"
-                      type="text"
-                      placeholder="Tus apellidos"
-                      value={form.apellidos}
-                      onChange={updateField('apellidos')}
-                      autoComplete="family-name"
-                    />
-                  </div>
+                  <input
+                    id="apellidos"
+                    className={`input ${errors.apellidos ? 'is-invalid' : ''}`}
+                    type="text"
+                    placeholder="Tus apellidos"
+                    value={form.apellidos}
+                    onChange={updateField('apellidos')}
+                    autoComplete="family-name"
+                  />
+                  {errors.apellidos && <span className="field-error">{errors.apellidos}</span>}
                 </div>
               </div>
 
               <div className="auth-field">
                 <label className="label" htmlFor="email">Email</label>
-                <div className="auth-field-with-icon">
-                  <Mail size={16} className="auth-field-icon" />
-                  <input
-                    id="email"
-                    className="input"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={form.email}
-                    onChange={updateField('email')}
-                    autoComplete="email"
-                  />
-                </div>
+                <input
+                  id="email"
+                  className={`input ${errors.email ? 'is-invalid' : ''}`}
+                  type="email"
+                  placeholder="tu@email.com"
+                  value={form.email}
+                  onChange={updateField('email')}
+                  autoComplete="email"
+                />
+                {errors.email && <span className="field-error">{errors.email}</span>}
               </div>
             </div>
 
-            {/* ------------- Sección 2: Credenciales de acceso ------------- */}
+            {/* ------------- Sección 2: Credenciales ------------- */}
             <div className="auth-section">
               <div className="auth-section-header">
                 <div className="auth-section-num">2</div>
@@ -169,60 +155,51 @@ export default function Register() {
 
               <div className="auth-field">
                 <label className="label" htmlFor="nickname">Nickname</label>
-                <div className="auth-field-with-icon">
-                  <AtSign size={16} className="auth-field-icon" />
-                  <input
-                    id="nickname"
-                    className="input"
-                    type="text"
-                    placeholder="Tu apodo en la porra"
-                    value={form.nickname}
-                    onChange={updateField('nickname')}
-                    autoComplete="username"
-                  />
-                </div>
+                <input
+                  id="nickname"
+                  className={`input ${errors.nickname ? 'is-invalid' : ''}`}
+                  type="text"
+                  placeholder="Tu apodo en la porra"
+                  value={form.nickname}
+                  onChange={updateField('nickname')}
+                  autoComplete="username"
+                />
+                {errors.nickname && <span className="field-error">{errors.nickname}</span>}
               </div>
 
               <div className="auth-row">
                 <div className="auth-field">
                   <label className="label" htmlFor="password">Contraseña</label>
-                  <div className="auth-field-with-icon">
-                    <Lock size={16} className="auth-field-icon" />
-                    <input
-                      id="password"
-                      className="input"
-                      type="password"
-                      placeholder="Mínimo 6 caracteres"
-                      value={form.password}
-                      onChange={updateField('password')}
-                      autoComplete="new-password"
-                    />
-                  </div>
+                  <input
+                    id="password"
+                    className={`input ${errors.password ? 'is-invalid' : ''}`}
+                    type="password"
+                    placeholder="Mínimo 6 caracteres"
+                    value={form.password}
+                    onChange={updateField('password')}
+                    autoComplete="new-password"
+                  />
+                  {errors.password && <span className="field-error">{errors.password}</span>}
                 </div>
                 <div className="auth-field">
                   <label className="label" htmlFor="passwordConfirm">Repetir contraseña</label>
-                  <div className="auth-field-with-icon">
-                    <Lock size={16} className="auth-field-icon" />
-                    <input
-                      id="passwordConfirm"
-                      className="input"
-                      type="password"
-                      placeholder="Repítela"
-                      value={form.passwordConfirm}
-                      onChange={updateField('passwordConfirm')}
-                      autoComplete="new-password"
-                    />
-                  </div>
+                  <input
+                    id="passwordConfirm"
+                    className={`input ${errors.passwordConfirm ? 'is-invalid' : ''}`}
+                    type="password"
+                    placeholder="Repítela"
+                    value={form.passwordConfirm}
+                    onChange={updateField('passwordConfirm')}
+                    autoComplete="new-password"
+                  />
+                  {errors.passwordConfirm && (
+                    <span className="field-error">{errors.passwordConfirm}</span>
+                  )}
                 </div>
               </div>
             </div>
 
-            {error && (
-              <div className="auth-error">
-                <AlertCircle size={18} />
-                <span>{error}</span>
-              </div>
-            )}
+            {errors._global && <div className="auth-error">{errors._global}</div>}
 
             <div className="auth-actions">
               <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
@@ -241,11 +218,11 @@ export default function Register() {
       {success && (
         <div className="auth-modal-backdrop" role="dialog" aria-modal="true">
           <div className="auth-modal">
-            <div className="auth-modal-icon"><CheckCircle2 size={36} strokeWidth={2.2} /></div>
-            <h2>¡Tu cuenta está lista!</h2>
+            <span className="auth-modal-eyebrow">¡Bienvenido!</span>
+            <h2>Tu cuenta está lista</h2>
             <p>
-              Hemos creado tu perfil correctamente. Ya puedes iniciar sesión con
-              <strong> {form.nickname}</strong> y tu contraseña.
+              Hemos creado tu perfil correctamente. Ya puedes iniciar sesión con{' '}
+              <strong>{form.nickname}</strong> y tu contraseña.
             </p>
             <button
               type="button"
