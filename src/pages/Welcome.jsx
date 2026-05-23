@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
-import { Trophy, Users, Calendar, ArrowRight, Sparkles, Target, BarChart3 } from 'lucide-react';
+import { Trophy, Users, Calendar, ArrowRight, Sparkles, Target, BarChart3, User } from 'lucide-react';
 import { TORNEO } from '../data/puntuacion.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import Avatar from '../components/Avatar.jsx';
 import './Welcome.css';
 
 export default function Welcome() {
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
+
   return (
     <div className="welcome">
       {/* ---------- Header ---------- */}
@@ -19,7 +24,14 @@ export default function Welcome() {
           </Link>
           <nav className="welcome-nav">
             <Link to="/how-it-works" className="btn btn-ghost">¿Cómo funciona?</Link>
-            <Link to="/login" className="btn btn-secondary">Iniciar sesión</Link>
+            {isLoggedIn ? (
+              <Link to="/perfil" className="welcome-nav-user">
+                <Avatar id={user.avatarId} size="sm" />
+                <span className="welcome-nav-nick">{user.nickname}</span>
+              </Link>
+            ) : (
+              <Link to="/login" className="btn btn-secondary">Iniciar sesión</Link>
+            )}
           </nav>
         </div>
       </header>
@@ -41,13 +53,22 @@ export default function Welcome() {
               en la clasificación con cada acierto.
             </p>
             <div className="welcome-hero-actions">
-              <Link to="/register" className="btn btn-primary btn-lg">
-                Crear cuenta
-                <ArrowRight size={18} />
-              </Link>
-              <Link to="/login" className="btn btn-secondary btn-lg">
-                Iniciar sesión
-              </Link>
+              {isLoggedIn ? (
+                <Link to="/perfil" className="btn btn-primary btn-lg">
+                  <User size={18} /> Ir a mi perfil
+                  <ArrowRight size={18} />
+                </Link>
+              ) : (
+                <>
+                  <Link to="/register" className="btn btn-primary btn-lg">
+                    Crear cuenta
+                    <ArrowRight size={18} />
+                  </Link>
+                  <Link to="/login" className="btn btn-secondary btn-lg">
+                    Iniciar sesión
+                  </Link>
+                </>
+              )}
             </div>
             <Link to="/how-it-works" className="welcome-hero-link">
               ¿Cómo funciona esta porra? <ArrowRight size={14} />

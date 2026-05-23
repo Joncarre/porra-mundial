@@ -69,6 +69,35 @@
   }
 }
 
+/* Logged-in user chip in header */
+.welcome-nav-user {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 4px 14px 4px 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+}
+
+.welcome-nav-user:hover {
+  background: var(--surface-3);
+  border-color: var(--border-gold);
+  color: var(--text-primary);
+}
+
+.welcome-nav-nick {
+  font-family: var(--font-display);
+}
+
+@media (max-width: 540px) {
+  .welcome-nav-nick { display: none; }
+}
+
 /* -------- Hero -------- */
 .welcome-hero {
   padding: var(--space-4xl) 0 var(--space-3xl);
