@@ -69,7 +69,7 @@
   background: var(--grad-gold);
   border-radius: 2px;
   transform: scaleX(0);
-  transform-origin: left;
+  transform-origin: center;
   transition: transform 0.6s var(--ease);
 }
 
@@ -81,22 +81,19 @@
   transform: scaleX(1);
 }
 
-/* Iniciar sesión — borde dorado dinámico en hover */
+/* Iniciar sesión — borde dorado claro en hover, sin glow */
 .welcome-login-btn {
   transition:
     color 0.4s var(--ease),
     border-color 0.5s var(--ease),
-    box-shadow 0.5s var(--ease),
     background 0.4s var(--ease);
 }
 
 .welcome-login-btn:hover {
   background: var(--surface-1);
-  border-color: var(--gold-500);
+  border-color: var(--gold-300);
   color: var(--text-primary);
-  box-shadow:
-    0 0 0 1px var(--gold-500),
-    0 0 18px rgba(184, 148, 90, 0.32);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Logged-in user chip */

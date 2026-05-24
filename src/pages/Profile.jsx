@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import AppHeader from '../components/AppHeader.jsx';
 import Avatar from '../components/Avatar.jsx';
@@ -27,6 +28,7 @@ function buildChecklist(user) {
       key: 'pago',
       title: 'Pago de la porra',
       state: pago ? 'done' : 'pending',
+      to: null, // lo gestiona el admin, no hay pantalla a la que ir
       copy: {
         done: 'Confirmado por el administrador.',
         pending: 'Habla con el admin para pagar tu cuota.',
@@ -36,6 +38,7 @@ function buildChecklist(user) {
       key: 'grupos',
       title: 'Plantilla fase de grupos',
       state: stateOf(grupos, pago),
+      to: '/apuestas',
       copy: {
         done: 'Pronósticos guardados.',
         pending: 'Lista para rellenar.',
@@ -46,6 +49,7 @@ function buildChecklist(user) {
       key: 'eliminatoria',
       title: 'Plantilla eliminatoria',
       state: stateOf(elim, grupos),
+      to: '/bracket',
       copy: {
         done: 'Bracket completado.',
         pending: 'Lista para rellenar.',
@@ -56,6 +60,7 @@ function buildChecklist(user) {
       key: 'apuestas',
       title: 'Plantilla otras apuestas',
       state: stateOf(otras, elim),
+      to: '/extras',
       copy: {
         done: 'Máximo goleador, balones y ganador guardados.',
         pending: 'Lista para rellenar.',
@@ -185,7 +190,13 @@ export default function Profile() {
                     <div className="tl-content">
                       <div className="tl-header">
                         <span className="tl-title">{item.title}</span>
-                        <span className="tl-status">{STATE_LABEL[item.state]}</span>
+                        {item.state === 'pending' && item.to ? (
+                          <Link to={item.to} className="tl-status tl-status--link">
+                            {STATE_LABEL[item.state]}
+                          </Link>
+                        ) : (
+                          <span className="tl-status">{STATE_LABEL[item.state]}</span>
+                        )}
                       </div>
                       <p className="tl-detail">{item.copy[item.state]}</p>
                     </div>

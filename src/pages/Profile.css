@@ -323,6 +323,20 @@
   border-color: var(--border-gold);
 }
 
+/* Variante clickable: lleva a la pantalla donde se rellena esa plantilla */
+.tl-status--link {
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.tl-step.is-pending .tl-status--link:hover {
+  background: var(--gold-500);
+  color: var(--text-on-dark);
+  border-color: var(--gold-500);
+  box-shadow: 0 2px 8px rgba(184, 148, 90, 0.30);
+}
+
 /* -------- Modal -------- */
 .profile-modal-backdrop {
   position: fixed;

@@ -135,12 +135,6 @@ function UsersPanel() {
                 onClick={() => handleToggle(u.id, 'pagado')}
                 disabled={updatingId === u.id}
               />
-              <ToggleRow
-                label="Admin"
-                checked={u.isAdmin}
-                onClick={() => handleToggle(u.id, 'isAdmin')}
-                disabled={updatingId === u.id}
-              />
             </div>
           </div>
         ))}
