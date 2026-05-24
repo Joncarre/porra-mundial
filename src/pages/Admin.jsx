@@ -119,7 +119,7 @@ function UsersPanel() {
       <div className="admin-users-list">
         {users.map((u) => (
           <div key={u.id} className="admin-user">
-            <Avatar id={u.avatarId} size="md" />
+            <Avatar foto={u.avatarFoto} name={u.nombre || u.nickname} size="md" />
             <div className="admin-user-info">
               <div className="admin-user-name">
                 {u.nombre} {u.apellidos}
@@ -281,6 +281,7 @@ function ResultsPanel() {
           {partidos.map((p) => (
             <li key={p.id} className="admin-partido">
               <span className="admin-partido-team admin-partido-team--local">
+                <span className="admin-partido-code">{p.local.code}</span>
                 {p.local.name}
               </span>
               <div className="admin-partido-score">
@@ -305,6 +306,7 @@ function ResultsPanel() {
                 />
               </div>
               <span className="admin-partido-team admin-partido-team--visitante">
+                <span className="admin-partido-code">{p.visitante.code}</span>
                 {p.visitante.name}
               </span>
             </li>
@@ -350,10 +352,6 @@ function EliminatoriaPanel() {
     };
   }, [grupoStandings, ganadores]);
 
-  const algunPartidoEnGrupos = Object.values(grupoStandings).some((tabla) =>
-    (tabla || []).some((e) => e.pj > 0),
-  );
-
   if (loading) return <div className="admin-loading">Cargando bracket…</div>;
 
   const handleChange = (next) => {
@@ -378,13 +376,6 @@ function EliminatoriaPanel() {
         <h2>Bracket oficial</h2>
         <span className="admin-count">{picksHechos} / {totalPicks || 32} cruces decididos</span>
       </div>
-
-      {!algunPartidoEnGrupos && (
-        <div className="admin-eli-warning">
-          Todavía no has registrado ningún resultado de la fase de grupos. Las
-          tarjetas mostrarán "Por decidir" hasta que el bracket pueda calcularse.
-        </div>
-      )}
 
       <BracketEditor
         grupoStandings={grupoStandings}

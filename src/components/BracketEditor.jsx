@@ -264,11 +264,11 @@ function ThirdPlaceCard({ match, winner, onPick }) {
           {winner && (
             <div className="be-result-block">
               <div className="be-result-row be-result-row--third">
-                <span className="be-result-label">Tercer puesto</span>
+                <span className="be-result-label">Tercero</span>
                 <strong className="be-result-team">{teamName(match, winner)}</strong>
               </div>
               <div className="be-result-row be-result-row--fourth">
-                <span className="be-result-label">Cuarto puesto</span>
+                <span className="be-result-label">Cuarto</span>
                 <strong className="be-result-team">{otroNombre(match, winner)}</strong>
               </div>
             </div>

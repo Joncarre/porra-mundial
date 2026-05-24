@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import AppHeader from '../components/AppHeader.jsx';
 import Avatar from '../components/Avatar.jsx';
-import { AVATARS, buscarAvatar } from '../data/avatars.js';
+import { fileToResizedDataUrl } from '../utils/image.js';
 import './Profile.css';
 
 /**
@@ -28,7 +28,7 @@ function buildChecklist(user) {
       key: 'pago',
       title: 'Pago de la porra',
       state: pago ? 'done' : 'pending',
-      to: null, // lo gestiona el admin, no hay pantalla a la que ir
+      to: null,
       copy: {
         done: 'Confirmado por el administrador.',
         pending: 'Habla con el admin para pagar tu cuota.',
@@ -76,10 +76,15 @@ const STATE_LABEL = {
   locked: 'Bloqueado',
 };
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
 export default function Profile() {
   const { user, patchUser } = useAuth();
-  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
-  const [updating, setUpdating] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [preview, setPreview] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const fileRef = useRef(null);
 
   if (!user) return null;
 
@@ -89,22 +94,67 @@ export default function Profile() {
     year: 'numeric',
   });
 
-  const handlePickAvatar = async (avatarId) => {
-    if (avatarId === user.avatarId) {
-      setAvatarPickerOpen(false);
+  const openPicker = () => {
+    setPreview(null);
+    setError('');
+    setPickerOpen(true);
+  };
+
+  const closePicker = () => {
+    setPickerOpen(false);
+    setPreview(null);
+    setError('');
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
+  const handleFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setError('');
+
+    if (!file.type.startsWith('image/')) {
+      setError('El archivo debe ser una imagen.');
       return;
     }
-    setUpdating(true);
+    if (file.size > MAX_FILE_SIZE) {
+      setError('La imagen es demasiado grande (máximo 5 MB).');
+      return;
+    }
     try {
-      await patchUser({ avatarId });
-    } finally {
-      setUpdating(false);
-      setAvatarPickerOpen(false);
+      const dataUrl = await fileToResizedDataUrl(file, 240);
+      setPreview(dataUrl);
+    } catch {
+      setError('No se pudo procesar la imagen.');
     }
   };
 
-  const currentAvatar = buscarAvatar(user.avatarId);
+  const handleSave = async () => {
+    if (!preview) return;
+    setSaving(true);
+    try {
+      await patchUser({ avatarFoto: preview });
+      closePicker();
+    } catch {
+      setError('No se pudo guardar la foto.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleRemove = async () => {
+    setSaving(true);
+    try {
+      await patchUser({ avatarFoto: null });
+      closePicker();
+    } catch {
+      setError('No se pudo eliminar la foto.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const checklist = buildChecklist(user);
+  const previewing = !!preview;
 
   return (
     <div className="profile-page">
@@ -114,18 +164,18 @@ export default function Profile() {
         <div className="container">
           {/* -------- Hero del perfil -------- */}
           <section className="profile-hero">
-            <div
-              className="profile-hero-bg"
-              style={{ background: currentAvatar.bg }}
-            />
             <div className="profile-hero-content">
               <button
                 type="button"
                 className="profile-avatar-wrapper"
-                onClick={() => setAvatarPickerOpen(true)}
-                title="Cambiar avatar"
+                onClick={openPicker}
+                title="Cambiar foto"
               >
-                <Avatar id={user.avatarId} size="xl" />
+                <Avatar
+                  foto={user.avatarFoto}
+                  name={user.nombre || user.nickname}
+                  size="xl"
+                />
               </button>
               <div className="profile-hero-info">
                 <div className="profile-hero-pills">
@@ -208,44 +258,82 @@ export default function Profile() {
         </div>
       </main>
 
-      {/* -------- Modal selector de avatar -------- */}
-      {avatarPickerOpen && (
-        <div className="profile-modal-backdrop" onClick={() => setAvatarPickerOpen(false)}>
+      {/* -------- Modal de subida de foto -------- */}
+      {pickerOpen && (
+        <div className="profile-modal-backdrop" onClick={closePicker}>
           <div className="profile-modal" onClick={(e) => e.stopPropagation()}>
             <header className="profile-modal-header">
               <div>
-                <h3>Elige tu avatar</h3>
+                <h3>Foto de perfil</h3>
                 <p className="text-secondary">
-                  Selecciona el que mejor te represente en la porra.
+                  Sube una imagen desde tu galería.
                 </p>
               </div>
               <button
                 type="button"
                 className="profile-modal-close"
-                onClick={() => setAvatarPickerOpen(false)}
+                onClick={closePicker}
                 aria-label="Cerrar"
               >
                 ×
               </button>
             </header>
 
-            <div className="profile-avatar-grid">
-              {AVATARS.map((avatar) => (
+            <div className="profile-upload">
+              <div className="profile-upload-preview">
+                <Avatar
+                  foto={preview || user.avatarFoto}
+                  name={user.nombre || user.nickname}
+                  size={180}
+                />
+              </div>
+
+              {error && <div className="profile-upload-error">{error}</div>}
+
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFile}
+              />
+
+              <div className="profile-upload-actions">
                 <button
-                  key={avatar.id}
                   type="button"
-                  className={`profile-avatar-option ${avatar.id === user.avatarId ? 'is-selected' : ''}`}
-                  onClick={() => handlePickAvatar(avatar.id)}
-                  disabled={updating}
+                  className="btn btn-secondary"
+                  onClick={() => fileRef.current?.click()}
+                  disabled={saving}
                 >
-                  <Avatar
-                    id={avatar.id}
-                    size="lg"
-                    selected={avatar.id === user.avatarId}
-                  />
-                  <span className="profile-avatar-name">{avatar.name}</span>
+                  {previewing ? 'Elegir otra imagen' : 'Elegir imagen'}
                 </button>
-              ))}
+
+                {previewing ? (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleSave}
+                    disabled={saving}
+                  >
+                    {saving ? 'Guardando…' : 'Guardar foto'}
+                  </button>
+                ) : (
+                  user.avatarFoto && (
+                    <button
+                      type="button"
+                      className="btn btn-secondary profile-upload-remove"
+                      onClick={handleRemove}
+                      disabled={saving}
+                    >
+                      {saving ? 'Eliminando…' : 'Eliminar foto'}
+                    </button>
+                  )
+                )}
+              </div>
+
+              <p className="profile-upload-hint">
+                Formatos JPG, PNG, WebP… Tamaño máximo 5 MB.
+              </p>
             </div>
           </div>
         </div>

@@ -24,7 +24,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db, DEMO_MODE } from '../firebase.js';
-import { DEFAULT_AVATAR_ID } from '../data/avatars.js';
 
 const STORE_KEY = 'porra:users';
 
@@ -73,7 +72,7 @@ export async function createUser(data) {
     email: data.email.trim().toLowerCase(),
     nickname: data.nickname.trim(),
     password: data.password,
-    avatarId: DEFAULT_AVATAR_ID,
+    avatarFoto: null, // se rellena al subir una imagen desde el perfil
     isAdmin: false,
     pagado: false,
     // Estado de plantillas — útil para la pantalla de Perfil

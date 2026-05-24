@@ -321,12 +321,23 @@
 
 .admin-partido-team {
   font-size: 0.95rem;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .admin-partido-team--local { text-align: right; }
 .admin-partido-team--visitante { text-align: left; }
+
+.admin-partido-code {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+  margin-right: 8px;
+}
 
 .admin-partido-score {
   display: flex;

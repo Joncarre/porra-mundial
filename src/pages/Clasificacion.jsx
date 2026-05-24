@@ -145,7 +145,7 @@ export default function Clasificacion() {
                         <td className="cl-col-pos">{r.posicion}</td>
                         <td className="cl-col-user">
                           <div className="cl-user">
-                            <Avatar id={r.user.avatarId} size="sm" />
+                            <Avatar foto={r.user.avatarFoto} name={r.user.nombre || r.user.nickname} size="sm" />
                             <div className="cl-user-text">
                               <span className="cl-user-nick">@{r.user.nickname}</span>
                               <span className="cl-user-name">

@@ -427,51 +427,57 @@
   color: var(--charcoal);
 }
 
-/* -------- Avatar grid -------- */
-.profile-avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: var(--space-md);
-}
-
-.profile-avatar-option {
+/* -------- Upload de foto de perfil -------- */
+.profile-upload {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md);
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+}
+
+.profile-upload-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
   background: var(--bg-soft);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  transition: all var(--transition);
-  cursor: pointer;
 }
 
-.profile-avatar-option:hover {
-  background: var(--surface-2);
-  border-color: var(--border-gold);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
-.profile-avatar-option.is-selected {
-  background: var(--grad-gold-soft);
-  border-color: var(--gold-500);
-}
-
-.profile-avatar-option:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.profile-avatar-name {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+.profile-upload-error {
+  width: 100%;
   text-align: center;
+  font-size: 0.88rem;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid rgba(184, 92, 82, 0.30);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
 }
 
-.profile-avatar-option.is-selected .profile-avatar-name {
-  color: var(--gold-700);
-  font-weight: 600;
+.profile-upload-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.profile-upload-remove {
+  color: var(--danger);
+  border-color: rgba(184, 92, 82, 0.30);
+}
+
+.profile-upload-remove:hover {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.profile-upload-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0;
 }

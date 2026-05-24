@@ -26,7 +26,7 @@ export default function Welcome() {
           <div className="welcome-hero-actions">
             {isLoggedIn ? (
               <Link to="/perfil" className="welcome-user-chip">
-                <Avatar id={user.avatarId} size="sm" />
+                <Avatar foto={user.avatarFoto} name={user.nombre || user.nickname} size="sm" />
                 <span className="welcome-user-text">
                   Continuar como <strong>{user.nickname}</strong>
                 </span>

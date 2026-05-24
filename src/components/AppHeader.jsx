@@ -90,7 +90,7 @@ export default function AppHeader() {
             className="app-user-trigger"
             onClick={() => setMenuOpen((v) => !v)}
           >
-            <Avatar id={user?.avatarId} size={44} />
+            <Avatar foto={user?.avatarFoto} name={user?.nombre || user?.nickname} size={44} />
             <div className="app-user-info">
               <span className="app-user-nick">@{user?.nickname}</span>
               {user?.isAdmin && <span className="app-user-role">Admin</span>}
