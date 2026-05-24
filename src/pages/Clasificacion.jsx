@@ -20,6 +20,9 @@ export default function Clasificacion() {
   const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState([]);
   const [config, setConfig] = useState({ boteTotal: 0, maxGoleadorActual: '' });
+  const [premios, setPremios] = useState({
+    maxGoleador: '', balonOro: '', balonPlata: '', balonBronce: '',
+  });
 
   useEffect(() => {
     (async () => {
@@ -78,6 +81,7 @@ export default function Clasificacion() {
 
       setRows(conPos);
       setConfig(cfg);
+      setPremios(resPremios);
       setLoading(false);
     })();
   }, []);
@@ -122,10 +126,10 @@ export default function Clasificacion() {
                     <tr>
                       <th className="cl-col-pos">#</th>
                       <th className="cl-col-user">Participante</th>
-                      <th className="cl-col-pts">Pts</th>
-                      <th>Ganadores</th>
-                      <th>Exactos</th>
-                      <th>Bracket</th>
+                      <th className="cl-col-pts">Puntos</th>
+                      <th>Partidos acertados</th>
+                      <th>Resultados exactos</th>
+                      <th>Eliminatorias acertadas</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -153,7 +157,7 @@ export default function Clasificacion() {
                 </table>
               </section>
 
-              <section className="cl-footer-cards">
+              <section className="cl-footer-cards cl-footer-cards--stats">
                 <div className="cl-card">
                   <span className="cl-card-label">Bote total</span>
                   <span className="cl-card-value">{boteFmt}</span>
@@ -165,6 +169,30 @@ export default function Clasificacion() {
                     {config.maxGoleadorActual || 'Sin asignar todavía'}
                   </span>
                   <span className="cl-card-hint">Lo actualiza el admin con el goleador líder del torneo.</span>
+                </div>
+              </section>
+
+              <section className="cl-footer-cards cl-footer-cards--prizes">
+                <div className="cl-card cl-card--gold">
+                  <span className="cl-card-label">Balón de Oro</span>
+                  <span className="cl-card-value cl-card-value--text">
+                    {premios.balonOro || 'Por anunciar'}
+                  </span>
+                  <span className="cl-card-hint">El mejor jugador del Mundial.</span>
+                </div>
+                <div className="cl-card cl-card--silver">
+                  <span className="cl-card-label">Balón de Plata</span>
+                  <span className="cl-card-value cl-card-value--text">
+                    {premios.balonPlata || 'Por anunciar'}
+                  </span>
+                  <span className="cl-card-hint">El segundo mejor del torneo.</span>
+                </div>
+                <div className="cl-card cl-card--bronze">
+                  <span className="cl-card-label">Balón de Bronce</span>
+                  <span className="cl-card-value cl-card-value--text">
+                    {premios.balonBronce || 'Por anunciar'}
+                  </span>
+                  <span className="cl-card-hint">El tercero del torneo.</span>
                 </div>
               </section>
             </>

@@ -36,7 +36,7 @@ export default function Welcome() {
                 <Link to="/register" className="btn btn-primary btn-lg">
                   Crear cuenta
                 </Link>
-                <Link to="/login" className="btn btn-secondary btn-lg">
+                <Link to="/login" className="btn btn-secondary btn-lg welcome-login-btn">
                   Iniciar sesión
                 </Link>
               </>

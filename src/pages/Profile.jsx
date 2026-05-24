@@ -121,7 +121,6 @@ export default function Profile() {
                 title="Cambiar avatar"
               >
                 <Avatar id={user.avatarId} size="xl" />
-                <span className="profile-avatar-hint">Cambiar avatar</span>
               </button>
               <div className="profile-hero-info">
                 <div className="profile-hero-pills">
@@ -176,20 +175,23 @@ export default function Profile() {
                 <h2>Tu estado en la porra</h2>
               </header>
 
-              <div className="profile-checklist">
-                {checklist.map((item) => (
-                  <div
-                    key={item.key}
-                    className={`profile-check is-${item.state}`}
-                  >
-                    <div className="profile-check-body">
-                      <div className="profile-check-title">{item.title}</div>
-                      <div className="profile-check-detail">{item.copy[item.state]}</div>
+              <ol className="profile-timeline">
+                {checklist.map((item, i) => (
+                  <li key={item.key} className={`tl-step is-${item.state}`}>
+                    <div className="tl-rail">
+                      <span className="tl-dot" />
+                      {i < checklist.length - 1 && <span className="tl-line" />}
                     </div>
-                    <span className="profile-check-status">{STATE_LABEL[item.state]}</span>
-                  </div>
+                    <div className="tl-content">
+                      <div className="tl-header">
+                        <span className="tl-title">{item.title}</span>
+                        <span className="tl-status">{STATE_LABEL[item.state]}</span>
+                      </div>
+                      <p className="tl-detail">{item.copy[item.state]}</p>
+                    </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </section>
           </div>
         </div>

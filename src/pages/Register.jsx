@@ -92,10 +92,9 @@ export default function Register() {
             {/* ------------- Sección 1: Información personal ------------- */}
             <div className="auth-section">
               <div className="auth-section-header">
-                <div className="auth-section-num">1</div>
                 <span className="auth-section-title">Información personal</span>
               </div>
-              <p className="auth-section-sub">
+              <p className="auth-section-sub auth-section-sub--no-indent">
                 Tus datos para identificarte ante el resto de participantes.
               </p>
 
@@ -146,10 +145,9 @@ export default function Register() {
             {/* ------------- Sección 2: Credenciales ------------- */}
             <div className="auth-section">
               <div className="auth-section-header">
-                <div className="auth-section-num">2</div>
                 <span className="auth-section-title">Credenciales de acceso</span>
               </div>
-              <p className="auth-section-sub">
+              <p className="auth-section-sub auth-section-sub--no-indent">
                 Estos serán tu usuario y contraseña para entrar a la porra.
               </p>
 
@@ -220,10 +218,7 @@ export default function Register() {
           <div className="auth-modal">
             <span className="auth-modal-eyebrow">¡Bienvenido!</span>
             <h2>Tu cuenta está lista</h2>
-            <p>
-              Hemos creado tu perfil correctamente. Necesitarás estas credenciales
-              para iniciar sesión en la porra.
-            </p>
+            <p>Hemos creado tu perfil correctamente.</p>
 
             <div className="auth-credentials">
               <div className="auth-credentials-row">
@@ -238,8 +233,11 @@ export default function Register() {
             </div>
 
             <div className="auth-warning">
-              <strong>Importante:</strong> apunta estas credenciales antes de continuar.
-              Una vez cierres esta ventana no podrás volver a verlas y no se podrán recuperar.
+              <span className="auth-warning-label">Importante</span>
+              <p className="auth-warning-text">
+                Apunta estas credenciales antes de continuar. Una vez cierres
+                esta ventana no podrás volver a verlas.
+              </p>
             </div>
 
             <button

@@ -141,16 +141,22 @@
 
 .cl-row--1 .cl-col-pts { color: var(--gold-700); }
 
-/* -------- Footer cards (bote + max goleador) -------- */
+/* -------- Footer cards -------- */
 .cl-footer-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: var(--space-lg);
   margin-top: var(--space-xl);
 }
 
+.cl-footer-cards--stats { grid-template-columns: 1fr 1fr; }
+.cl-footer-cards--prizes { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 860px) {
+  .cl-footer-cards--prizes { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 720px) {
-  .cl-footer-cards { grid-template-columns: 1fr; }
+  .cl-footer-cards--stats { grid-template-columns: 1fr; }
 }
 
 .cl-card {
@@ -188,6 +194,25 @@
 .cl-card-value--text {
   font-size: clamp(1.25rem, 3vw, 1.75rem);
   font-style: italic;
+}
+
+/* Variantes de balón */
+.cl-card--gold { border-color: rgba(184, 148, 90, 0.30); }
+.cl-card--silver { border-color: rgba(160, 164, 176, 0.35); }
+.cl-card--bronze { border-color: rgba(176, 123, 58, 0.30); }
+
+.cl-card--silver .cl-card-value {
+  background: linear-gradient(135deg, #d8d8de 0%, #a0a4b0 50%, #6d717f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cl-card--bronze .cl-card-value {
+  background: linear-gradient(135deg, #d4a570 0%, #b07b3a 50%, #7d5223 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .cl-card-hint {
