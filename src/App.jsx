@@ -8,6 +8,7 @@ import ResultadosGrupos from './pages/ResultadosGrupos.jsx';
 import Apuestas from './pages/Apuestas.jsx';
 import Bracket from './pages/Bracket.jsx';
 import Extras from './pages/Extras.jsx';
+import Clasificacion from './pages/Clasificacion.jsx';
 import Admin from './pages/Admin.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -58,6 +59,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Extras />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/clasificacion"
+        element={
+          <ProtectedRoute>
+            <Clasificacion />
           </ProtectedRoute>
         }
       />

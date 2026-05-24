@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 import App from './App.jsx';
-import { seedDemoAdmin } from './services/seed.js';
 import './index.css';
-
-// En modo demo, asegura que existe la cuenta admin/admin antes de renderizar.
-seedDemoAdmin();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

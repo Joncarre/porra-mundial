@@ -11,6 +11,7 @@ import {
   getResultadosPremios,
   saveResultadosPremios,
 } from '../services/resultados.js';
+import { getTorneoConfig, saveTorneoConfig } from '../services/torneo.js';
 import { GRUPO_LETRAS, partidosDelGrupo } from '../data/grupos.js';
 import { clasificacionTodosLosGrupos, bracketCompleto, progresoBracket } from '../utils/bracket.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -21,6 +22,7 @@ const TABS = [
   { id: 'resultados', label: 'Resultados de grupos' },
   { id: 'eliminatoria', label: 'Eliminatoria' },
   { id: 'premios', label: 'Premios' },
+  { id: 'torneo', label: 'Bote y goleador' },
 ];
 
 export default function Admin() {
@@ -59,6 +61,7 @@ export default function Admin() {
           {tab === 'resultados' && <ResultsPanel />}
           {tab === 'eliminatoria' && <EliminatoriaPanel />}
           {tab === 'premios' && <PremiosPanel />}
+          {tab === 'torneo' && <TorneoPanel />}
         </div>
       </main>
     </div>
@@ -489,6 +492,93 @@ function PremiosPanel() {
           disabled={saving}
         >
           {saving ? 'Guardando…' : 'Guardar premios'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   Torneo panel — bote total + máximo goleador actual
+   ============================================================ */
+function TorneoPanel() {
+  const [cfg, setCfg] = useState({ boteTotal: 0, maxGoleadorActual: '' });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getTorneoConfig();
+      setCfg(data);
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div className="admin-loading">Cargando configuración…</div>;
+
+  const handleChange = (key) => (e) => {
+    setCfg((c) => ({ ...c, [key]: e.target.value }));
+    setSavedAt(null);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const data = await saveTorneoConfig(cfg);
+      setCfg(data);
+      setSavedAt(Date.now());
+      setTimeout(() => setSavedAt(null), 2400);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="admin-panel">
+      <div className="admin-panel-head">
+        <h2>Bote y máximo goleador</h2>
+        <span className="admin-count">Información pública que se muestra en la clasificación</span>
+      </div>
+
+      <div className="admin-premios">
+        <div className="admin-premio-field">
+          <label className="label" htmlFor="cfg-bote">Bote total (€)</label>
+          <input
+            id="cfg-bote"
+            type="number"
+            min="0"
+            step="1"
+            className="input"
+            value={cfg.boteTotal}
+            onChange={handleChange('boteTotal')}
+            placeholder="0"
+          />
+        </div>
+        <div className="admin-premio-field">
+          <label className="label" htmlFor="cfg-goleador">Máximo goleador actual</label>
+          <input
+            id="cfg-goleador"
+            type="text"
+            className="input"
+            value={cfg.maxGoleadorActual}
+            onChange={handleChange('maxGoleadorActual')}
+            placeholder="Nombre del jugador líder"
+            maxLength={80}
+            autoComplete="off"
+          />
+        </div>
+      </div>
+
+      <div className="admin-eli-actions">
+        {savedAt && <span className="admin-saved-pill">Guardado</span>}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleSave}
+          disabled={saving}
+        >
+          {saving ? 'Guardando…' : 'Guardar'}
         </button>
       </div>
     </div>
