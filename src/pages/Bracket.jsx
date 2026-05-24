@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader.jsx';
 import BracketEditor from '../components/BracketEditor.jsx';
+import GroupStandingsCard from '../components/GroupStandingsCard.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { GRUPO_LETRAS } from '../data/grupos.js';
 import {
   getPrediccionesFase1,
   getPrediccionesFase2,
@@ -16,6 +18,7 @@ export default function Bracket() {
   const { user, patchUser } = useAuth();
   const navigate = useNavigate();
   const [grupoStandings, setGrupoStandings] = useState({});
+  const [predGruposPartidos, setPredGruposPartidos] = useState({});
   const [ganadores, setGanadores] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -32,7 +35,9 @@ export default function Bracket() {
         getPrediccionesFase1(user.id),
         getPrediccionesFase2(user.id),
       ]);
-      setGrupoStandings(clasificacionTodosLosGrupos(f1.partidos || {}));
+      const partidos = f1.partidos || {};
+      setPredGruposPartidos(partidos);
+      setGrupoStandings(clasificacionTodosLosGrupos(partidos));
       setGanadores(f2.ganadores || {});
       setLoading(false);
     })();
@@ -172,6 +177,31 @@ export default function Bracket() {
                 </footer>
               )}
             </div>
+          )}
+
+          {!loading && (
+            <section className="brk-groups">
+              <header className="brk-groups-header">
+                <span className="eyebrow">Tus grupos según tus apuestas</span>
+                <h2 className="brk-groups-title">
+                  Cómo quedarían los grupos con tu plantilla
+                </h2>
+                <p className="brk-groups-sub">
+                  Esta es tu simulación: el orden de cada grupo se calcula con los
+                  resultados que apostaste en la fase de grupos.
+                </p>
+              </header>
+              <div className="brk-groups-grid">
+                {GRUPO_LETRAS.map((letra) => (
+                  <GroupStandingsCard
+                    key={letra}
+                    letra={letra}
+                    partidos={predGruposPartidos}
+                    showMatches={false}
+                  />
+                ))}
+              </div>
+            </section>
           )}
         </div>
       </main>

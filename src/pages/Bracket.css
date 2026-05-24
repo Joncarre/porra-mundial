@@ -144,6 +144,43 @@
   max-width: 560px;
 }
 
+/* -------- Simulación de grupos según las apuestas del usuario -------- */
+.brk-groups {
+  margin-top: var(--space-3xl);
+}
+
+.brk-groups-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.brk-groups-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  color: var(--charcoal);
+  margin-top: var(--space-xs);
+}
+
+.brk-groups-sub {
+  max-width: 620px;
+  font-size: 0.95rem;
+}
+
+.brk-groups-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xl);
+}
+
+@media (max-width: 1100px) {
+  .brk-groups-grid { grid-template-columns: 1fr; }
+}
+
 /* -------- Locked state -------- */
 .brk-locked {
   max-width: 560px;

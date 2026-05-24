@@ -1,0 +1,222 @@
+/* ============================================================
+   GroupStandingsCard — tarjeta reutilizable de clasificación
+   ============================================================ */
+
+.gs-group {
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition);
+}
+
+.gs-group:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.gs-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.gs-group-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: var(--charcoal);
+}
+
+.gs-group-letter {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+
+/* -------- Standings table -------- */
+.gs-table-wrap {
+  overflow-x: auto;
+  margin: 0 calc(-1 * var(--space-xs));
+}
+
+.gs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.88rem;
+  table-layout: fixed;
+  min-width: 520px;
+}
+
+.gs-table th:not(.gs-col-pos):not(.gs-col-team),
+.gs-table td:not(.gs-col-pos):not(.gs-col-team) {
+  width: 44px;
+}
+
+.gs-table thead th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 6px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.gs-table tbody td {
+  padding: 10px 6px;
+  text-align: center;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.gs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gs-col-pos {
+  width: 36px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.gs-col-team {
+  text-align: left !important;
+  width: auto;
+}
+
+.gs-team {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.gs-team-code {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gs-team-name {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.gs-col-pts {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--charcoal);
+}
+
+.gs-dg-pos { color: var(--success); font-weight: 600; }
+.gs-dg-neg { color: var(--danger); font-weight: 600; }
+
+/* -------- Row colors (1st → 4th, green to red) -------- */
+.gs-row--1 {
+  background: rgba(111, 156, 114, 0.18);
+}
+.gs-row--1 td:first-child {
+  box-shadow: inset 3px 0 0 var(--success);
+}
+
+.gs-row--2 {
+  background: rgba(111, 156, 114, 0.08);
+}
+.gs-row--2 td:first-child {
+  box-shadow: inset 3px 0 0 rgba(111, 156, 114, 0.5);
+}
+
+.gs-row--3 {
+  background: rgba(201, 168, 93, 0.14);
+}
+.gs-row--3 td:first-child {
+  box-shadow: inset 3px 0 0 var(--warning);
+}
+
+.gs-row--4 {
+  background: rgba(184, 92, 82, 0.10);
+}
+.gs-row--4 td:first-child {
+  box-shadow: inset 3px 0 0 var(--danger);
+}
+
+/* -------- Matches list (optional) -------- */
+.gs-matches {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.gs-matches-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.gs-matches-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gs-match {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 8px 12px;
+  background: var(--bg-soft);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+}
+
+.gs-match-team {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+.gs-match-team--local { text-align: right; }
+.gs-match-team--visitante { text-align: left; }
+
+.gs-match-code {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+  margin-right: 6px;
+}
+
+.gs-match-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--charcoal);
+  white-space: nowrap;
+}
+
+.gs-match-dash {
+  color: var(--text-muted);
+  font-weight: 400;
+}
