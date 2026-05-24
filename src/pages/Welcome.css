@@ -27,11 +27,11 @@
 }
 
 .welcome-hero-title {
-  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  font-size: clamp(1.9rem, 4.5vw, 3.25rem);
   font-weight: 500;
-  line-height: 1.05;
+  line-height: 1.08;
   color: var(--charcoal);
-  max-width: 800px;
+  max-width: 720px;
 }
 
 .welcome-hero-subtitle {

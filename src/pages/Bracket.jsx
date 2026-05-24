@@ -114,12 +114,6 @@ export default function Bracket() {
               propios pronósticos de la fase de grupos. Pulsa sobre el equipo
               que crees que avanza.
             </p>
-            {yaCompletada && (
-              <div className="brk-already-pill">
-                Ya confirmaste tu bracket — los cambios que hagas aquí se irán
-                guardando igualmente.
-              </div>
-            )}
           </header>
 
           {loading ? (

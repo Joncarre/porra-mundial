@@ -10,10 +10,10 @@
 
 .be-tree {
   display: grid;
-  grid-template-columns: 130px 130px 130px 130px minmax(220px, 240px) 130px 130px 130px 130px;
+  grid-template-columns: 132px 132px 132px 132px minmax(220px, 240px) 132px 132px 132px 132px;
   gap: 10px;
   align-items: stretch;
-  min-width: 1320px;
+  min-width: 1340px;
   margin: 0 auto;
 }
 
@@ -71,9 +71,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 1px;
   width: 100%;
-  padding: 8px 10px;
+  min-height: 42px;
+  padding: 6px 9px;
   background: var(--bg-soft);
   color: var(--text-primary);
   border: 1.5px solid var(--border-default);
@@ -82,12 +84,14 @@
   transition: background var(--transition-fast), color var(--transition-fast);
   font-family: inherit;
   text-align: left;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .be-team-code {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold-600);
@@ -95,7 +99,7 @@
 }
 
 .be-team-name {
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   font-weight: 500;
   color: var(--text-primary);
   line-height: 1.15;
@@ -138,17 +142,21 @@
 }
 
 .be-team--placeholder {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   color: var(--text-muted);
   font-style: italic;
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   border: 1.5px dashed var(--border-default);
-  padding: 12px 10px;
+  padding: 6px 9px;
+  min-height: 42px;
   text-align: center;
   border-radius: 5px;
   cursor: default;
   animation: none;
+  box-sizing: border-box;
 }
 
 .be-team--placeholder:hover {
@@ -202,14 +210,10 @@
   align-items: baseline;
   padding: 7px 12px;
   background: var(--bg-soft);
+  border: 1px solid transparent;
   border-radius: 5px;
   font-size: 0.82rem;
   gap: 8px;
-}
-
-.be-result-row--champion {
-  background: var(--grad-gold-soft);
-  border: 1px solid var(--border-gold);
 }
 
 .be-result-label {
@@ -228,10 +232,56 @@
   word-break: break-word;
 }
 
+/* Campeón — verde pastel más saturado */
+.be-result-row--champion {
+  background: linear-gradient(135deg, #c8e8cc 0%, #a5d8b0 100%);
+  border-color: rgba(60, 140, 80, 0.35);
+}
+.be-result-row--champion .be-result-label {
+  color: #1f5e28;
+}
 .be-result-row--champion .be-result-team {
-  color: var(--gold-700);
+  color: #173f1c;
   font-family: var(--font-display);
   font-style: italic;
+}
+
+/* Subcampeón — verde pastel más claro */
+.be-result-row--subchampion {
+  background: linear-gradient(135deg, #e5f3e7 0%, #d2ead7 100%);
+  border-color: rgba(120, 180, 135, 0.25);
+}
+.be-result-row--subchampion .be-result-label {
+  color: #3a7a48;
+}
+.be-result-row--subchampion .be-result-team {
+  color: #2f6238;
+}
+
+/* Tercer puesto — morado pastel más saturado */
+.be-result-row--third {
+  background: linear-gradient(135deg, #ddc8ec 0%, #c6a8de 100%);
+  border-color: rgba(110, 75, 165, 0.30);
+}
+.be-result-row--third .be-result-label {
+  color: #4a2f7a;
+}
+.be-result-row--third .be-result-team {
+  color: #391f5e;
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+/* Cuarto puesto — morado pastel más claro */
+.be-result-row--fourth {
+  background: linear-gradient(135deg, #ece0f3 0%, #ddd0e8 100%);
+  border-color: rgba(150, 120, 195, 0.25);
+}
+.be-result-row--fourth .be-result-label {
+  color: #6a4d92;
+}
+.be-result-row--fourth .be-result-team {
+  color: #523a72;
 }
 
 .be-empty {

@@ -12,15 +12,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 26px;
+  padding-bottom: 26px;
   gap: var(--space-md);
 }
 
 /* -------- Brand (wordmark only, no mark) -------- */
 .app-brand {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--charcoal);
@@ -40,9 +40,10 @@
 .app-nav-link {
   display: inline-flex;
   align-items: center;
-  padding: 8px 14px;
-  font-size: 0.88rem;
-  font-weight: 500;
+  padding: 10px 16px;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   color: var(--text-secondary);
   position: relative;
   background: transparent;
@@ -53,8 +54,8 @@
 .app-nav-link::after {
   content: '';
   position: absolute;
-  left: 14px;
-  right: 14px;
+  left: 16px;
+  right: 16px;
   bottom: 0;
   height: 2px;
   background: var(--grad-gold);
@@ -88,7 +89,7 @@
   color: var(--gold-700);
   background: transparent;
   border: none;
-  padding: 8px 14px;
+  padding: 10px 16px;
 }
 
 @media (max-width: 720px) {
@@ -108,13 +109,6 @@
   background: transparent;
   border: 1px solid transparent;
   border-radius: var(--radius-full);
-  transition: all var(--transition-fast);
-}
-
-.app-user-trigger:hover {
-  background: var(--surface-1);
-  border-color: var(--border-default);
-  box-shadow: var(--shadow-sm);
 }
 
 .app-user-info {

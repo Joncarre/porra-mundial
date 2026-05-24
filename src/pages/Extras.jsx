@@ -145,12 +145,6 @@ export default function Extras() {
               Las apuestas que pueden marcar la diferencia: el máximo goleador
               del torneo y los tres mejores jugadores del Mundial.
             </p>
-            {yaCompletada && (
-              <div className="ex-already-pill">
-                Ya confirmaste tus apuestas — los cambios que hagas aquí se irán
-                guardando igualmente.
-              </div>
-            )}
           </header>
 
           {loading ? (

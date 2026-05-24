@@ -86,6 +86,9 @@ export const PUNTOS_DESCRIPCION_FASE2 = [
   },
 ];
 
+/** Aportación de cada participante al bote, en euros. */
+export const CUOTA_PARTICIPANTE = 10;
+
 /** Datos generales del torneo, usados en pantallas informativas. */
 export const TORNEO = {
   nombre: 'Mundial 2026',

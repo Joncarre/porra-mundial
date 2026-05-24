@@ -14,15 +14,17 @@ import {
 } from '../services/resultados.js';
 import { getTorneoConfig } from '../services/torneo.js';
 import { calcularPuntos } from '../utils/puntos.js';
+import { CUOTA_PARTICIPANTE } from '../data/puntuacion.js';
 import './Clasificacion.css';
 
 export default function Clasificacion() {
   const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState([]);
-  const [config, setConfig] = useState({ boteTotal: 0, maxGoleadorActual: '' });
+  const [config, setConfig] = useState({ maxGoleadorActual: '' });
   const [premios, setPremios] = useState({
     maxGoleador: '', balonOro: '', balonPlata: '', balonBronce: '',
   });
+  const [pagados, setPagados] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -85,21 +87,23 @@ export default function Clasificacion() {
       setRows(conPos);
       setConfig(cfg);
       setPremios(resPremios);
+      setPagados(users.filter((u) => u.pagado).length);
       setLoading(false);
     })();
   }, []);
 
+  const bote = pagados * CUOTA_PARTICIPANTE;
   const boteFmt = useMemo(() => {
     try {
       return new Intl.NumberFormat('es-ES', {
         style: 'currency',
         currency: 'EUR',
         maximumFractionDigits: 0,
-      }).format(config.boteTotal || 0);
+      }).format(bote);
     } catch {
-      return `${config.boteTotal || 0} €`;
+      return `${bote} €`;
     }
-  }, [config.boteTotal]);
+  }, [bote]);
 
   return (
     <div className="cl-page">
@@ -164,7 +168,9 @@ export default function Clasificacion() {
                 <div className="cl-card">
                   <span className="cl-card-label">Bote total</span>
                   <span className="cl-card-value">{boteFmt}</span>
-                  <span className="cl-card-hint">Suma de las aportaciones de los participantes.</span>
+                  <span className="cl-card-hint">
+                    {pagados} {pagados === 1 ? 'participante' : 'participantes'} pagado{pagados === 1 ? '' : 's'} × {CUOTA_PARTICIPANTE}€.
+                  </span>
                 </div>
                 <div className="cl-card">
                   <span className="cl-card-label">Máximo goleador actual</span>

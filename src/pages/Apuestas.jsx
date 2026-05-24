@@ -145,12 +145,6 @@ export default function Apuestas() {
               Predice el resultado exacto de los 72 partidos de la fase de grupos.
               Puedes ir guardando tu progreso y volver más tarde.
             </p>
-            {yaCompletada && (
-              <div className="ap-already-pill">
-                Ya confirmaste tus apuestas anteriormente — los cambios que hagas
-                aquí se irán guardando igualmente.
-              </div>
-            )}
           </header>
 
           {loading ? (

@@ -22,7 +22,7 @@ const TABS = [
   { id: 'resultados', label: 'Resultados de grupos' },
   { id: 'eliminatoria', label: 'Eliminatoria' },
   { id: 'premios', label: 'Premios' },
-  { id: 'torneo', label: 'Bote y goleador' },
+  { id: 'torneo', label: 'Goleador actual' },
 ];
 
 export default function Admin() {
@@ -496,7 +496,7 @@ function PremiosPanel() {
    Torneo panel — bote total + máximo goleador actual
    ============================================================ */
 function TorneoPanel() {
-  const [cfg, setCfg] = useState({ boteTotal: 0, maxGoleadorActual: '' });
+  const [cfg, setCfg] = useState({ maxGoleadorActual: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState(null);
@@ -504,15 +504,15 @@ function TorneoPanel() {
   useEffect(() => {
     (async () => {
       const data = await getTorneoConfig();
-      setCfg(data);
+      setCfg({ maxGoleadorActual: data.maxGoleadorActual || '' });
       setLoading(false);
     })();
   }, []);
 
   if (loading) return <div className="admin-loading">Cargando configuración…</div>;
 
-  const handleChange = (key) => (e) => {
-    setCfg((c) => ({ ...c, [key]: e.target.value }));
+  const handleChange = (e) => {
+    setCfg({ maxGoleadorActual: e.target.value });
     setSavedAt(null);
   };
 
@@ -520,7 +520,7 @@ function TorneoPanel() {
     setSaving(true);
     try {
       const data = await saveTorneoConfig(cfg);
-      setCfg(data);
+      setCfg({ maxGoleadorActual: data.maxGoleadorActual || '' });
       setSavedAt(Date.now());
       setTimeout(() => setSavedAt(null), 2400);
     } finally {
@@ -531,32 +531,21 @@ function TorneoPanel() {
   return (
     <div className="admin-panel">
       <div className="admin-panel-head">
-        <h2>Bote y máximo goleador</h2>
-        <span className="admin-count">Información pública que se muestra en la clasificación</span>
+        <h2>Máximo goleador actual</h2>
+        <span className="admin-count">
+          El bote se calcula automáticamente sumando los participantes pagados
+        </span>
       </div>
 
       <div className="admin-premios">
         <div className="admin-premio-field">
-          <label className="label" htmlFor="cfg-bote">Bote total (€)</label>
-          <input
-            id="cfg-bote"
-            type="number"
-            min="0"
-            step="1"
-            className="input"
-            value={cfg.boteTotal}
-            onChange={handleChange('boteTotal')}
-            placeholder="0"
-          />
-        </div>
-        <div className="admin-premio-field">
-          <label className="label" htmlFor="cfg-goleador">Máximo goleador actual</label>
+          <label className="label" htmlFor="cfg-goleador">Goleador líder del torneo</label>
           <input
             id="cfg-goleador"
             type="text"
             className="input"
             value={cfg.maxGoleadorActual}
-            onChange={handleChange('maxGoleadorActual')}
+            onChange={handleChange}
             placeholder="Nombre del jugador líder"
             maxLength={80}
             autoComplete="off"

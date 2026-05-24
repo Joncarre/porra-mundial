@@ -127,15 +127,15 @@
 
 /* -------- Color de la columna # según posición -------- */
 .cl-row--top1 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(46, 160, 67, 0.32), transparent);
-  color: #1f6b2a;
+  background: linear-gradient(90deg, rgba(20, 140, 50, 0.62), transparent);
+  color: #0a3a16;
 }
 .cl-row--top2 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(46, 160, 67, 0.22), transparent);
-  color: #2a7536;
+  background: linear-gradient(90deg, rgba(85, 195, 110, 0.36), transparent);
+  color: #1f6b2a;
 }
 .cl-row--top3 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(46, 160, 67, 0.14), transparent);
+  background: linear-gradient(90deg, rgba(170, 230, 185, 0.20), transparent);
   color: #3a8047;
 }
 .cl-row--mid .cl-col-pos {
@@ -143,19 +143,19 @@
   color: var(--text-muted);
 }
 .cl-row--bot3 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(220, 90, 80, 0.14), transparent);
-  color: #a64a3f;
+  background: linear-gradient(90deg, rgba(230, 150, 140, 0.20), transparent);
+  color: #b8554a;
 }
 .cl-row--bot2 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(220, 90, 80, 0.22), transparent);
+  background: linear-gradient(90deg, rgba(225, 80, 70, 0.38), transparent);
   color: #8e3a2f;
 }
 .cl-row--bot1 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(220, 90, 80, 0.32), transparent);
-  color: #732820;
+  background: linear-gradient(90deg, rgba(195, 35, 25, 0.62), transparent);
+  color: #5a160e;
 }
 
-.cl-row--top1 .cl-col-pts { color: #1f6b2a; }
+.cl-row--top1 .cl-col-pts { color: #0a3a16; }
 
 /* -------- Footer cards -------- */
 .cl-footer-cards {

@@ -226,7 +226,7 @@ function FinalCard({ match, winner, onPick }) {
                 <span className="be-result-label">Campeón</span>
                 <strong className="be-result-team">{teamName(match, winner)}</strong>
               </div>
-              <div className="be-result-row">
+              <div className="be-result-row be-result-row--subchampion">
                 <span className="be-result-label">Subcampeón</span>
                 <strong className="be-result-team">{otroNombre(match, winner)}</strong>
               </div>
@@ -263,11 +263,11 @@ function ThirdPlaceCard({ match, winner, onPick }) {
           </div>
           {winner && (
             <div className="be-result-block">
-              <div className="be-result-row">
+              <div className="be-result-row be-result-row--third">
                 <span className="be-result-label">Tercer puesto</span>
                 <strong className="be-result-team">{teamName(match, winner)}</strong>
               </div>
-              <div className="be-result-row">
+              <div className="be-result-row be-result-row--fourth">
                 <span className="be-result-label">Cuarto puesto</span>
                 <strong className="be-result-team">{otroNombre(match, winner)}</strong>
               </div>
