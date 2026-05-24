@@ -239,12 +239,24 @@
 }
 
 .rg-match-team {
-  color: var(--text-primary);
+  color: var(--text-secondary);
   font-weight: 500;
+  font-size: 0.82rem;
 }
 
 .rg-match-team--local { text-align: right; }
 .rg-match-team--visitante { text-align: left; }
+
+.rg-match-code {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+  margin-right: 6px;
+}
 
 .rg-match-score {
   display: inline-flex;

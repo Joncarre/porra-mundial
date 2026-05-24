@@ -111,13 +111,19 @@ function GroupCard({ letra, partidos }) {
           <ul className="rg-matches-list">
             {jugados.map((p) => (
               <li key={p.id} className="rg-match">
-                <span className="rg-match-team rg-match-team--local">{p.local.name}</span>
+                <span className="rg-match-team rg-match-team--local">
+                  <span className="rg-match-code">{p.local.code}</span>
+                  {p.local.name}
+                </span>
                 <span className="rg-match-score">
                   <strong>{p.resultado.golesLocal}</strong>
                   <span className="rg-match-dash">—</span>
                   <strong>{p.resultado.golesVisitante}</strong>
                 </span>
-                <span className="rg-match-team rg-match-team--visitante">{p.visitante.name}</span>
+                <span className="rg-match-team rg-match-team--visitante">
+                  <span className="rg-match-code">{p.visitante.code}</span>
+                  {p.visitante.name}
+                </span>
               </li>
             ))}
           </ul>

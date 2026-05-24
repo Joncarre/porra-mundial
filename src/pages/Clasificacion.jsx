@@ -120,7 +120,10 @@ export default function Clasificacion() {
           </header>
 
           {loading ? (
-            <div className="cl-loading">Calculando puntos…</div>
+            <div className="cl-loading">
+              <div className="cl-loading-spinner" aria-hidden="true" />
+              <span className="cl-loading-text">Calculando puntos…</span>
+            </div>
           ) : rows.length === 0 ? (
             <div className="cl-empty">
               Todavía no hay participantes registrados en la porra.
@@ -145,7 +148,7 @@ export default function Clasificacion() {
                         <td className="cl-col-pos">{r.posicion}</td>
                         <td className="cl-col-user">
                           <div className="cl-user">
-                            <Avatar foto={r.user.avatarFoto} name={r.user.nombre || r.user.nickname} size="sm" />
+                            <Avatar foto={r.user.avatarFoto} name={r.user.nombre || r.user.nickname} size="md" />
                             <div className="cl-user-text">
                               <span className="cl-user-nick">@{r.user.nickname}</span>
                               <span className="cl-user-name">

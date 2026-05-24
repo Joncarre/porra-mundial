@@ -241,7 +241,6 @@
 .be-result-row--champion .be-result-team {
   color: #173f1c;
   font-family: var(--font-display);
-  font-style: italic;
 }
 
 /* Subcampeón — verde pastel más claro */
@@ -267,7 +266,6 @@
 .be-result-row--third .be-result-team {
   color: #391f5e;
   font-family: var(--font-display);
-  font-style: italic;
 }
 
 /* Cuarto puesto — morado pastel más claro */
