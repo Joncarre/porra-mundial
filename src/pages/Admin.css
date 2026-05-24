@@ -400,6 +400,24 @@
   border-top: 1px solid var(--border-subtle);
 }
 
+/* ============================================================
+   PREMIOS panel
+   ============================================================ */
+.admin-premios {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+@media (max-width: 720px) {
+  .admin-premios { grid-template-columns: 1fr; }
+}
+
+.admin-premio-field {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 600px) {
   .admin-partido {
     grid-template-columns: 1fr;

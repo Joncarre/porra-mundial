@@ -21,8 +21,10 @@ import { db, DEMO_MODE } from '../firebase.js';
 
 const STORE_KEY = 'porra:resultados';
 const STORE_KEY_ELIM = 'porra:resultados_eliminatoria';
+const STORE_KEY_PREMIOS = 'porra:resultados_premios';
 const FIRESTORE_DOC = ['resultados', 'grupos'];
 const FIRESTORE_DOC_ELIM = ['resultados', 'eliminatoria'];
+const FIRESTORE_DOC_PREMIOS = ['resultados', 'premios'];
 
 function readDemo() {
   try {
@@ -73,6 +75,45 @@ export async function saveResultadosEliminatoria(ganadores) {
     localStorage.setItem(STORE_KEY_ELIM, JSON.stringify(data));
   } else {
     await setDoc(doc(db, ...FIRESTORE_DOC_ELIM), data, { merge: true });
+  }
+  return data;
+}
+
+/* ============================================================
+   PREMIOS — máximo goleador y balones oficiales (al final del Mundial)
+   ============================================================ */
+
+const PREMIOS_DEFAULT = {
+  maxGoleador: '',
+  balonOro: '',
+  balonPlata: '',
+  balonBronce: '',
+};
+
+export async function getResultadosPremios() {
+  if (DEMO_MODE) {
+    try {
+      const raw = localStorage.getItem(STORE_KEY_PREMIOS);
+      return raw ? { ...PREMIOS_DEFAULT, ...JSON.parse(raw) } : { ...PREMIOS_DEFAULT };
+    } catch {
+      return { ...PREMIOS_DEFAULT };
+    }
+  }
+  const snap = await getDoc(doc(db, ...FIRESTORE_DOC_PREMIOS));
+  return snap.exists() ? { ...PREMIOS_DEFAULT, ...snap.data() } : { ...PREMIOS_DEFAULT };
+}
+
+export async function saveResultadosPremios(premios) {
+  const data = {
+    maxGoleador: premios.maxGoleador?.trim() || '',
+    balonOro: premios.balonOro?.trim() || '',
+    balonPlata: premios.balonPlata?.trim() || '',
+    balonBronce: premios.balonBronce?.trim() || '',
+  };
+  if (DEMO_MODE) {
+    localStorage.setItem(STORE_KEY_PREMIOS, JSON.stringify(data));
+  } else {
+    await setDoc(doc(db, ...FIRESTORE_DOC_PREMIOS), data, { merge: true });
   }
   return data;
 }

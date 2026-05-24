@@ -8,6 +8,8 @@ import {
   saveResultadosPartidos,
   getResultadosEliminatoria,
   saveResultadosEliminatoria,
+  getResultadosPremios,
+  saveResultadosPremios,
 } from '../services/resultados.js';
 import { GRUPO_LETRAS, partidosDelGrupo } from '../data/grupos.js';
 import { clasificacionTodosLosGrupos, bracketCompleto, progresoBracket } from '../utils/bracket.js';
@@ -18,6 +20,7 @@ const TABS = [
   { id: 'usuarios', label: 'Usuarios' },
   { id: 'resultados', label: 'Resultados de grupos' },
   { id: 'eliminatoria', label: 'Eliminatoria' },
+  { id: 'premios', label: 'Premios' },
 ];
 
 export default function Admin() {
@@ -55,6 +58,7 @@ export default function Admin() {
           {tab === 'usuarios' && <UsersPanel />}
           {tab === 'resultados' && <ResultsPanel />}
           {tab === 'eliminatoria' && <EliminatoriaPanel />}
+          {tab === 'premios' && <PremiosPanel />}
         </div>
       </main>
     </div>
@@ -400,6 +404,91 @@ function EliminatoriaPanel() {
           disabled={saving}
         >
           {saving ? 'Guardando…' : 'Guardar bracket oficial'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   Premios panel — máx goleador y balones oficiales
+   ============================================================ */
+const PREMIO_FIELDS = [
+  { key: 'maxGoleador', label: 'Máximo goleador' },
+  { key: 'balonOro', label: 'Balón de Oro' },
+  { key: 'balonPlata', label: 'Balón de Plata' },
+  { key: 'balonBronce', label: 'Balón de Bronce' },
+];
+
+function PremiosPanel() {
+  const [premios, setPremios] = useState({
+    maxGoleador: '', balonOro: '', balonPlata: '', balonBronce: '',
+  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getResultadosPremios();
+      setPremios(data);
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div className="admin-loading">Cargando premios…</div>;
+
+  const handleChange = (key) => (e) => {
+    setPremios((p) => ({ ...p, [key]: e.target.value }));
+    setSavedAt(null);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const data = await saveResultadosPremios(premios);
+      setPremios(data);
+      setSavedAt(Date.now());
+      setTimeout(() => setSavedAt(null), 2400);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="admin-panel">
+      <div className="admin-panel-head">
+        <h2>Premios oficiales</h2>
+        <span className="admin-count">Apunta los ganadores al final del Mundial</span>
+      </div>
+
+      <div className="admin-premios">
+        {PREMIO_FIELDS.map((f) => (
+          <div key={f.key} className="admin-premio-field">
+            <label className="label" htmlFor={`premio-${f.key}`}>{f.label}</label>
+            <input
+              id={`premio-${f.key}`}
+              type="text"
+              className="input"
+              value={premios[f.key]}
+              onChange={handleChange(f.key)}
+              placeholder="Nombre del jugador"
+              maxLength={80}
+              autoComplete="off"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="admin-eli-actions">
+        {savedAt && <span className="admin-saved-pill">Guardado</span>}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleSave}
+          disabled={saving}
+        >
+          {saving ? 'Guardando…' : 'Guardar premios'}
         </button>
       </div>
     </div>

@@ -14,6 +14,7 @@ import { db, DEMO_MODE } from '../firebase.js';
 
 const STORE_KEY_FASE1 = 'porra:predicciones_fase1';
 const STORE_KEY_FASE2 = 'porra:predicciones_fase2';
+const STORE_KEY_EXTRAS = 'porra:predicciones_extras';
 
 function readDemoStore(key) {
   try {
@@ -92,6 +93,43 @@ export async function savePrediccionesFase2(userId, ganadores) {
     writeDemoStore(STORE_KEY_FASE2, store);
   } else {
     await setDoc(doc(db, 'predicciones_fase2', userId), data, { merge: true });
+  }
+  return data;
+}
+
+/* ============================================================
+   EXTRAS — máximo goleador y balones (oro / plata / bronce)
+   ============================================================ */
+
+const EXTRAS_DEFAULT = {
+  maxGoleador: '',
+  balonOro: '',
+  balonPlata: '',
+  balonBronce: '',
+};
+
+export async function getPrediccionesExtras(userId) {
+  if (DEMO_MODE) {
+    const store = readDemoStore(STORE_KEY_EXTRAS);
+    return { ...EXTRAS_DEFAULT, ...(store[userId] || {}) };
+  }
+  const snap = await getDoc(doc(db, 'predicciones_extras', userId));
+  return snap.exists() ? { ...EXTRAS_DEFAULT, ...snap.data() } : { ...EXTRAS_DEFAULT };
+}
+
+export async function savePrediccionesExtras(userId, extras) {
+  const data = {
+    maxGoleador: extras.maxGoleador?.trim() || '',
+    balonOro: extras.balonOro?.trim() || '',
+    balonPlata: extras.balonPlata?.trim() || '',
+    balonBronce: extras.balonBronce?.trim() || '',
+  };
+  if (DEMO_MODE) {
+    const store = readDemoStore(STORE_KEY_EXTRAS);
+    store[userId] = data;
+    writeDemoStore(STORE_KEY_EXTRAS, store);
+  } else {
+    await setDoc(doc(db, 'predicciones_extras', userId), data, { merge: true });
   }
   return data;
 }
