@@ -1,0 +1,157 @@
+/* ============================================================
+   Bracket — pantalla de apuestas eliminatoria del usuario
+   ============================================================ */
+
+.brk-page {
+  flex: 1;
+  background: var(--grad-hero);
+  display: flex;
+  flex-direction: column;
+}
+
+.brk-main {
+  flex: 1;
+  padding: var(--space-2xl) 0 var(--space-3xl);
+}
+
+.brk-page-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.brk-page-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  color: var(--charcoal);
+  margin-top: var(--space-sm);
+}
+
+.brk-page-sub {
+  max-width: 640px;
+}
+
+.brk-already-pill {
+  margin-top: var(--space-sm);
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  background: var(--warning-bg);
+  border: 1px solid rgba(201, 168, 93, 0.30);
+  border-radius: var(--radius-md);
+  color: var(--gold-700);
+  max-width: 580px;
+  line-height: 1.5;
+}
+
+.brk-loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-3xl) 0;
+}
+
+/* -------- Panel -------- */
+.brk-panel {
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* -------- Progreso -------- */
+.brk-progress {
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.brk-progress-text {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.brk-progress-count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--charcoal);
+}
+
+.brk-progress-total {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.brk-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--surface-3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.brk-progress-fill {
+  height: 100%;
+  background: var(--grad-gold);
+  border-radius: var(--radius-full);
+  transition: width var(--transition);
+}
+
+/* -------- Acciones -------- */
+.brk-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.brk-saved-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid rgba(111, 156, 114, 0.30);
+  border-radius: var(--radius-full);
+  animation: fadeIn 0.3s var(--ease-out);
+  margin-right: auto;
+}
+
+/* -------- Locked state -------- */
+.brk-locked {
+  max-width: 560px;
+  margin: var(--space-3xl) auto;
+  text-align: center;
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.brk-locked-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--charcoal);
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.brk-locked-detail {
+  margin-bottom: var(--space-xl);
+}

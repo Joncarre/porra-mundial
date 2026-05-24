@@ -1,15 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AppHeader from '../components/AppHeader.jsx';
 import Avatar from '../components/Avatar.jsx';
+import BracketEditor from '../components/BracketEditor.jsx';
 import { getAllUsers, updateUser } from '../services/users.js';
-import { getResultadosGrupos, saveResultadosPartidos } from '../services/resultados.js';
+import {
+  getResultadosGrupos,
+  saveResultadosPartidos,
+  getResultadosEliminatoria,
+  saveResultadosEliminatoria,
+} from '../services/resultados.js';
 import { GRUPO_LETRAS, partidosDelGrupo } from '../data/grupos.js';
+import { clasificacionTodosLosGrupos, bracketCompleto, progresoBracket } from '../utils/bracket.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import './Admin.css';
 
 const TABS = [
   { id: 'usuarios', label: 'Usuarios' },
   { id: 'resultados', label: 'Resultados de grupos' },
+  { id: 'eliminatoria', label: 'Eliminatoria' },
 ];
 
 export default function Admin() {
@@ -46,6 +54,7 @@ export default function Admin() {
 
           {tab === 'usuarios' && <UsersPanel />}
           {tab === 'resultados' && <ResultsPanel />}
+          {tab === 'eliminatoria' && <EliminatoriaPanel />}
         </div>
       </main>
     </div>
@@ -304,6 +313,94 @@ function ResultsPanel() {
         <p className="admin-hint">
           Deja los dos campos vacíos para indicar que el partido no se ha jugado.
         </p>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   Eliminatoria panel — bracket oficial
+   ============================================================ */
+function EliminatoriaPanel() {
+  const [grupoStandings, setGrupoStandings] = useState({});
+  const [ganadores, setGanadores] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const [gru, eli] = await Promise.all([
+        getResultadosGrupos(),
+        getResultadosEliminatoria(),
+      ]);
+      setGrupoStandings(clasificacionTodosLosGrupos(gru.partidos || {}));
+      setGanadores(eli.ganadores || {});
+      setLoading(false);
+    })();
+  }, []);
+
+  const { picksHechos, totalPicks } = useMemo(() => {
+    const bracket = bracketCompleto(grupoStandings, ganadores);
+    const p = progresoBracket(bracket, ganadores);
+    return {
+      totalPicks: p.d32.total + p.o16.total + p.qf.total + p.sf.total + p.tercer.total + p.final.total,
+      picksHechos: p.d32.hechos + p.o16.hechos + p.qf.hechos + p.sf.hechos + p.tercer.hechos + p.final.hechos,
+    };
+  }, [grupoStandings, ganadores]);
+
+  const algunPartidoEnGrupos = Object.values(grupoStandings).some((tabla) =>
+    (tabla || []).some((e) => e.pj > 0),
+  );
+
+  if (loading) return <div className="admin-loading">Cargando bracket…</div>;
+
+  const handleChange = (next) => {
+    setGanadores(next);
+    setSavedAt(null);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await saveResultadosEliminatoria(ganadores);
+      setSavedAt(Date.now());
+      setTimeout(() => setSavedAt(null), 2400);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="admin-panel">
+      <div className="admin-panel-head">
+        <h2>Bracket oficial</h2>
+        <span className="admin-count">{picksHechos} / {totalPicks || 32} cruces decididos</span>
+      </div>
+
+      {!algunPartidoEnGrupos && (
+        <div className="admin-eli-warning">
+          Todavía no has registrado ningún resultado de la fase de grupos. Las
+          tarjetas mostrarán "Por decidir" hasta que el bracket pueda calcularse.
+        </div>
+      )}
+
+      <BracketEditor
+        grupoStandings={grupoStandings}
+        ganadores={ganadores}
+        onChange={handleChange}
+      />
+
+      <div className="admin-eli-actions">
+        {savedAt && <span className="admin-saved-pill">Guardado</span>}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleSave}
+          disabled={saving}
+        >
+          {saving ? 'Guardando…' : 'Guardar bracket oficial'}
+        </button>
       </div>
     </div>
   );

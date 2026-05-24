@@ -13,6 +13,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db, DEMO_MODE } from '../firebase.js';
 
 const STORE_KEY_FASE1 = 'porra:predicciones_fase1';
+const STORE_KEY_FASE2 = 'porra:predicciones_fase2';
 
 function readDemoStore(key) {
   try {
@@ -53,6 +54,44 @@ export async function savePrediccionesFase1(userId, partidos) {
     writeDemoStore(STORE_KEY_FASE1, store);
   } else {
     await setDoc(doc(db, 'predicciones_fase1', userId), data, { merge: true });
+  }
+  return data;
+}
+
+/* ============================================================
+   FASE 2 — bracket eliminatorio
+   ============================================================ */
+
+/**
+ * Pronóstico del bracket del usuario. Estructura:
+ *   {
+ *     ganadores: {
+ *       73: 'MEX', 74: 'GER', ... 88: '...',  // dieciseisavos
+ *       89..96: '...',                          // octavos
+ *       97..100: '...',                         // cuartos
+ *       101..102: '...',                        // semifinales
+ *       103: '...',  // ganador del tercer puesto (el otro semi-perdedor es 4.º)
+ *       104: '...',  // campeón del mundial
+ *     }
+ *   }
+ */
+export async function getPrediccionesFase2(userId) {
+  if (DEMO_MODE) {
+    const store = readDemoStore(STORE_KEY_FASE2);
+    return store[userId] || { ganadores: {} };
+  }
+  const snap = await getDoc(doc(db, 'predicciones_fase2', userId));
+  return snap.exists() ? snap.data() : { ganadores: {} };
+}
+
+export async function savePrediccionesFase2(userId, ganadores) {
+  const data = { ganadores };
+  if (DEMO_MODE) {
+    const store = readDemoStore(STORE_KEY_FASE2);
+    store[userId] = data;
+    writeDemoStore(STORE_KEY_FASE2, store);
+  } else {
+    await setDoc(doc(db, 'predicciones_fase2', userId), data, { merge: true });
   }
   return data;
 }

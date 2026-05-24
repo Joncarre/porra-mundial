@@ -6,6 +6,7 @@ import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
 import ResultadosGrupos from './pages/ResultadosGrupos.jsx';
 import Apuestas from './pages/Apuestas.jsx';
+import Bracket from './pages/Bracket.jsx';
 import Admin from './pages/Admin.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -40,6 +41,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Apuestas />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/bracket"
+        element={
+          <ProtectedRoute>
+            <Bracket />
           </ProtectedRoute>
         }
       />

@@ -20,7 +20,9 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db, DEMO_MODE } from '../firebase.js';
 
 const STORE_KEY = 'porra:resultados';
+const STORE_KEY_ELIM = 'porra:resultados_eliminatoria';
 const FIRESTORE_DOC = ['resultados', 'grupos'];
+const FIRESTORE_DOC_ELIM = ['resultados', 'eliminatoria'];
 
 function readDemo() {
   try {
@@ -41,6 +43,38 @@ export async function getResultadosGrupos() {
   }
   const snap = await getDoc(doc(db, ...FIRESTORE_DOC));
   return snap.exists() ? snap.data() : { partidos: {} };
+}
+
+/* ============================================================
+   ELIMINATORIA — resultados oficiales del bracket
+   ============================================================ */
+
+/**
+ * Resultados oficiales de la fase eliminatoria.
+ * Estructura idéntica a las predicciones del usuario:
+ *   { ganadores: { 73: 'MEX', ..., 103: 'X', 104: 'Y' } }
+ */
+export async function getResultadosEliminatoria() {
+  if (DEMO_MODE) {
+    try {
+      const raw = localStorage.getItem(STORE_KEY_ELIM);
+      return raw ? JSON.parse(raw) : { ganadores: {} };
+    } catch {
+      return { ganadores: {} };
+    }
+  }
+  const snap = await getDoc(doc(db, ...FIRESTORE_DOC_ELIM));
+  return snap.exists() ? snap.data() : { ganadores: {} };
+}
+
+export async function saveResultadosEliminatoria(ganadores) {
+  const data = { ganadores };
+  if (DEMO_MODE) {
+    localStorage.setItem(STORE_KEY_ELIM, JSON.stringify(data));
+  } else {
+    await setDoc(doc(db, ...FIRESTORE_DOC_ELIM), data, { merge: true });
+  }
+  return data;
 }
 
 /**

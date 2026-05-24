@@ -56,6 +56,12 @@ export default function AppHeader() {
           >
             Apuestas
           </NavLink>
+          <NavLink
+            to="/bracket"
+            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+          >
+            Bracket
+          </NavLink>
           {user?.isAdmin && (
             <NavLink
               to="/admin"
