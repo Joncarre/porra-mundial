@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
 import ResultadosGrupos from './pages/ResultadosGrupos.jsx';
+import Apuestas from './pages/Apuestas.jsx';
 import Admin from './pages/Admin.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -31,6 +32,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <ResultadosGrupos />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/apuestas"
+        element={
+          <ProtectedRoute>
+            <Apuestas />
           </ProtectedRoute>
         }
       />

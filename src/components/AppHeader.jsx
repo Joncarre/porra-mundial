@@ -50,6 +50,12 @@ export default function AppHeader() {
           >
             Grupos
           </NavLink>
+          <NavLink
+            to="/apuestas"
+            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+          >
+            Apuestas
+          </NavLink>
           {user?.isAdmin && (
             <NavLink
               to="/admin"
