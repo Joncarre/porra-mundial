@@ -61,9 +61,6 @@ function GroupCard({ letra, partidos }) {
         <h2 className="rg-group-title">
           <span className="rg-group-letter">Grupo</span> {letra}
         </h2>
-        <span className="rg-group-meta">
-          {jugados.length} / {matchesWithResult.length} partidos jugados
-        </span>
       </header>
 
       <div className="rg-table-wrap">
@@ -72,6 +69,7 @@ function GroupCard({ letra, partidos }) {
             <tr>
               <th className="rg-col-pos">#</th>
               <th className="rg-col-team">Equipo</th>
+              <th className="rg-col-pts">Pts</th>
               <th>PJ</th>
               <th>G</th>
               <th>E</th>
@@ -79,7 +77,6 @@ function GroupCard({ letra, partidos }) {
               <th>GF</th>
               <th>GC</th>
               <th>DG</th>
-              <th className="rg-col-pts">Pts</th>
             </tr>
           </thead>
           <tbody>
@@ -88,10 +85,11 @@ function GroupCard({ letra, partidos }) {
                 <td className="rg-col-pos">{equipo.posicion}</td>
                 <td className="rg-col-team">
                   <div className="rg-team">
-                    <span className="rg-team-code">{equipo.code}</span>
                     <span className="rg-team-name">{equipo.name}</span>
+                    <span className="rg-team-code">{equipo.code}</span>
                   </div>
                 </td>
+                <td className="rg-col-pts">{equipo.pts}</td>
                 <td>{equipo.pj}</td>
                 <td>{equipo.g}</td>
                 <td>{equipo.em}</td>
@@ -101,7 +99,6 @@ function GroupCard({ letra, partidos }) {
                 <td className={equipo.dg > 0 ? 'rg-dg-pos' : equipo.dg < 0 ? 'rg-dg-neg' : ''}>
                   {equipo.dg > 0 ? `+${equipo.dg}` : equipo.dg}
                 </td>
-                <td className="rg-col-pts">{equipo.pts}</td>
               </tr>
             ))}
           </tbody>
