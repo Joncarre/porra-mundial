@@ -74,7 +74,7 @@ export default function Register() {
 
   return (
     <div className="auth-page">
-      <div className="container auth-back-wrap">
+      <div className="container auth-back-wrap auth-back-wrap--register">
         <Link to="/" className="auth-back">&larr; Volver al inicio</Link>
       </div>
 

@@ -6,6 +6,7 @@ import {
   getPrediccionesExtras,
   savePrediccionesExtras,
 } from '../services/predicciones.js';
+import { apuestasCerradas, APUESTAS_DEADLINE_LABEL } from '../utils/deadlines.js';
 import './Extras.css';
 
 const CAMPOS = [
@@ -130,6 +131,7 @@ export default function Extras() {
   };
 
   const yaCompletada = !!user.plantillaOtrasApuestasCompletada;
+  const cerradas = apuestasCerradas();
 
   return (
     <div className="ex-page">
@@ -179,6 +181,7 @@ export default function Extras() {
                       placeholder={c.placeholder}
                       value={extras[c.key]}
                       onChange={handleChange(c.key)}
+                      disabled={cerradas}
                       maxLength={80}
                       autoComplete="off"
                     />
@@ -187,28 +190,37 @@ export default function Extras() {
                 ))}
               </div>
 
-              <footer className="ex-actions">
-                {savedAt && <span className="ex-saved-pill">Progreso guardado</span>}
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleSaveProgress}
-                  disabled={saving}
-                >
-                  {saving ? 'Guardando…' : 'Guardar progreso'}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleConfirm}
-                  disabled={saving || !allDone}
-                  title={!allDone ? `Faltan ${CAMPOS.length - completados} apuestas por rellenar` : undefined}
-                >
-                  {allDone
-                    ? 'Confirmar mis apuestas'
-                    : `Faltan ${CAMPOS.length - completados} apuestas`}
-                </button>
-              </footer>
+              {cerradas ? (
+                <footer className="ex-actions ex-actions--cerradas">
+                  <span className="ex-cerradas-notice">
+                    Las apuestas se cerraron el {APUESTAS_DEADLINE_LABEL}. Tus
+                    apuestas quedan como estaban guardadas.
+                  </span>
+                </footer>
+              ) : (
+                <footer className="ex-actions">
+                  {savedAt && <span className="ex-saved-pill">Progreso guardado</span>}
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleSaveProgress}
+                    disabled={saving}
+                  >
+                    {saving ? 'Guardando…' : 'Guardar progreso'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleConfirm}
+                    disabled={saving || !allDone}
+                    title={!allDone ? `Faltan ${CAMPOS.length - completados} apuestas por rellenar` : undefined}
+                  >
+                    {allDone
+                      ? 'Confirmar mis apuestas'
+                      : `Faltan ${CAMPOS.length - completados} apuestas`}
+                  </button>
+                </footer>
+              )}
             </div>
           )}
         </div>

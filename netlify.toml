@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA fallback: cualquier ruta desconocida sirve index.html para que
+# React Router se encargue del enrutado en cliente. Sin esto, abrir
+# directamente /perfil o /clasificacion devolvería 404 desde Netlify.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

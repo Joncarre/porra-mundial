@@ -297,44 +297,69 @@
 
 .tl-step.is-locked .tl-detail { color: var(--text-muted); }
 
-/* Status pill */
+/* Status pill — diseño premium con gradiente, dot interno y sombra */
 .tl-status {
   flex-shrink: 0;
-  font-size: 0.66rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.68rem;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 4px 11px;
+  padding: 5px 13px 5px 11px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-default);
   background: var(--surface-1);
   color: var(--text-muted);
+  box-shadow: 0 1px 2px rgba(40, 30, 15, 0.04);
+  transition: all var(--transition);
+}
+
+.tl-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
 }
 
 .tl-step.is-done .tl-status {
-  background: var(--success);
-  color: white;
-  border-color: var(--success);
+  background: linear-gradient(135deg, #8bbf8f 0%, #5d9560 100%);
+  color: #ffffff;
+  border-color: rgba(72, 130, 80, 0.40);
+  box-shadow: 0 4px 10px rgba(111, 156, 114, 0.28);
 }
 
 .tl-step.is-pending .tl-status {
-  background: var(--surface-1);
+  background: linear-gradient(135deg, #fff5dc 0%, #f0dfb0 100%);
   color: var(--gold-700);
   border-color: var(--border-gold);
+  box-shadow: 0 4px 10px rgba(184, 148, 90, 0.22);
+}
+
+.tl-step.is-locked .tl-status {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-color: var(--border-default);
+  box-shadow: none;
+  opacity: 0.75;
 }
 
 /* Variante clickable: lleva a la pantalla donde se rellena esa plantilla */
 .tl-status--link {
   cursor: pointer;
   text-decoration: none;
-  transition: all var(--transition-fast);
 }
 
 .tl-step.is-pending .tl-status--link:hover {
-  background: var(--gold-500);
+  background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-500) 100%);
   color: var(--text-on-dark);
   border-color: var(--gold-500);
-  box-shadow: 0 2px 8px rgba(184, 148, 90, 0.30);
+  box-shadow: 0 6px 14px rgba(184, 148, 90, 0.40);
+  transform: translateY(-1px);
 }
 
 /* -------- Modal -------- */

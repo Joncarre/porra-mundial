@@ -81,19 +81,24 @@
   transform: scaleX(1);
 }
 
-/* Iniciar sesión — borde dorado claro en hover, sin glow */
+/* Iniciar sesión — único efecto: borde dorado que se ilumina de
+   forma dinámica (color cycling). Nada de cambio de fondo, color
+   o sombra. */
 .welcome-login-btn {
-  transition:
-    color 0.4s var(--ease),
-    border-color 0.5s var(--ease),
-    background 0.4s var(--ease);
+  transition: border-color 0.5s var(--ease);
 }
 
 .welcome-login-btn:hover {
   background: var(--surface-1);
-  border-color: var(--gold-300);
   color: var(--text-primary);
+  border-color: var(--gold-300);
   box-shadow: var(--shadow-sm);
+  animation: welcome-login-pulse 2s ease-in-out infinite;
+}
+
+@keyframes welcome-login-pulse {
+  0%, 100% { border-color: var(--gold-300); }
+  50%      { border-color: var(--gold-500); }
 }
 
 /* Logged-in user chip */

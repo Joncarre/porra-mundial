@@ -125,21 +125,37 @@
   color: var(--text-muted);
 }
 
-/* -------- Filas top 3 -------- */
-.cl-row--1 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(216, 182, 122, 0.30), transparent);
-  color: var(--gold-700);
+/* -------- Color de la columna # según posición -------- */
+.cl-row--top1 .cl-col-pos {
+  background: linear-gradient(90deg, rgba(46, 160, 67, 0.32), transparent);
+  color: #1f6b2a;
 }
-.cl-row--2 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(192, 197, 208, 0.40), transparent);
-  color: #5d6275;
+.cl-row--top2 .cl-col-pos {
+  background: linear-gradient(90deg, rgba(46, 160, 67, 0.22), transparent);
+  color: #2a7536;
 }
-.cl-row--3 .cl-col-pos {
-  background: linear-gradient(90deg, rgba(205, 127, 50, 0.25), transparent);
-  color: #8a4f1d;
+.cl-row--top3 .cl-col-pos {
+  background: linear-gradient(90deg, rgba(46, 160, 67, 0.14), transparent);
+  color: #3a8047;
+}
+.cl-row--mid .cl-col-pos {
+  background: linear-gradient(90deg, rgba(170, 170, 180, 0.10), transparent);
+  color: var(--text-muted);
+}
+.cl-row--bot3 .cl-col-pos {
+  background: linear-gradient(90deg, rgba(220, 90, 80, 0.14), transparent);
+  color: #a64a3f;
+}
+.cl-row--bot2 .cl-col-pos {
+  background: linear-gradient(90deg, rgba(220, 90, 80, 0.22), transparent);
+  color: #8e3a2f;
+}
+.cl-row--bot1 .cl-col-pos {
+  background: linear-gradient(90deg, rgba(220, 90, 80, 0.32), transparent);
+  color: #732820;
 }
 
-.cl-row--1 .cl-col-pts { color: var(--gold-700); }
+.cl-row--top1 .cl-col-pts { color: #1f6b2a; }
 
 /* -------- Footer cards -------- */
 .cl-footer-cards {

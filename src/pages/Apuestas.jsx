@@ -4,6 +4,7 @@ import AppHeader from '../components/AppHeader.jsx';
 import { GRUPO_LETRAS, partidosDelGrupo, TODOS_LOS_PARTIDOS_GRUPOS } from '../data/grupos.js';
 import { getPrediccionesFase1, savePrediccionesFase1 } from '../services/predicciones.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { apuestasCerradas, APUESTAS_DEADLINE_LABEL } from '../utils/deadlines.js';
 import './Apuestas.css';
 
 const TOTAL_PARTIDOS = TODOS_LOS_PARTIDOS_GRUPOS.length; // 72
@@ -59,6 +60,7 @@ export default function Apuestas() {
 
   const allDone = completados === TOTAL_PARTIDOS;
   const yaCompletada = !!user?.plantillaGruposCompletada;
+  const cerradas = apuestasCerradas();
 
   // ---------- Locks ----------
   if (!user) return null;
@@ -198,6 +200,7 @@ export default function Apuestas() {
                     return (
                       <li key={p.id} className="ap-partido">
                         <span className="ap-partido-team ap-partido-team--local">
+                          <span className="ap-partido-code">{p.local.code}</span>
                           {p.local.name}
                         </span>
                         <div className="ap-partido-score">
@@ -208,6 +211,7 @@ export default function Apuestas() {
                             className="ap-score-input"
                             value={s.golesLocal}
                             onChange={handleChange(p.id, 'golesLocal')}
+                            disabled={cerradas}
                             aria-label={`Tu predicción de goles de ${p.local.name}`}
                           />
                           <span className="ap-partido-dash">—</span>
@@ -218,10 +222,12 @@ export default function Apuestas() {
                             className="ap-score-input"
                             value={s.golesVisitante}
                             onChange={handleChange(p.id, 'golesVisitante')}
+                            disabled={cerradas}
                             aria-label={`Tu predicción de goles de ${p.visitante.name}`}
                           />
                         </div>
                         <span className="ap-partido-team ap-partido-team--visitante">
+                          <span className="ap-partido-code">{p.visitante.code}</span>
                           {p.visitante.name}
                         </span>
                       </li>
@@ -231,26 +237,35 @@ export default function Apuestas() {
               </div>
 
               {/* Acciones */}
-              <footer className="ap-actions">
-                {savedAt && <span className="ap-saved-pill">Progreso guardado</span>}
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleSaveProgress}
-                  disabled={saving}
-                >
-                  {saving ? 'Guardando…' : 'Guardar progreso'}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleConfirm}
-                  disabled={saving || !allDone}
-                  title={!allDone ? `Te faltan ${TOTAL_PARTIDOS - completados} partidos por rellenar` : undefined}
-                >
-                  {allDone ? 'Confirmar todas mis apuestas' : `Faltan ${TOTAL_PARTIDOS - completados} partidos`}
-                </button>
-              </footer>
+              {cerradas ? (
+                <footer className="ap-actions ap-actions--cerradas">
+                  <span className="ap-cerradas-notice">
+                    Las apuestas se cerraron el {APUESTAS_DEADLINE_LABEL}. Tus
+                    pronósticos quedan como estaban guardados.
+                  </span>
+                </footer>
+              ) : (
+                <footer className="ap-actions">
+                  {savedAt && <span className="ap-saved-pill">Progreso guardado</span>}
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleSaveProgress}
+                    disabled={saving}
+                  >
+                    {saving ? 'Guardando…' : 'Guardar progreso'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleConfirm}
+                    disabled={saving || !allDone}
+                    title={!allDone ? `Te faltan ${TOTAL_PARTIDOS - completados} partidos por rellenar` : undefined}
+                  >
+                    {allDone ? 'Confirmar todas mis apuestas' : `Faltan ${TOTAL_PARTIDOS - completados} partidos`}
+                  </button>
+                </footer>
+              )}
             </div>
           )}
         </div>

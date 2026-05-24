@@ -40,29 +40,55 @@
 .app-nav-link {
   display: inline-flex;
   align-items: center;
-  padding: 10px 18px;
-  font-size: 0.98rem;
+  padding: 8px 14px;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-secondary);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
+  position: relative;
+  background: transparent;
+  border-radius: 0;
+  transition: color 0.4s var(--ease);
+}
+
+.app-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 0;
+  height: 2px;
+  background: var(--grad-gold);
+  border-radius: 2px 2px 0 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.45s var(--ease);
 }
 
 .app-nav-link:hover {
   color: var(--charcoal);
-  background: var(--bg-soft);
+  background: transparent;
+}
+
+.app-nav-link:hover::after,
+.app-nav-link.is-active::after {
+  transform: scaleX(1);
 }
 
 .app-nav-link.is-active {
   color: var(--charcoal);
-  background: var(--surface-3);
+  background: transparent;
 }
 
-.app-nav-link--admin.is-active {
-  background: var(--grad-gold-soft);
+.app-nav-link--admin {
   color: var(--gold-700);
-  border: 1px solid var(--border-gold);
-  padding: 7px 15px;
+}
+
+.app-nav-link--admin:hover,
+.app-nav-link--admin.is-active {
+  color: var(--gold-700);
+  background: transparent;
+  border: none;
+  padding: 8px 14px;
 }
 
 @media (max-width: 720px) {

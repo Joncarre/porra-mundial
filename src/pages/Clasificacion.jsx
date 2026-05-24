@@ -66,17 +66,20 @@ export default function Clasificacion() {
         return a.user.nickname.localeCompare(b.user.nickname);
       });
 
-      // Posición con manejo de empates: misma posición si mismos puntos
-      // y mismos desempates principales.
-      let prev = null;
-      let posActual = 0;
+      // Posición ordinal (1, 2, 3...) y bucket para el color de la celda #.
+      // Si hay menos de 7 participantes, evitamos solapar verde/rojo y
+      // dejamos el resto en neutro.
+      const total = computed.length;
       const conPos = computed.map((row, idx) => {
-        const key = `${row.puntos}-${row.aciertosExacto}-${row.aciertosGanador}`;
-        if (key !== prev) {
-          posActual = idx + 1;
-          prev = key;
-        }
-        return { ...row, posicion: posActual };
+        const pos = idx + 1;
+        let bucket = 'mid';
+        if (pos === 1) bucket = 'top1';
+        else if (pos === 2) bucket = 'top2';
+        else if (pos === 3) bucket = 'top3';
+        else if (total > 6 && pos === total) bucket = 'bot1';
+        else if (total > 6 && pos === total - 1) bucket = 'bot2';
+        else if (total > 6 && pos === total - 2) bucket = 'bot3';
+        return { ...row, posicion: pos, rankBucket: bucket };
       });
 
       setRows(conPos);
@@ -134,7 +137,7 @@ export default function Clasificacion() {
                   </thead>
                   <tbody>
                     {rows.map((r) => (
-                      <tr key={r.user.id} className={`cl-row cl-row--${r.posicion <= 3 ? r.posicion : 'n'}`}>
+                      <tr key={r.user.id} className={`cl-row cl-row--${r.rankBucket}`}>
                         <td className="cl-col-pos">{r.posicion}</td>
                         <td className="cl-col-user">
                           <div className="cl-user">

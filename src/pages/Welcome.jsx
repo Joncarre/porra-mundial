@@ -15,8 +15,8 @@ export default function Welcome() {
         <div className="container-narrow welcome-hero-inner animate-fade-up">
           <span className="eyebrow">Mundial 2026</span>
           <h1 className="welcome-hero-title">
-            Predice, compite y gana<br />
-            con <span className="text-gold">tus amigos</span>.
+            Predice, apuesta y gana<br />
+            la porra del <span className="text-gold">Mundial 2026</span>.
           </h1>
           <p className="welcome-hero-subtitle">
             La porra más elegante del Mundial 2026. Rellena tus pronósticos

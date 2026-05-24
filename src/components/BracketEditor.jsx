@@ -1,29 +1,42 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { bracketCompleto, progresoBracket, aplicarPick } from '../utils/bracket.js';
 import './BracketEditor.css';
 
-const RONDAS = [
-  { id: 'd32', label: 'Dieciseisavos', total: 16 },
-  { id: 'o16', label: 'Octavos',       total: 8 },
-  { id: 'qf',  label: 'Cuartos',       total: 4 },
-  { id: 'sf',  label: 'Semifinales',   total: 2 },
-  { id: 'finals', label: 'Final · 3.º puesto', total: 2 },
-];
-
 /**
- * Editor reutilizable del bracket eliminatorio. Lo usan tanto la
- * pantalla del usuario (con su predicción de grupos) como el panel
- * del admin (con los resultados oficiales de grupos).
+ * Bracket eliminatorio en formato árbol. La mitad superior del cuadro
+ * juega 97 + 98 → semifinal 101; la mitad inferior juega 99 + 100 →
+ * semifinal 102. Las dos semis se cruzan en la final central.
  *
- * Props:
- *  - grupoStandings: clasificación de cada grupo (objeto letra → tabla)
- *  - ganadores: { matchId → code } estado actual
- *  - onChange: (nuevoMap) => void; recibe el map de ganadores ya limpio
- *  - readOnly: si true, las tarjetas no son interactivas
+ *   d32(8) → o16(4) → qf(2) → sf(1) ─┐         ┌─ sf(1) ← qf(2) ← o16(4) ← d32(8)
+ *                                     ├─ FINAL ─┤
+ *                                     └─ 3.º ──┘
  */
-export default function BracketEditor({ grupoStandings, ganadores, onChange, readOnly = false }) {
-  const [ronda, setRonda] = useState('d32');
 
+const TOP_HALF = {
+  d32_pairs: [
+    [74, 77],   // → 89
+    [73, 75],   // → 90
+    [81, 82],   // → 94
+    [83, 84],   // → 93
+  ],
+  o16: [89, 90, 94, 93],
+  qf: [97, 98],
+  sf: [101],
+};
+
+const BOTTOM_HALF = {
+  d32_pairs: [
+    [76, 78],   // → 91
+    [79, 80],   // → 92
+    [86, 88],   // → 95
+    [85, 87],   // → 96
+  ],
+  o16: [91, 92, 95, 96],
+  qf: [99, 100],
+  sf: [102],
+};
+
+export default function BracketEditor({ grupoStandings, ganadores, onChange, readOnly = false }) {
   const bracket = useMemo(
     () => bracketCompleto(grupoStandings, ganadores),
     [grupoStandings, ganadores],
@@ -32,75 +45,109 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
 
   const handlePick = (matchId, code) => {
     if (readOnly) return;
-    // Si vuelvo a pulsar el mismo equipo, deselecciono.
     const current = ganadores[matchId];
     const nextCode = current === code ? null : code;
     const next = aplicarPick(grupoStandings, ganadores, matchId, nextCode);
     onChange(next);
   };
 
-  return (
-    <div className="be">
-      {/* ---------- Selector de ronda ---------- */}
-      <nav className="be-rounds" role="tablist">
-        {RONDAS.map((r) => {
-          const counts = countsForRound(r.id, progreso);
-          return (
-            <button
-              key={r.id}
-              role="tab"
-              aria-selected={ronda === r.id}
-              className={`be-round-tab ${ronda === r.id ? 'is-active' : ''} ${counts.hechos === counts.total && counts.total > 0 ? 'is-complete' : ''}`}
-              onClick={() => setRonda(r.id)}
-            >
-              <span className="be-round-tab-label">{r.label}</span>
-              <span className="be-round-tab-count">
-                {counts.hechos}/{counts.total || r.total}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
+  const getMatch = (id) =>
+    bracket.d32[id] || bracket.o16[id] || bracket.qf[id] || bracket.sf[id] || null;
 
-      {/* ---------- Contenido de la ronda activa ---------- */}
-      {ronda === 'd32' && (
-        <MatchGrid
-          matches={orderedMatches(bracket.d32)}
-          ganadores={ganadores}
-          onPick={handlePick}
-        />
-      )}
-      {ronda === 'o16' && (
-        <MatchGrid
-          matches={orderedMatches(bracket.o16)}
-          ganadores={ganadores}
-          onPick={handlePick}
-          emptyMsg="Completa los dieciseisavos para desbloquear los cruces de octavos."
-        />
-      )}
-      {ronda === 'qf' && (
-        <MatchGrid
-          matches={orderedMatches(bracket.qf)}
-          ganadores={ganadores}
-          onPick={handlePick}
-          emptyMsg="Completa los octavos para desbloquear los cuartos."
-        />
-      )}
-      {ronda === 'sf' && (
-        <MatchGrid
-          matches={orderedMatches(bracket.sf)}
-          ganadores={ganadores}
-          onPick={handlePick}
-          emptyMsg="Completa los cuartos para desbloquear las semifinales."
-        />
-      )}
-      {ronda === 'finals' && (
-        <FinalsRound
-          bracket={bracket}
-          ganadores={ganadores}
-          onPick={handlePick}
-        />
-      )}
+  return (
+    <div className={`be-tree-wrap ${readOnly ? 'is-readonly' : ''}`}>
+      <div className="be-tree">
+        {/* ============== LEFT HALF ============== */}
+        <div className="be-col be-col--d32 be-col--left">
+          {TOP_HALF.d32_pairs.map((pair, pi) => (
+            <div key={pi} className="be-pair">
+              {pair.map((id) => (
+                <MatchCard
+                  key={id}
+                  match={getMatch(id)}
+                  winner={ganadores[id]}
+                  onPick={handlePick}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="be-col be-col--o16 be-col--left">
+          {TOP_HALF.o16.map((id) => (
+            <MatchCard key={id} match={getMatch(id)} winner={ganadores[id]} onPick={handlePick} />
+          ))}
+        </div>
+
+        <div className="be-col be-col--qf be-col--left">
+          {TOP_HALF.qf.map((id) => (
+            <MatchCard key={id} match={getMatch(id)} winner={ganadores[id]} onPick={handlePick} />
+          ))}
+        </div>
+
+        <div className="be-col be-col--sf be-col--left">
+          {TOP_HALF.sf.map((id) => (
+            <MatchCard key={id} match={getMatch(id)} winner={ganadores[id]} onPick={handlePick} />
+          ))}
+        </div>
+
+        {/* ============== CENTER ============== */}
+        <div className="be-col be-col--center">
+          <FinalCard
+            match={bracket.final}
+            winner={ganadores[104]}
+            onPick={(code) => handlePick(104, code)}
+          />
+          <ThirdPlaceCard
+            match={bracket.tercerPuesto}
+            winner={ganadores[103]}
+            onPick={(code) => handlePick(103, code)}
+          />
+        </div>
+
+        {/* ============== RIGHT HALF (mirror) ============== */}
+        <div className="be-col be-col--sf be-col--right">
+          {BOTTOM_HALF.sf.map((id) => (
+            <MatchCard key={id} match={getMatch(id)} winner={ganadores[id]} onPick={handlePick} />
+          ))}
+        </div>
+
+        <div className="be-col be-col--qf be-col--right">
+          {BOTTOM_HALF.qf.map((id) => (
+            <MatchCard key={id} match={getMatch(id)} winner={ganadores[id]} onPick={handlePick} />
+          ))}
+        </div>
+
+        <div className="be-col be-col--o16 be-col--right">
+          {BOTTOM_HALF.o16.map((id) => (
+            <MatchCard key={id} match={getMatch(id)} winner={ganadores[id]} onPick={handlePick} />
+          ))}
+        </div>
+
+        <div className="be-col be-col--d32 be-col--right">
+          {BOTTOM_HALF.d32_pairs.map((pair, pi) => (
+            <div key={pi} className="be-pair">
+              {pair.map((id) => (
+                <MatchCard
+                  key={id}
+                  match={getMatch(id)}
+                  winner={ganadores[id]}
+                  onPick={handlePick}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="be-progress-summary">
+        <ProgressChip label="Dieciseisavos" {...progreso.d32} />
+        <ProgressChip label="Octavos" {...progreso.o16} />
+        <ProgressChip label="Cuartos" {...progreso.qf} />
+        <ProgressChip label="Semifinales" {...progreso.sf} />
+        <ProgressChip label="3.º puesto" {...progreso.tercer} />
+        <ProgressChip label="Final" {...progreso.final} />
+      </div>
     </div>
   );
 }
@@ -109,114 +156,137 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
    Sub-componentes
    ============================================================ */
 
-function MatchGrid({ matches, ganadores, onPick, emptyMsg }) {
-  const usable = matches.filter((m) => m.local || m.visitante);
-  if (usable.length === 0) {
-    return <div className="be-empty">{emptyMsg || 'Sin partidos disponibles todavía.'}</div>;
-  }
-  return (
-    <ul className="be-matches">
-      {matches.map((m) => (
-        <MatchCard key={m.id} match={m} winner={ganadores[m.id]} onPick={onPick} />
-      ))}
-    </ul>
-  );
-}
-
-function MatchCard({ match, winner, onPick, label }) {
-  const ready = match.local && match.visitante;
-  return (
-    <li className={`be-match ${ready ? '' : 'be-match--pending'}`}>
-      <div className="be-match-head">{label || `Partido ${match.id}`}</div>
-      <div className="be-match-teams">
-        <TeamBtn
-          team={match.local}
-          selected={winner === match.local?.code}
-          onClick={() => match.local && onPick(match.id, match.local.code)}
-          disabled={!ready}
-        />
-        <span className="be-match-vs">vs</span>
-        <TeamBtn
-          team={match.visitante}
-          selected={winner === match.visitante?.code}
-          onClick={() => match.visitante && onPick(match.id, match.visitante.code)}
-          disabled={!ready}
-        />
+function MatchCard({ match, winner, onPick }) {
+  if (!match) {
+    return (
+      <div className="be-match be-match--pending">
+        <PlaceholderTeam />
+        <PlaceholderTeam />
       </div>
-    </li>
+    );
+  }
+  return (
+    <div className="be-match">
+      <TeamBtn
+        team={match.local}
+        selected={winner === match.local?.code}
+        onClick={() => match.local && onPick(match.id, match.local.code)}
+      />
+      <TeamBtn
+        team={match.visitante}
+        selected={winner === match.visitante?.code}
+        onClick={() => match.visitante && onPick(match.id, match.visitante.code)}
+      />
+    </div>
   );
 }
 
-function TeamBtn({ team, selected, onClick, disabled }) {
-  if (!team) {
-    return <span className="be-team be-team--placeholder">Por decidir</span>;
-  }
+function TeamBtn({ team, selected, onClick }) {
+  if (!team) return <PlaceholderTeam />;
   return (
     <button
       type="button"
       className={`be-team ${selected ? 'is-winner' : ''}`}
       onClick={onClick}
-      disabled={disabled}
     >
-      {team.name}
+      <span className="be-team-code">{team.code}</span>
+      <span className="be-team-name">{team.name}</span>
     </button>
   );
 }
 
-function FinalsRound({ bracket, ganadores, onPick }) {
-  const t = bracket.tercerPuesto;
-  const f = bracket.final;
-  const semisListas = t.local && t.visitante;
+function PlaceholderTeam() {
+  return <span className="be-team be-team--placeholder">Por decidir</span>;
+}
 
+function FinalCard({ match, winner, onPick }) {
+  const listo = match?.local && match?.visitante;
   return (
-    <div className="be-finals">
-      <section className="be-final-block be-final-block--third">
-        <header className="be-final-block-head">
-          <span className="eyebrow">Tercer y cuarto puesto</span>
-          <h3>Lo juegan los perdedores de las semifinales</h3>
-        </header>
-        {semisListas ? (
-          <>
-            <MatchCard
-              match={{ ...t, id: 103 }}
-              winner={ganadores[103]}
-              onPick={onPick}
-              label="Partido por el bronce"
+    <section className="be-special be-special--final">
+      <header className="be-special-head">
+        <span className="eyebrow">Final del Mundial</span>
+      </header>
+      {listo ? (
+        <>
+          <div className="be-match be-match--final">
+            <TeamBtn
+              team={match.local}
+              selected={winner === match.local.code}
+              onClick={() => onPick(match.local.code)}
             />
-            {ganadores[103] && (
-              <p className="be-finals-note">
-                Cuarto puesto: <strong>{otroEquipoName(t, ganadores[103])}</strong>
-              </p>
-            )}
-          </>
-        ) : (
-          <div className="be-empty">Completa las semifinales para desbloquearlo.</div>
-        )}
-      </section>
+            <TeamBtn
+              team={match.visitante}
+              selected={winner === match.visitante.code}
+              onClick={() => onPick(match.visitante.code)}
+            />
+          </div>
+          {winner && (
+            <div className="be-result-block">
+              <div className="be-result-row be-result-row--champion">
+                <span className="be-result-label">Campeón</span>
+                <strong className="be-result-team">{teamName(match, winner)}</strong>
+              </div>
+              <div className="be-result-row">
+                <span className="be-result-label">Subcampeón</span>
+                <strong className="be-result-team">{otroNombre(match, winner)}</strong>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="be-empty">Completa las semifinales para desbloquearla.</div>
+      )}
+    </section>
+  );
+}
 
-      <section className="be-final-block be-final-block--champion">
-        <header className="be-final-block-head">
-          <span className="eyebrow">Final del Mundial</span>
-          <h3>Campeón del Mundial 2026</h3>
-        </header>
-        {f.local && f.visitante ? (
-          <>
-            <MatchCard
-              match={{ ...f, id: 104 }}
-              winner={ganadores[104]}
-              onPick={onPick}
-              label="Final"
+function ThirdPlaceCard({ match, winner, onPick }) {
+  const listo = match?.local && match?.visitante;
+  return (
+    <section className="be-special be-special--third">
+      <header className="be-special-head">
+        <span className="eyebrow">Tercer y cuarto puesto</span>
+      </header>
+      {listo ? (
+        <>
+          <div className="be-match">
+            <TeamBtn
+              team={match.local}
+              selected={winner === match.local.code}
+              onClick={() => onPick(match.local.code)}
             />
-            {ganadores[104] && (
-              <p className="be-finals-note be-finals-note--gold">
-                Tu campeón: <strong>{teamNameByCode(f, ganadores[104])}</strong>
-              </p>
-            )}
-          </>
-        ) : (
-          <div className="be-empty">Completa las semifinales para desbloquearla.</div>
-        )}
-      </section>
+            <TeamBtn
+              team={match.visitante}
+              selected={winner === match.visitante.code}
+              onClick={() => onPick(match.visitante.code)}
+            />
+          </div>
+          {winner && (
+            <div className="be-result-block">
+              <div className="be-result-row">
+                <span className="be-result-label">Tercer puesto</span>
+                <strong className="be-result-team">{teamName(match, winner)}</strong>
+              </div>
+              <div className="be-result-row">
+                <span className="be-result-label">Cuarto puesto</span>
+                <strong className="be-result-team">{otroNombre(match, winner)}</strong>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="be-empty">Completa las semifinales para desbloquearlo.</div>
+      )}
+    </section>
+  );
+}
+
+function ProgressChip({ label, hechos, total }) {
+  const done = total > 0 && hechos === total;
+  return (
+    <div className={`be-progress-chip ${done ? 'is-done' : ''}`}>
+      <span className="be-progress-chip-label">{label}</span>
+      <span className="be-progress-chip-count">{hechos}/{total || '-'}</span>
     </div>
   );
 }
@@ -224,28 +294,13 @@ function FinalsRound({ bracket, ganadores, onPick }) {
 /* ============================================================
    Helpers
    ============================================================ */
-
-function countsForRound(rondaId, progreso) {
-  if (rondaId === 'finals') {
-    return {
-      hechos: progreso.tercer.hechos + progreso.final.hechos,
-      total: progreso.tercer.total + progreso.final.total,
-    };
-  }
-  return progreso[rondaId];
-}
-
-function orderedMatches(mapMatches) {
-  return Object.values(mapMatches).sort((a, b) => a.id - b.id);
-}
-
-function teamNameByCode(match, code) {
+function teamName(match, code) {
   if (match.local?.code === code) return match.local.name;
   if (match.visitante?.code === code) return match.visitante.name;
   return '—';
 }
 
-function otroEquipoName(match, code) {
+function otroNombre(match, code) {
   if (match.local?.code === code) return match.visitante?.name || '—';
   if (match.visitante?.code === code) return match.local?.name || '—';
   return '—';

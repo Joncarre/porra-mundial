@@ -9,6 +9,7 @@ import {
   savePrediccionesFase2,
 } from '../services/predicciones.js';
 import { clasificacionTodosLosGrupos, bracketCompleto, progresoBracket } from '../utils/bracket.js';
+import { apuestasCerradas, APUESTAS_DEADLINE_LABEL } from '../utils/deadlines.js';
 import './Bracket.css';
 
 export default function Bracket() {
@@ -98,6 +99,7 @@ export default function Bracket() {
   };
 
   const yaCompletada = !!user.plantillaEliminatoriaCompletada;
+  const cerradas = apuestasCerradas();
 
   return (
     <div className="brk-page">
@@ -141,30 +143,40 @@ export default function Bracket() {
                 grupoStandings={grupoStandings}
                 ganadores={ganadores}
                 onChange={handleChange}
+                readOnly={cerradas}
               />
 
-              <footer className="brk-actions">
-                {savedAt && <span className="brk-saved-pill">Progreso guardado</span>}
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleSaveProgress}
-                  disabled={saving}
-                >
-                  {saving ? 'Guardando…' : 'Guardar progreso'}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleConfirm}
-                  disabled={saving || !allDone}
-                  title={!allDone ? `Faltan ${totalPicks - picksHechos} cruces por decidir` : undefined}
-                >
-                  {allDone
-                    ? 'Confirmar mi bracket'
-                    : `Faltan ${totalPicks - picksHechos} cruces`}
-                </button>
-              </footer>
+              {cerradas ? (
+                <footer className="brk-actions brk-actions--cerradas">
+                  <span className="brk-cerradas-notice">
+                    Las apuestas se cerraron el {APUESTAS_DEADLINE_LABEL}. Tu
+                    bracket queda como estaba guardado.
+                  </span>
+                </footer>
+              ) : (
+                <footer className="brk-actions">
+                  {savedAt && <span className="brk-saved-pill">Progreso guardado</span>}
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleSaveProgress}
+                    disabled={saving}
+                  >
+                    {saving ? 'Guardando…' : 'Guardar progreso'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleConfirm}
+                    disabled={saving || !allDone}
+                    title={!allDone ? `Faltan ${totalPicks - picksHechos} cruces por decidir` : undefined}
+                  >
+                    {allDone
+                      ? 'Confirmar mi bracket'
+                      : `Faltan ${totalPicks - picksHechos} cruces`}
+                  </button>
+                </footer>
+              )}
             </div>
           )}
         </div>
