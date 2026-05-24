@@ -41,7 +41,7 @@ export default function App() {
       <Route
         path="/apuestas"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute forbidAdmin>
             <Apuestas />
           </ProtectedRoute>
         }
@@ -49,7 +49,7 @@ export default function App() {
       <Route
         path="/bracket"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute forbidAdmin>
             <Bracket />
           </ProtectedRoute>
         }
@@ -57,7 +57,7 @@ export default function App() {
       <Route
         path="/extras"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute forbidAdmin>
             <Extras />
           </ProtectedRoute>
         }

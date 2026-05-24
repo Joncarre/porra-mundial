@@ -230,29 +230,29 @@
   word-break: break-word;
 }
 
-/* Campeón — verde pastel más saturado */
+/* Campeón — naranja pastel saturado */
 .be-result-row--champion {
-  background: linear-gradient(135deg, #c8e8cc 0%, #a5d8b0 100%);
-  border-color: rgba(60, 140, 80, 0.35);
+  background: linear-gradient(135deg, #f8d4a8 0%, #f0b67e 100%);
+  border-color: rgba(180, 100, 30, 0.32);
 }
 .be-result-row--champion .be-result-label {
-  color: #1f5e28;
+  color: #8a4a14;
 }
 .be-result-row--champion .be-result-team {
-  color: #173f1c;
+  color: #5a2f08;
   font-family: var(--font-display);
 }
 
-/* Subcampeón — verde pastel más claro */
+/* Subcampeón — naranja pastel más claro */
 .be-result-row--subchampion {
-  background: linear-gradient(135deg, #e5f3e7 0%, #d2ead7 100%);
-  border-color: rgba(120, 180, 135, 0.25);
+  background: linear-gradient(135deg, #fce5cb 0%, #f5d4a8 100%);
+  border-color: rgba(200, 140, 70, 0.25);
 }
 .be-result-row--subchampion .be-result-label {
-  color: #3a7a48;
+  color: #a76d24;
 }
 .be-result-row--subchampion .be-result-team {
-  color: #2f6238;
+  color: #7d4c14;
 }
 
 /* Tercer puesto — morado pastel más saturado */

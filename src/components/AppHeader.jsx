@@ -50,24 +50,28 @@ export default function AppHeader() {
           >
             Grupos
           </NavLink>
-          <NavLink
-            to="/apuestas"
-            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
-          >
-            Apuestas
-          </NavLink>
-          <NavLink
-            to="/bracket"
-            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
-          >
-            Bracket
-          </NavLink>
-          <NavLink
-            to="/extras"
-            className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
-          >
-            Extras
-          </NavLink>
+          {!user?.isAdmin && (
+            <>
+              <NavLink
+                to="/apuestas"
+                className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Apuestas
+              </NavLink>
+              <NavLink
+                to="/bracket"
+                className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Bracket
+              </NavLink>
+              <NavLink
+                to="/extras"
+                className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Extras
+              </NavLink>
+            </>
+          )}
           <NavLink
             to="/clasificacion"
             className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}

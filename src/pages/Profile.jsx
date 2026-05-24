@@ -179,14 +179,15 @@ export default function Profile() {
               </button>
               <div className="profile-hero-info">
                 <div className="profile-hero-pills">
-                  {user.isAdmin && (
+                  {user.isAdmin ? (
                     <span className="profile-pill profile-pill--admin">Administrador</span>
+                  ) : (
+                    <span
+                      className={`profile-pill ${user.pagado ? 'profile-pill--paid' : 'profile-pill--unpaid'}`}
+                    >
+                      {user.pagado ? 'Pagado' : 'Pago pendiente'}
+                    </span>
                   )}
-                  <span
-                    className={`profile-pill ${user.pagado ? 'profile-pill--paid' : 'profile-pill--unpaid'}`}
-                  >
-                    {user.pagado ? 'Pagado' : 'Pago pendiente'}
-                  </span>
                 </div>
                 <h1 className="profile-hero-name">
                   {user.nombre} {user.apellidos}
@@ -197,7 +198,7 @@ export default function Profile() {
             </div>
           </section>
 
-          <div className="profile-grid">
+          <div className={`profile-grid ${user.isAdmin ? 'profile-grid--single' : ''}`}>
             {/* -------- Datos personales -------- */}
             <section className="profile-section">
               <header className="profile-section-header">
@@ -224,36 +225,38 @@ export default function Profile() {
               </div>
             </section>
 
-            {/* -------- Estado en la porra -------- */}
-            <section className="profile-section">
-              <header className="profile-section-header">
-                <h2>Tu estado en la porra</h2>
-              </header>
+            {/* -------- Estado en la porra (solo participantes) -------- */}
+            {!user.isAdmin && (
+              <section className="profile-section">
+                <header className="profile-section-header">
+                  <h2>Tu estado en la porra</h2>
+                </header>
 
-              <ol className="profile-timeline">
-                {checklist.map((item, i) => (
-                  <li key={item.key} className={`tl-step is-${item.state}`}>
-                    <div className="tl-rail">
-                      <span className="tl-dot" />
-                      {i < checklist.length - 1 && <span className="tl-line" />}
-                    </div>
-                    <div className="tl-content">
-                      <div className="tl-header">
-                        <span className="tl-title">{item.title}</span>
-                        {item.state === 'pending' && item.to ? (
-                          <Link to={item.to} className="tl-status tl-status--link">
-                            {STATE_LABEL[item.state]}
-                          </Link>
-                        ) : (
-                          <span className="tl-status">{STATE_LABEL[item.state]}</span>
-                        )}
+                <ol className="profile-timeline">
+                  {checklist.map((item, i) => (
+                    <li key={item.key} className={`tl-step is-${item.state}`}>
+                      <div className="tl-rail">
+                        <span className="tl-dot" />
+                        {i < checklist.length - 1 && <span className="tl-line" />}
                       </div>
-                      <p className="tl-detail">{item.copy[item.state]}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
+                      <div className="tl-content">
+                        <div className="tl-header">
+                          <span className="tl-title">{item.title}</span>
+                          {item.state === 'pending' && item.to ? (
+                            <Link to={item.to} className="tl-status tl-status--link">
+                              {STATE_LABEL[item.state]}
+                            </Link>
+                          ) : (
+                            <span className="tl-status">{STATE_LABEL[item.state]}</span>
+                          )}
+                        </div>
+                        <p className="tl-detail">{item.copy[item.state]}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )}
           </div>
         </div>
       </main>

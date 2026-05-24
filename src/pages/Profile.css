@@ -133,6 +133,11 @@
   margin-top: var(--space-xl);
 }
 
+.profile-grid--single {
+  grid-template-columns: minmax(0, 720px);
+  justify-content: center;
+}
+
 @media (max-width: 900px) {
   .profile-grid { grid-template-columns: 1fr; }
 }
