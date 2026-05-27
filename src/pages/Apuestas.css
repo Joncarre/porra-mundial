@@ -190,9 +190,9 @@
 .ap-jornada-title {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   color: var(--gold-700);
   text-align: center;
   margin-bottom: var(--space-md);
