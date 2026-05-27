@@ -71,25 +71,34 @@ export default function GroupStandingsCard({ letra, partidos, showMatches = true
       {showMatches && jugados.length > 0 && (
         <div className="gs-matches">
           <h4 className="gs-matches-title">Partidos jugados</h4>
-          <ul className="gs-matches-list">
-            {jugados.map((p) => (
-              <li key={p.id} className="gs-match">
-                <span className="gs-match-team gs-match-team--local">
-                  <span className="gs-match-code">{p.local.code}</span>
-                  {p.local.name}
-                </span>
-                <span className="gs-match-score">
-                  <strong>{p.resultado.golesLocal}</strong>
-                  <span className="gs-match-dash">—</span>
-                  <strong>{p.resultado.golesVisitante}</strong>
-                </span>
-                <span className="gs-match-team gs-match-team--visitante">
-                  <span className="gs-match-code">{p.visitante.code}</span>
-                  {p.visitante.name}
-                </span>
-              </li>
-            ))}
-          </ul>
+          {[1, 2, 3].map((j) => {
+            const partidosJ = jugados.filter((p) => p.jornada === j);
+            if (partidosJ.length === 0) return null;
+            return (
+              <div key={j} className="gs-jornada">
+                <div className="gs-jornada-label">Jornada {j}</div>
+                <ul className="gs-matches-list">
+                  {partidosJ.map((p) => (
+                    <li key={p.id} className="gs-match">
+                      <span className="gs-match-team gs-match-team--local">
+                        <span className="gs-match-code">{p.local.code}</span>
+                        {p.local.name}
+                      </span>
+                      <span className="gs-match-score">
+                        <strong>{p.resultado.golesLocal}</strong>
+                        <span className="gs-match-dash">—</span>
+                        <strong>{p.resultado.golesVisitante}</strong>
+                      </span>
+                      <span className="gs-match-team gs-match-team--visitante">
+                        <span className="gs-match-code">{p.visitante.code}</span>
+                        {p.visitante.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       )}
     </section>

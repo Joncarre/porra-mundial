@@ -168,6 +168,21 @@
   margin-bottom: var(--space-sm);
 }
 
+.gs-jornada {
+  margin-bottom: var(--space-md);
+}
+
+.gs-jornada:last-child { margin-bottom: 0; }
+
+.gs-jornada-label {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--gold-700);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
 .gs-matches-list {
   list-style: none;
   display: flex;

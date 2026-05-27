@@ -188,46 +188,56 @@ export default function Apuestas() {
               {/* Lista de partidos del grupo activo */}
               <div className="ap-grupo-content">
                 <h3 className="ap-grupo-title">Grupo {grupoActivo}</h3>
-                <ul className="ap-partidos">
-                  {partidos.map((p) => {
-                    const s = scores[p.id] || { golesLocal: '', golesVisitante: '' };
-                    return (
-                      <li key={p.id} className="ap-partido">
-                        <span className="ap-partido-team ap-partido-team--local">
-                          <span className="ap-partido-code">{p.local.code}</span>
-                          {p.local.name}
-                        </span>
-                        <div className="ap-partido-score">
-                          <input
-                            type="number"
-                            min="0"
-                            max="99"
-                            className="ap-score-input"
-                            value={s.golesLocal}
-                            onChange={handleChange(p.id, 'golesLocal')}
-                            disabled={cerradas}
-                            aria-label={`Tu predicción de goles de ${p.local.name}`}
-                          />
-                          <span className="ap-partido-dash">—</span>
-                          <input
-                            type="number"
-                            min="0"
-                            max="99"
-                            className="ap-score-input"
-                            value={s.golesVisitante}
-                            onChange={handleChange(p.id, 'golesVisitante')}
-                            disabled={cerradas}
-                            aria-label={`Tu predicción de goles de ${p.visitante.name}`}
-                          />
-                        </div>
-                        <span className="ap-partido-team ap-partido-team--visitante">
-                          <span className="ap-partido-code">{p.visitante.code}</span>
-                          {p.visitante.name}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
+                {[1, 2, 3].map((j) => {
+                  const partidosJ = partidos.filter((p) => p.jornada === j);
+                  if (partidosJ.length === 0) return null;
+                  return (
+                    <div key={j} className="ap-jornada">
+                      <h4 className="ap-jornada-title">Jornada {j}</h4>
+                      <ul className="ap-partidos">
+                        {partidosJ.map((p) => {
+                          const s = scores[p.id] || { golesLocal: '', golesVisitante: '' };
+                          return (
+                            <li key={p.id} className="ap-partido">
+                              <span className="ap-partido-fecha">{p.fecha}</span>
+                              <span className="ap-partido-team ap-partido-team--local">
+                                <span className="ap-partido-code">{p.local.code}</span>
+                                {p.local.name}
+                              </span>
+                              <div className="ap-partido-score">
+                                <input
+                                  type="number"
+                                  min="0"
+                                  max="99"
+                                  className="ap-score-input"
+                                  value={s.golesLocal}
+                                  onChange={handleChange(p.id, 'golesLocal')}
+                                  disabled={cerradas}
+                                  aria-label={`Tu predicción de goles de ${p.local.name}`}
+                                />
+                                <span className="ap-partido-dash">—</span>
+                                <input
+                                  type="number"
+                                  min="0"
+                                  max="99"
+                                  className="ap-score-input"
+                                  value={s.golesVisitante}
+                                  onChange={handleChange(p.id, 'golesVisitante')}
+                                  disabled={cerradas}
+                                  aria-label={`Tu predicción de goles de ${p.visitante.name}`}
+                                />
+                              </div>
+                              <span className="ap-partido-team ap-partido-team--visitante">
+                                <span className="ap-partido-code">{p.visitante.code}</span>
+                                {p.visitante.name}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Acciones */}

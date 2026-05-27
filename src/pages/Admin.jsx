@@ -277,41 +277,51 @@ function ResultsPanel() {
           </div>
         </div>
 
-        <ul className="admin-partidos">
-          {partidos.map((p) => (
-            <li key={p.id} className="admin-partido">
-              <span className="admin-partido-team admin-partido-team--local">
-                <span className="admin-partido-code">{p.local.code}</span>
-                {p.local.name}
-              </span>
-              <div className="admin-partido-score">
-                <input
-                  type="number"
-                  min="0"
-                  max="99"
-                  className="admin-score-input"
-                  value={getInputValue(p.id, 'golesLocal')}
-                  onChange={handleChange(p.id, 'golesLocal')}
-                  aria-label={`Goles de ${p.local.name}`}
-                />
-                <span className="admin-partido-dash">—</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="99"
-                  className="admin-score-input"
-                  value={getInputValue(p.id, 'golesVisitante')}
-                  onChange={handleChange(p.id, 'golesVisitante')}
-                  aria-label={`Goles de ${p.visitante.name}`}
-                />
-              </div>
-              <span className="admin-partido-team admin-partido-team--visitante">
-                <span className="admin-partido-code">{p.visitante.code}</span>
-                {p.visitante.name}
-              </span>
-            </li>
-          ))}
-        </ul>
+        {[1, 2, 3].map((j) => {
+          const partidosJ = partidos.filter((p) => p.jornada === j);
+          if (partidosJ.length === 0) return null;
+          return (
+            <div key={j} className="admin-jornada">
+              <h4 className="admin-jornada-title">Jornada {j}</h4>
+              <ul className="admin-partidos">
+                {partidosJ.map((p) => (
+                  <li key={p.id} className="admin-partido">
+                    <span className="admin-partido-fecha">{p.fecha}</span>
+                    <span className="admin-partido-team admin-partido-team--local">
+                      <span className="admin-partido-code">{p.local.code}</span>
+                      {p.local.name}
+                    </span>
+                    <div className="admin-partido-score">
+                      <input
+                        type="number"
+                        min="0"
+                        max="99"
+                        className="admin-score-input"
+                        value={getInputValue(p.id, 'golesLocal')}
+                        onChange={handleChange(p.id, 'golesLocal')}
+                        aria-label={`Goles de ${p.local.name}`}
+                      />
+                      <span className="admin-partido-dash">—</span>
+                      <input
+                        type="number"
+                        min="0"
+                        max="99"
+                        className="admin-score-input"
+                        value={getInputValue(p.id, 'golesVisitante')}
+                        onChange={handleChange(p.id, 'golesVisitante')}
+                        aria-label={`Goles de ${p.visitante.name}`}
+                      />
+                    </div>
+                    <span className="admin-partido-team admin-partido-team--visitante">
+                      <span className="admin-partido-code">{p.visitante.code}</span>
+                      {p.visitante.name}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
 
         <p className="admin-hint">
           Deja los dos campos vacíos para indicar que el partido no se ha jugado.
