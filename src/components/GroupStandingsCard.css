@@ -175,12 +175,14 @@
 .gs-jornada:last-child { margin-bottom: 0; }
 
 .gs-jornada-label {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: var(--gold-700);
-  letter-spacing: 0.02em;
-  margin-bottom: 4px;
+  text-align: center;
+  margin-bottom: var(--space-sm);
 }
 
 .gs-matches-list {
