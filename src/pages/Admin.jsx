@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppHeader from '../components/AppHeader.jsx';
 import Avatar from '../components/Avatar.jsx';
 import BracketEditor from '../components/BracketEditor.jsx';
@@ -13,7 +13,7 @@ import {
 } from '../services/resultados.js';
 import { getTorneoConfig, saveTorneoConfig } from '../services/torneo.js';
 import { GRUPO_LETRAS, partidosDelGrupo } from '../data/grupos.js';
-import { clasificacionTodosLosGrupos, bracketCompleto, progresoBracket } from '../utils/bracket.js';
+import { clasificacionTodosLosGrupos } from '../utils/bracket.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import './Admin.css';
 
@@ -353,15 +353,6 @@ function EliminatoriaPanel() {
     })();
   }, []);
 
-  const { picksHechos, totalPicks } = useMemo(() => {
-    const bracket = bracketCompleto(grupoStandings, ganadores);
-    const p = progresoBracket(bracket, ganadores);
-    return {
-      totalPicks: p.d32.total + p.o16.total + p.qf.total + p.sf.total + p.tercer.total + p.final.total,
-      picksHechos: p.d32.hechos + p.o16.hechos + p.qf.hechos + p.sf.hechos + p.tercer.hechos + p.final.hechos,
-    };
-  }, [grupoStandings, ganadores]);
-
   if (loading) return <div className="admin-loading">Cargando bracket…</div>;
 
   const handleChange = (next) => {
@@ -384,7 +375,7 @@ function EliminatoriaPanel() {
     <div className="admin-panel">
       <div className="admin-panel-head">
         <h2>Bracket oficial</h2>
-        <span className="admin-count">{picksHechos} / {totalPicks || 32} cruces decididos</span>
+        <span className="admin-count">Se rellena al cerrar la fase de grupos</span>
       </div>
 
       <BracketEditor

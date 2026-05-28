@@ -56,6 +56,15 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
 
   return (
     <div className="be">
+      <div className="be-progress">
+        <ProgressItem label="Dieciseisavos" {...progreso.d32} />
+        <ProgressItem label="Octavos" {...progreso.o16} />
+        <ProgressItem label="Cuartos" {...progreso.qf} />
+        <ProgressItem label="Semifinales" {...progreso.sf} />
+        <ProgressItem label="3.º puesto" {...progreso.tercer} />
+        <ProgressItem label="Final" {...progreso.final} />
+      </div>
+
       <div className={`be-tree-wrap ${readOnly ? 'is-readonly' : ''}`}>
       <div className="be-tree">
         {/* ============== LEFT HALF ============== */}
@@ -140,15 +149,6 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
           ))}
         </div>
       </div>
-      </div>
-
-      <div className="be-progress">
-        <ProgressItem label="Dieciseisavos" {...progreso.d32} />
-        <ProgressItem label="Octavos" {...progreso.o16} />
-        <ProgressItem label="Cuartos" {...progreso.qf} />
-        <ProgressItem label="Semifinales" {...progreso.sf} />
-        <ProgressItem label="3.º puesto" {...progreso.tercer} />
-        <ProgressItem label="Final" {...progreso.final} />
       </div>
     </div>
   );

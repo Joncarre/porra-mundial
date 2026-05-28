@@ -125,19 +125,6 @@ export default function Bracket() {
             <div className="brk-loading">Cargando tu bracket…</div>
           ) : (
             <div className="brk-panel">
-              <div className="brk-progress">
-                <div className="brk-progress-text">
-                  <span className="brk-progress-count">{picksHechos}</span>
-                  <span className="brk-progress-total"> / {totalPicks} cruces decididos</span>
-                </div>
-                <div className="brk-progress-bar">
-                  <div
-                    className="brk-progress-fill"
-                    style={{ width: `${totalPicks > 0 ? (picksHechos / totalPicks) * 100 : 0}%` }}
-                  />
-                </div>
-              </div>
-
               <BracketEditor
                 grupoStandings={grupoStandings}
                 ganadores={ganadores}
