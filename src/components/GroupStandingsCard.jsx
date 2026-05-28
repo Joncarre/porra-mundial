@@ -70,7 +70,6 @@ export default function GroupStandingsCard({ letra, partidos, showMatches = true
 
       {showMatches && jugados.length > 0 && (
         <div className="gs-matches">
-          <h4 className="gs-matches-title">Partidos jugados</h4>
           {[1, 2, 3].map((j) => {
             const partidosJ = jugados.filter((p) => p.jornada === j);
             if (partidosJ.length === 0) return null;

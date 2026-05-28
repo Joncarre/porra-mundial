@@ -12,18 +12,13 @@
 
 /* -------- Slim back link bar -------- */
 .auth-back-wrap {
-  padding-top: var(--space-2xl);
   padding-bottom: var(--space-md);
-}
-
-/* Register necesita un poco más de aire arriba que Login. */
-.auth-back-wrap--register {
-  padding-top: var(--space-3xl);
 }
 
 .auth-back {
   display: inline-flex;
   align-items: center;
+  margin-top: var(--space-2xl); /* misma posición que el back de HowItWorks */
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-secondary);
@@ -31,6 +26,11 @@
   position: relative;
   padding-bottom: 6px;
   transition: color 0.5s var(--ease);
+}
+
+/* Register baja un poco más el enlace que Login. */
+.auth-back-wrap--register .auth-back {
+  margin-top: var(--space-3xl);
 }
 
 .auth-back::after {

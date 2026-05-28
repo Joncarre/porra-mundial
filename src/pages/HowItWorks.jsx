@@ -8,24 +8,34 @@ import './HowItWorks.css';
 
 const PASOS = [
   {
-    titulo: 'Regístrate en la porra',
+    titulo: 'Regístrate y paga',
     detalle:
-      'Crea tu cuenta con tus datos personales y elige un nickname y una contraseña. Los usarás para iniciar sesión durante todo el torneo.',
+      'Crea tu cuenta con tu nickname y contraseña, y haz el bizum de la cuota al administrador.',
+  },
+  {
+    titulo: 'El admin confirma tu pago',
+    detalle:
+      'Cuando el administrador reciba tu aportación, te marcará como pagado y se te desbloqueará la porra.',
   },
   {
     titulo: 'Rellena la fase de grupos',
     detalle:
-      'Pronostica los 72 partidos de la fase de grupos y elige al máximo goleador y a los balones de oro, plata y bronce.',
+      'Pronostica el resultado de los 72 partidos de la fase de grupos.',
   },
   {
     titulo: 'Completa el bracket eliminatorio',
     detalle:
-      'A partir de tus propios pronósticos de grupos, el sistema te guía con los equipos posibles para completar el cuadro hasta la final.',
+      'A partir de tus propios pronósticos de grupos, el sistema te guía con los equipos posibles hasta la final.',
+  },
+  {
+    titulo: 'Rellena las apuestas extra',
+    detalle:
+      'Elige al máximo goleador y a los balones de oro, plata y bronce del Mundial.',
   },
   {
     titulo: 'Consulta la clasificación',
     detalle:
-      'A medida que el administrador actualice los resultados reales, la tabla de la porra se mueve automáticamente con los puntos de cada participante.',
+      'A medida que el administrador actualice los resultados reales, la tabla se mueve automáticamente con los puntos de cada participante.',
   },
 ];
 
@@ -42,7 +52,7 @@ export default function HowItWorks() {
           <span className="eyebrow">¿Cómo funciona?</span>
           <h1 className="hiw-hero-title">
             La porra del <span className="text-gold">Mundial 2026</span>,
-            explicada en cuatro pasos.
+            explicada paso a paso.
           </h1>
           <p className="hiw-hero-sub">
             Del {TORNEO.fechaInicio} al {TORNEO.fechaFin}, {TORNEO.totalEquipos} equipos

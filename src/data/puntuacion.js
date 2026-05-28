@@ -35,7 +35,7 @@ export const PUNTOS = {
 /** Información presentada al usuario en "Cómo funciona". */
 export const PUNTOS_DESCRIPCION_FASE1 = [
   {
-    titulo: 'Acertar ganador / empate',
+    titulo: 'Acertar ganador / empate / perdedor',
     valor: '+1 punto',
     detalle: 'Si aciertas quién gana, empata o pierde en cada partido de la fase de grupos.',
   },
