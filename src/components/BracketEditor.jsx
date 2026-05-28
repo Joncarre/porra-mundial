@@ -55,7 +55,8 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
     bracket.d32[id] || bracket.o16[id] || bracket.qf[id] || bracket.sf[id] || null;
 
   return (
-    <div className={`be-tree-wrap ${readOnly ? 'is-readonly' : ''}`}>
+    <div className="be">
+      <div className={`be-tree-wrap ${readOnly ? 'is-readonly' : ''}`}>
       <div className="be-tree">
         {/* ============== LEFT HALF ============== */}
         <div className="be-col be-col--d32 be-col--left">
@@ -139,14 +140,15 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
           ))}
         </div>
       </div>
+      </div>
 
-      <div className="be-progress-summary">
-        <ProgressChip label="Dieciseisavos" {...progreso.d32} />
-        <ProgressChip label="Octavos" {...progreso.o16} />
-        <ProgressChip label="Cuartos" {...progreso.qf} />
-        <ProgressChip label="Semifinales" {...progreso.sf} />
-        <ProgressChip label="3.º puesto" {...progreso.tercer} />
-        <ProgressChip label="Final" {...progreso.final} />
+      <div className="be-progress">
+        <ProgressItem label="Dieciseisavos" {...progreso.d32} />
+        <ProgressItem label="Octavos" {...progreso.o16} />
+        <ProgressItem label="Cuartos" {...progreso.qf} />
+        <ProgressItem label="Semifinales" {...progreso.sf} />
+        <ProgressItem label="3.º puesto" {...progreso.tercer} />
+        <ProgressItem label="Final" {...progreso.final} />
       </div>
     </div>
   );
@@ -281,13 +283,13 @@ function ThirdPlaceCard({ match, winner, onPick }) {
   );
 }
 
-function ProgressChip({ label, hechos, total }) {
+function ProgressItem({ label, hechos, total }) {
   const done = total > 0 && hechos === total;
   return (
-    <div className={`be-progress-chip ${done ? 'is-done' : ''}`}>
-      <span className="be-progress-chip-label">{label}</span>
-      <span className="be-progress-chip-count">
-        {hechos} <span className="be-progress-chip-sep">/</span> {total || '—'}
+    <div className={`be-progress-item ${done ? 'is-done' : ''}`}>
+      <span className="be-progress-item-label">{label}</span>
+      <span className="be-progress-item-count">
+        {hechos} <span className="be-progress-item-sep">/</span> {total || '—'}
       </span>
     </div>
   );

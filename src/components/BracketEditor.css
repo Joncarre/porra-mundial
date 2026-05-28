@@ -186,6 +186,10 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
+  /* Reserva ya el alto del estado completo (cabecera + 2 equipos +
+     bloque de resultado) para que el panel no crezca al entrar los
+     equipos y mostrarse el resultado. */
+  min-height: 232px;
 }
 
 .be-special--final {
@@ -288,41 +292,50 @@
   font-style: italic;
 }
 
+/* En los paneles Final/3.º el mensaje vacío se centra en el alto reservado */
+.be-special .be-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
 /* ============================================================
    Progress chips
    ============================================================ */
-.be-progress-summary {
+/* Panel único de progreso, centrado bajo el cuadro */
+.be-progress {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-sm);
+  align-items: stretch;
+  max-width: 720px;
   margin: var(--space-xl) auto 0;
-  padding-top: var(--space-lg);
-  border-top: 1px solid var(--border-subtle);
+  padding: var(--space-md) var(--space-sm);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
-.be-progress-chip {
+.be-progress-item {
+  flex: 1 1 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  min-width: 104px;
-  padding: 12px 18px;
-  background: var(--surface-1);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition);
+  padding: 6px 14px;
+  border-left: 1px solid var(--border-subtle);
 }
 
-.be-progress-chip.is-done {
-  background: var(--grad-gold-soft);
-  border-color: var(--border-gold);
-  box-shadow: var(--shadow-gold);
+.be-progress-item:first-child {
+  border-left: none;
 }
 
-.be-progress-chip-label {
-  font-size: 0.58rem;
+.be-progress-item-label {
+  font-size: 0.56rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -330,25 +343,22 @@
   text-align: center;
 }
 
-.be-progress-chip.is-done .be-progress-chip-label {
-  color: var(--gold-700);
-}
-
-.be-progress-chip-count {
+.be-progress-item-count {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: var(--charcoal);
   letter-spacing: 0.02em;
 }
 
-.be-progress-chip-sep {
+.be-progress-item-sep {
   color: var(--text-muted);
   font-weight: 400;
   margin: 0 1px;
 }
 
-.be-progress-chip.is-done .be-progress-chip-count {
+.be-progress-item.is-done .be-progress-item-label,
+.be-progress-item.is-done .be-progress-item-count {
   color: var(--gold-700);
 }
 
