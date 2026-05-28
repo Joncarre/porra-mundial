@@ -286,7 +286,9 @@ function ProgressChip({ label, hechos, total }) {
   return (
     <div className={`be-progress-chip ${done ? 'is-done' : ''}`}>
       <span className="be-progress-chip-label">{label}</span>
-      <span className="be-progress-chip-count">{hechos}/{total || '-'}</span>
+      <span className="be-progress-chip-count">
+        {hechos} <span className="be-progress-chip-sep">/</span> {total || '—'}
+      </span>
     </div>
   );
 }

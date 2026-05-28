@@ -295,46 +295,61 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
+  gap: var(--space-sm);
+  margin: var(--space-xl) auto 0;
+  padding-top: var(--space-lg);
   border-top: 1px solid var(--border-subtle);
 }
 
 .be-progress-chip {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  background: var(--bg-soft);
+  gap: 5px;
+  min-width: 104px;
+  padding: 12px 18px;
+  background: var(--surface-1);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-full);
-  font-size: 0.74rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
 }
 
 .be-progress-chip.is-done {
-  background: var(--success-bg);
-  border-color: rgba(111, 156, 114, 0.40);
+  background: var(--grad-gold-soft);
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-gold);
 }
 
 .be-progress-chip-label {
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 .be-progress-chip.is-done .be-progress-chip-label {
-  color: var(--success);
+  color: var(--gold-700);
 }
 
 .be-progress-chip-count {
   font-family: var(--font-display);
   font-weight: 600;
+  font-size: 1.15rem;
   color: var(--charcoal);
-  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.be-progress-chip-sep {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin: 0 1px;
 }
 
 .be-progress-chip.is-done .be-progress-chip-count {
-  color: var(--success);
+  color: var(--gold-700);
 }
 
 /* ============================================================
