@@ -16,7 +16,7 @@ import {
   CUARTOS,
   SEMIS,
 } from '../data/bracketStructure.js';
-import { bracketCompleto, clasificacionTodosLosGrupos } from './bracket.js';
+import { clasificados, clasificacionTodosLosGrupos } from './bracket.js';
 
 const resultadoTipo = (gl, gv) => (gl > gv ? 'L' : gl < gv ? 'V' : 'E');
 
@@ -90,34 +90,34 @@ export function calcularPuntos({
   sumarRonda(CUARTOS,       PUNTOS.fase_eliminatoria.pasa_a_semis);     // +8
   sumarRonda(SEMIS,         PUNTOS.fase_eliminatoria.llega_a_la_final); // +10
 
-  // ----------------- 3.º y 4.º puesto -----------------
-  // Para saber el "4.º" hay que conocer las dos selecciones del partido
-  // 103 — necesitamos reconstruir el bracket de ambos (usuario y real).
-  const userBracket = bracketCompleto(
-    clasificacionTodosLosGrupos(predGrupos),
-    predBracket,
-  );
-  const realBracket = bracketCompleto(
-    clasificacionTodosLosGrupos(resGrupos),
-    resBracket,
-  );
-
-  const cuartoPredCode = otroCode(userBracket.tercerPuesto, predBracket[103]);
-  const cuartoRealCode = otroCode(realBracket.tercerPuesto, resBracket[103]);
-
+  // ----------------- 3.º puesto (el 4.º no puntúa) -----------------
   if (predBracket[103] && resBracket[103] && predBracket[103] === resBracket[103]) {
-    puntos += PUNTOS.fase_eliminatoria.tercer_o_cuarto_puesto; // +10 por 3.º
-    aciertosBracket += 1;
-  }
-  if (cuartoPredCode && cuartoRealCode && cuartoPredCode === cuartoRealCode) {
-    puntos += PUNTOS.fase_eliminatoria.tercer_o_cuarto_puesto; // +10 por 4.º
+    puntos += PUNTOS.fase_eliminatoria.tercer_puesto; // +10
     aciertosBracket += 1;
   }
 
   // ----------------- Campeón -----------------
   if (predBracket[104] && resBracket[104] && predBracket[104] === resBracket[104]) {
-    puntos += PUNTOS.fase_eliminatoria.gana_el_mundial; // +10
+    puntos += PUNTOS.fase_eliminatoria.gana_el_mundial; // +20
     aciertosBracket += 1;
+  }
+
+  // ----------------- Clasificados a dieciseisavos (+2 cada uno) -----------------
+  // Por cada equipo de los 32 del usuario (1.º, 2.º o mejor tercero según
+  // su porra de grupos) que coincida con los 32 reales que pasan a la
+  // fase final.
+  const codesClasificados = (clasif) =>
+    new Set([
+      ...Object.values(clasif.primeros).filter(Boolean).map((t) => t.code),
+      ...Object.values(clasif.segundos).filter(Boolean).map((t) => t.code),
+      ...clasif.tercerosClasificados.map((t) => t.code),
+    ]);
+  const realClasificados = codesClasificados(clasificados(clasificacionTodosLosGrupos(resGrupos)));
+  const predClasificados = codesClasificados(clasificados(clasificacionTodosLosGrupos(predGrupos)));
+  for (const code of predClasificados) {
+    if (realClasificados.has(code)) {
+      puntos += PUNTOS.fase_eliminatoria.clasifica_dieciseisavos; // +2
+    }
   }
 
   // ----------------- Premios individuales -----------------
@@ -139,11 +139,4 @@ export function calcularPuntos({
   }
 
   return { puntos, aciertosGanador, aciertosExacto, aciertosBracket, aciertosPremios };
-}
-
-function otroCode(match, code) {
-  if (!match || !code) return null;
-  if (match.local?.code === code) return match.visitante?.code || null;
-  if (match.visitante?.code === code) return match.local?.code || null;
-  return null;
 }

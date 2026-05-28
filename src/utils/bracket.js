@@ -40,7 +40,9 @@ export function clasificacionTodosLosGrupos(partidos = {}) {
  * A partir de la clasificación de los 12 grupos, devuelve los 32
  * equipos que pasan a dieciseisavos:
  *  - los 12 primeros y los 12 segundos
- *  - los 8 mejores terceros (puntos → DG → GF → orden de grupo)
+ *  - los 8 mejores terceros. Criterio oficial:
+ *    puntos → diferencia de goles → goles a favor → goles en contra.
+ *    (los 4 peores terceros quedan eliminados)
  */
 export function clasificados(grupoStandings) {
   const primeros = {};
@@ -54,13 +56,12 @@ export function clasificados(grupoStandings) {
     if (tabla[2]) terceros.push(tabla[2]);
   }
 
-  // Mejores 8 terceros usando el mismo criterio que dentro de un grupo,
-  // con desempate final por orden alfabético del grupo (estable).
   const tercerosOrdenados = [...terceros].sort((a, b) => {
-    if (b.pts !== a.pts) return b.pts - a.pts;
-    if (b.dg !== a.dg) return b.dg - a.dg;
-    if (b.gf !== a.gf) return b.gf - a.gf;
-    return a.grupo.localeCompare(b.grupo);
+    if (b.pts !== a.pts) return b.pts - a.pts;   // más puntos
+    if (b.dg !== a.dg) return b.dg - a.dg;       // mejor diferencia de goles
+    if (b.gf !== a.gf) return b.gf - a.gf;       // más goles a favor
+    if (a.gc !== b.gc) return a.gc - b.gc;       // menos goles en contra
+    return a.grupo.localeCompare(b.grupo);        // desempate estable final
   });
   const tercerosClasificados = tercerosOrdenados.slice(0, 8);
 
@@ -72,45 +73,86 @@ export function clasificados(grupoStandings) {
    ============================================================ */
 
 /**
+ * Asigna los 8 mejores terceros a los 8 slots de dieciseisavos que los
+ * requieren, respetando los grupos elegibles de cada slot.
+ *
+ * Es un emparejamiento bipartito (slot ↔ tercero) que se resuelve con
+ * backtracking, probando los terceros en orden de clasificación. El
+ * resultado es determinista (mismos grupos → mismo bracket), lo que es
+ * imprescindible para que los picks del usuario no se invaliden solos.
+ *
+ * Si los grupos aún no están decididos y no existe emparejamiento
+ * completo (caso del admin con resultados parciales), cae a una
+ * asignación voraz que también respeta la elegibilidad.
+ *
+ * @returns {Object} map matchId → equipo tercero
+ */
+function asignarTercerosASlots(cl) {
+  const slots = DIECISEISAVOS
+    .map((s) => {
+      const ref = s.local.tipo === '3' ? s.local
+        : s.visitante.tipo === '3' ? s.visitante
+        : null;
+      return ref ? { matchId: s.id, grupos: ref.grupos } : null;
+    })
+    .filter(Boolean);
+
+  const terceros = cl.tercerosClasificados;
+  const asignacion = {};
+  const usados = new Set();
+
+  const backtrack = (i) => {
+    if (i === slots.length) return true;
+    const slot = slots[i];
+    for (const t of terceros) {
+      if (usados.has(t.code)) continue;
+      if (!slot.grupos.includes(t.grupo)) continue;
+      asignacion[slot.matchId] = t;
+      usados.add(t.code);
+      if (backtrack(i + 1)) return true;
+      usados.delete(t.code);
+      delete asignacion[slot.matchId];
+    }
+    return false;
+  };
+
+  if (backtrack(0)) return asignacion;
+
+  // Sin emparejamiento completo (grupos incompletos): asignación voraz
+  // respetando la elegibilidad; los slots sin tercero quedan vacíos.
+  const parcial = {};
+  const usados2 = new Set();
+  for (const slot of slots) {
+    const t = terceros.find((x) => !usados2.has(x.code) && slot.grupos.includes(x.grupo));
+    if (t) {
+      parcial[slot.matchId] = t;
+      usados2.add(t.code);
+    }
+  }
+  return parcial;
+}
+
+/**
  * Construye los 16 partidos de dieciseisavos resolviendo cada slot a un
  * equipo concreto a partir de la clasificación.
- * Si la fase de grupos no está suficientemente decidida (puestos no
- * resueltos, terceros desempatados), algún slot puede venir como null.
+ * Si la fase de grupos no está suficientemente decidida, algún slot
+ * puede venir como null.
  */
 export function construirDieciseisavos(grupoStandings) {
   const cl = clasificados(grupoStandings);
-  const tercerosUsados = new Set();
+  const tercerosPorSlot = asignarTercerosASlots(cl);
 
-  const resolveSlot = (ref) => {
-    if (ref.tipo === '1') return cl.primeros[ref.grupo];
-    if (ref.tipo === '2') return cl.segundos[ref.grupo];
-    if (ref.tipo === '3') {
-      // Asigna el mejor tercero todavía disponible cuyo grupo esté entre
-      // los elegibles del slot.
-      for (const t of cl.tercerosClasificados) {
-        if (tercerosUsados.has(t.code)) continue;
-        if (ref.grupos.includes(t.grupo)) {
-          tercerosUsados.add(t.code);
-          return t;
-        }
-      }
-      // Fallback: el mejor tercero restante aunque no esté en la lista
-      // elegible (puede pasar con simplificación frente a la tabla FIFA).
-      for (const t of cl.tercerosClasificados) {
-        if (!tercerosUsados.has(t.code)) {
-          tercerosUsados.add(t.code);
-          return t;
-        }
-      }
-      return null;
-    }
+  const resolveSlot = (ref, matchId) => {
+    if (ref.tipo === '1') return cl.primeros[ref.grupo] || null;
+    if (ref.tipo === '2') return cl.segundos[ref.grupo] || null;
+    if (ref.tipo === '3') return tercerosPorSlot[matchId] || null;
     return null;
   };
 
   return DIECISEISAVOS.map((slot) => ({
     id: slot.id,
-    local: resolveSlot(slot.local),
-    visitante: resolveSlot(slot.visitante),
+    local: resolveSlot(slot.local, slot.id),
+    visitante: resolveSlot(slot.visitante, slot.id),
   }));
 }
 

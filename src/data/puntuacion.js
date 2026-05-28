@@ -18,14 +18,17 @@ export const PUNTOS = {
     balon_bronce: 20,
   },
   fase_eliminatoria: {
+    // +2 por cada equipo del usuario (1.º, 2.º o mejor tercero según su
+    // porra) que coincida con los 32 que realmente pasan a dieciseisavos.
+    clasifica_dieciseisavos: 2,
     // Puntos por cada equipo que el usuario acierte que avanza a la
     // siguiente ronda en su bracket.
     pasa_a_octavos: 4,         // desde dieciseisavos (32 → 16)
     pasa_a_cuartos: 6,         // 16 → 8
     pasa_a_semis: 8,           // 8 → 4
-    tercer_o_cuarto_puesto: 10,
+    tercer_puesto: 10,         // solo el 3.º (el 4.º no puntúa)
     llega_a_la_final: 10,      // por cada uno de los dos finalistas
-    gana_el_mundial: 10,
+    gana_el_mundial: 20,       // campeón
   },
 };
 
@@ -55,6 +58,11 @@ export const PUNTOS_DESCRIPCION_FASE1 = [
 
 export const PUNTOS_DESCRIPCION_FASE2 = [
   {
+    titulo: 'Clasificado a dieciseisavos',
+    valor: '+2 puntos',
+    detalle: 'Por cada equipo que aciertes entre los 32 que pasan a la fase final.',
+  },
+  {
     titulo: 'Pasa a octavos',
     valor: '+4 puntos',
     detalle: 'Por cada equipo de dieciseisavos que aciertes que pasa a octavos.',
@@ -70,9 +78,9 @@ export const PUNTOS_DESCRIPCION_FASE2 = [
     detalle: 'Por cada equipo que aciertes en semifinales.',
   },
   {
-    titulo: 'Tercer y cuarto puesto',
+    titulo: 'Tercer puesto',
     valor: '+10 puntos',
-    detalle: 'Por acertar el tercer y el cuarto puesto del Mundial.',
+    detalle: 'Por acertar el tercer puesto del Mundial.',
   },
   {
     titulo: 'Llega a la final',
@@ -81,7 +89,7 @@ export const PUNTOS_DESCRIPCION_FASE2 = [
   },
   {
     titulo: 'Ganador del Mundial',
-    valor: '+10 puntos',
+    valor: '+20 puntos',
     detalle: 'Por acertar al campeón del Mundial 2026.',
   },
 ];

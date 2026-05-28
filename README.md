@@ -28,12 +28,13 @@ Aplicación web para organizar una porra entre amigos del Mundial de Fútbol 202
 - **+20 puntos** por cada balón acertado (oro, plata, bronce).
 
 ### Fase eliminatoria
-- **+4 puntos** por cada equipo que acierte que pasa a octavos (desde los 32 de dieciseisavos).
+- **+2 puntos** por cada equipo acertado entre los 32 que pasan a dieciseisavos.
+- **+4 puntos** por cada equipo que acierte que pasa a octavos.
 - **+6 puntos** por cada equipo que pase a cuartos.
 - **+8 puntos** por cada equipo que pase a semifinales.
-- **+10 puntos** por acertar el 3.º y 4.º puesto.
+- **+10 puntos** por acertar el 3.º puesto.
 - **+10 puntos** por cada equipo que llegue a la final.
-- **+10 puntos** por acertar el ganador del Mundial.
+- **+20 puntos** por acertar el ganador del Mundial.
 
 ## Fases de desarrollo
 
