@@ -49,6 +49,24 @@ export function clasificados(grupoStandings) {
   const segundos = {};
   const terceros = [];
 
+  // Los 32 clasificados solo existen cuando TODA la fase de grupos está
+  // jugada (las 6 jornadas de los 12 grupos). Cada grupo suma 12 PJ
+  // (6 partidos × 2 equipos). Hasta entonces el bracket queda vacío:
+  // ni se coloca a nadie ni se reparten puntos por clasificarse.
+  const todasCompletas = GRUPO_LETRAS.every((letra) => {
+    const tabla = grupoStandings[letra] || [];
+    const pjTotal = tabla.reduce((s, t) => s + (t.pj || 0), 0);
+    return tabla.length === 4 && pjTotal === 12;
+  });
+
+  if (!todasCompletas) {
+    for (const letra of GRUPO_LETRAS) {
+      primeros[letra] = null;
+      segundos[letra] = null;
+    }
+    return { primeros, segundos, terceros: [], tercerosClasificados: [] };
+  }
+
   for (const letra of GRUPO_LETRAS) {
     const tabla = grupoStandings[letra] || [];
     primeros[letra] = tabla[0] || null;
