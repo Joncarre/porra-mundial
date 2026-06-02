@@ -74,21 +74,34 @@ export function calcularPuntos({
   }
 
   // ----------------- Eliminatoria -----------------
-  // Cada ronda da puntos por equipo acertado que "pasa" a la siguiente.
-  const sumarRonda = (slots, ptsPorAcierto) => {
+  // Comparación POR CONJUNTOS (no por slot/llave): un equipo cuenta en
+  // una ronda si tanto el usuario como la realidad lo tenían en esa
+  // ronda, sin exigir que coincida la posición concreta del cruce.
+  // Las rondas son acumulativas e independientes: un equipo que llega a
+  // cuartos puntúa en octavos Y en cuartos; un campeón puntúa en
+  // octavos, cuartos, semis, final y "gana el mundial".
+  const ganadoresDeRonda = (slots, ganadoresMap) => {
+    const set = new Set();
     for (const slot of slots) {
-      const p = predBracket[slot.id];
-      const r = resBracket[slot.id];
-      if (p && r && p === r) {
+      const code = ganadoresMap[slot.id];
+      if (code) set.add(code);
+    }
+    return set;
+  };
+  const aplicarRonda = (slots, ptsPorAcierto) => {
+    const pred = ganadoresDeRonda(slots, predBracket);
+    const real = ganadoresDeRonda(slots, resBracket);
+    for (const code of pred) {
+      if (real.has(code)) {
         puntos += ptsPorAcierto;
         aciertosBracket += 1;
       }
     }
   };
-  sumarRonda(DIECISEISAVOS, PUNTOS.fase_eliminatoria.pasa_a_octavos);   // +4
-  sumarRonda(OCTAVOS,       PUNTOS.fase_eliminatoria.pasa_a_cuartos);   // +6
-  sumarRonda(CUARTOS,       PUNTOS.fase_eliminatoria.pasa_a_semis);     // +8
-  sumarRonda(SEMIS,         PUNTOS.fase_eliminatoria.llega_a_la_final); // +10
+  aplicarRonda(DIECISEISAVOS, PUNTOS.fase_eliminatoria.pasa_a_octavos);   // +4 por equipo en octavos
+  aplicarRonda(OCTAVOS,       PUNTOS.fase_eliminatoria.pasa_a_cuartos);   // +6 por equipo en cuartos
+  aplicarRonda(CUARTOS,       PUNTOS.fase_eliminatoria.pasa_a_semis);     // +8 por equipo en semis
+  aplicarRonda(SEMIS,         PUNTOS.fase_eliminatoria.llega_a_la_final); // +10 por equipo en la final
 
   // ----------------- 3.º puesto (el 4.º no puntúa) -----------------
   if (predBracket[103] && resBracket[103] && predBracket[103] === resBracket[103]) {

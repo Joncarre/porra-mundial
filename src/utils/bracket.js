@@ -41,7 +41,7 @@ export function clasificacionTodosLosGrupos(partidos = {}) {
  * equipos que pasan a dieciseisavos:
  *  - los 12 primeros y los 12 segundos
  *  - los 8 mejores terceros. Criterio oficial:
- *    puntos → diferencia de goles → goles a favor → goles en contra.
+ *    puntos → DG → partidos ganados → partidos perdidos → GF → GC.
  *    (los 4 peores terceros quedan eliminados)
  */
 export function clasificados(grupoStandings) {
@@ -77,9 +77,11 @@ export function clasificados(grupoStandings) {
   const tercerosOrdenados = [...terceros].sort((a, b) => {
     if (b.pts !== a.pts) return b.pts - a.pts;   // más puntos
     if (b.dg !== a.dg) return b.dg - a.dg;       // mejor diferencia de goles
+    if (b.g !== a.g) return b.g - a.g;           // más partidos ganados
+    if (a.p !== b.p) return a.p - b.p;           // menos partidos perdidos
     if (b.gf !== a.gf) return b.gf - a.gf;       // más goles a favor
     if (a.gc !== b.gc) return a.gc - b.gc;       // menos goles en contra
-    return a.grupo.localeCompare(b.grupo);        // desempate estable final
+    return a.grupo.localeCompare(b.grupo);        // estable
   });
   const tercerosClasificados = tercerosOrdenados.slice(0, 8);
 

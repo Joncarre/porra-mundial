@@ -5,7 +5,9 @@
  * Un resultado es un objeto { golesLocal: number, golesVisitante: number }.
  * Un partido sin resultado se ignora (todavía no jugado).
  *
- * Criterio de desempate: puntos → diferencia de goles → goles a favor → nombre.
+ * Criterio de desempate (oficial de la porra):
+ *   puntos → diferencia de goles → partidos ganados → partidos perdidos
+ *   → goles a favor → goles en contra → nombre (estable).
  */
 
 import { GRUPOS, partidosDelGrupo } from '../data/grupos.js';
@@ -72,10 +74,13 @@ export function clasificacionDelGrupo(letra, partidosResultados = {}) {
   }
 
   const orden = Object.values(stats).sort((a, b) => {
-    if (b.pts !== a.pts) return b.pts - a.pts;
-    if (b.dg !== a.dg) return b.dg - a.dg;
-    if (b.gf !== a.gf) return b.gf - a.gf;
-    return a.name.localeCompare(b.name);
+    if (b.pts !== a.pts) return b.pts - a.pts;   // más puntos
+    if (b.dg !== a.dg) return b.dg - a.dg;       // mejor diferencia de goles
+    if (b.g !== a.g) return b.g - a.g;           // más partidos ganados
+    if (a.p !== b.p) return a.p - b.p;           // menos partidos perdidos
+    if (b.gf !== a.gf) return b.gf - a.gf;       // más goles a favor
+    if (a.gc !== b.gc) return a.gc - b.gc;       // menos goles en contra
+    return a.name.localeCompare(b.name);          // estable
   });
   return orden.map((eq, idx) => ({ ...eq, posicion: idx + 1 }));
 }
