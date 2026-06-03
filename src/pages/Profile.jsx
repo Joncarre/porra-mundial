@@ -215,10 +215,6 @@ export default function Profile() {
                   <span className="profile-data-value">{user.apellidos}</span>
                 </div>
                 <div className="profile-data-item">
-                  <span className="profile-data-label">Email</span>
-                  <span className="profile-data-value">{user.email}</span>
-                </div>
-                <div className="profile-data-item">
                   <span className="profile-data-label">Nickname</span>
                   <span className="profile-data-value">@{user.nickname}</span>
                 </div>

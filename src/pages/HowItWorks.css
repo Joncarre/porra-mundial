@@ -157,10 +157,14 @@
    ============================================================ */
 .hiw-points-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-xl);
-  max-width: 1040px;
+  max-width: 1240px;
   margin: 0 auto;
+}
+
+@media (max-width: 980px) {
+  .hiw-points-cards { grid-template-columns: 1fr; }
 }
 
 .hiw-points-card {

@@ -28,12 +28,12 @@ export const PUNTOS = {
     pasa_a_semis: 8,           // 8 → 4
     tercer_puesto: 10,         // solo el 3.º (el 4.º no puntúa)
     llega_a_la_final: 10,      // por cada uno de los dos finalistas
-    gana_el_mundial: 20,       // campeón
+    gana_el_mundial: 30,       // campeón
   },
 };
 
 /** Información presentada al usuario en "Cómo funciona". */
-export const PUNTOS_DESCRIPCION_FASE1 = [
+export const PUNTOS_DESCRIPCION_GRUPOS = [
   {
     titulo: 'Acertar ganador / empate / perdedor',
     valor: '+1 punto',
@@ -44,6 +44,9 @@ export const PUNTOS_DESCRIPCION_FASE1 = [
     valor: '+3 puntos',
     detalle: 'Si además aciertas el marcador exacto (sumado al punto del ganador, son 4 en total).',
   },
+];
+
+export const PUNTOS_DESCRIPCION_EXTRAS = [
   {
     titulo: 'Máximo goleador',
     valor: '+10 puntos',
@@ -56,7 +59,7 @@ export const PUNTOS_DESCRIPCION_FASE1 = [
   },
 ];
 
-export const PUNTOS_DESCRIPCION_FASE2 = [
+export const PUNTOS_DESCRIPCION_ELIMINATORIA = [
   {
     titulo: 'Clasificado a dieciseisavos',
     valor: '+2 puntos',
@@ -89,7 +92,7 @@ export const PUNTOS_DESCRIPCION_FASE2 = [
   },
   {
     titulo: 'Ganador del Mundial',
-    valor: '+20 puntos',
+    valor: '+30 puntos',
     detalle: 'Por acertar al campeón del Mundial 2026.',
   },
 ];

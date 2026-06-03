@@ -69,7 +69,6 @@ export async function createUser(data) {
     id: genId(),
     nombre: data.nombre.trim(),
     apellidos: data.apellidos.trim(),
-    email: data.email.trim().toLowerCase(),
     nickname: data.nickname.trim(),
     password: data.password,
     avatarFoto: null, // se rellena al subir una imagen desde el perfil

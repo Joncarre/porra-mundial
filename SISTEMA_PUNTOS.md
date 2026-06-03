@@ -48,9 +48,9 @@ Las rondas se evalúan de forma **acumulativa e independiente**: un equipo que l
 | Pasa a semifinales | 97-100 (4) | **+8** | 32 |
 | Llega a la final | 101-102 (2) | **+10** | 20 |
 | Tercer puesto | 103 (1) | **+10** | 10 |
-| Campeón (ganador final) | 104 (1) | **+20** | 20 |
+| Campeón (ganador final) | 104 (1) | **+30** | 30 |
 
-> Máximo bracket: **194**
+> Máximo bracket: **204**
 
 > ⚠️ El **cuarto puesto NO puntúa**.
 
@@ -77,9 +77,9 @@ Comparación de texto **case-insensitive** y con **trim** (ignora mayúsculas/mi
 |---|---:|
 | Fase de grupos | 288 |
 | Clasificados a dieciseisavos | 64 |
-| Bracket | 194 |
+| Bracket | 204 |
 | Premios | 70 |
-| **TOTAL** | **616** |
+| **TOTAL** | **626** |
 
 ---
 

@@ -125,7 +125,7 @@ function UsersPanel() {
                 {u.nombre} {u.apellidos}
               </div>
               <div className="admin-user-meta">
-                @{u.nickname} · {u.email}
+                @{u.nickname}
               </div>
             </div>
             <div className="admin-user-toggles">

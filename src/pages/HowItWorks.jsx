@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import {
-  PUNTOS_DESCRIPCION_FASE1,
-  PUNTOS_DESCRIPCION_FASE2,
+  PUNTOS_DESCRIPCION_GRUPOS,
+  PUNTOS_DESCRIPCION_ELIMINATORIA,
+  PUNTOS_DESCRIPCION_EXTRAS,
   TORNEO,
 } from '../data/puntuacion.js';
 import './HowItWorks.css';
@@ -10,7 +11,7 @@ const PASOS = [
   {
     titulo: 'Regístrate y paga',
     detalle:
-      'Crea tu cuenta con tu nickname y contraseña, y haz el bizum de la cuota al administrador.',
+      'Crea tu cuenta con tu nickname y contraseña, y entrega en mano la cuota al administrador.',
   },
   {
     titulo: 'El admin confirma tu pago',
@@ -35,7 +36,7 @@ const PASOS = [
   {
     titulo: 'Consulta la clasificación',
     detalle:
-      'A medida que el administrador actualice los resultados reales, la tabla se mueve automáticamente con los puntos de cada participante.',
+      'A medida que el administrador actualice los resultados, la clasificación también se actualizará automáticamente.',
   },
 ];
 
@@ -88,11 +89,10 @@ export default function HowItWorks() {
           <div className="hiw-points-cards">
             <div className="hiw-points-card">
               <div className="hiw-points-card-head">
-                <span className="hiw-points-card-num">01</span>
                 <h3>Fase de grupos</h3>
               </div>
               <ul className="hiw-points-list">
-                {PUNTOS_DESCRIPCION_FASE1.map((p) => (
+                {PUNTOS_DESCRIPCION_GRUPOS.map((p) => (
                   <li key={p.titulo} className="hiw-points-row">
                     <span className="hiw-points-label">{p.titulo}</span>
                     <span className="hiw-points-leader" aria-hidden="true" />
@@ -104,11 +104,25 @@ export default function HowItWorks() {
 
             <div className="hiw-points-card">
               <div className="hiw-points-card-head">
-                <span className="hiw-points-card-num">02</span>
                 <h3>Fase eliminatoria</h3>
               </div>
               <ul className="hiw-points-list">
-                {PUNTOS_DESCRIPCION_FASE2.map((p) => (
+                {PUNTOS_DESCRIPCION_ELIMINATORIA.map((p) => (
+                  <li key={p.titulo} className="hiw-points-row">
+                    <span className="hiw-points-label">{p.titulo}</span>
+                    <span className="hiw-points-leader" aria-hidden="true" />
+                    <span className="hiw-points-value">{p.valor}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="hiw-points-card">
+              <div className="hiw-points-card-head">
+                <h3>Apuestas extra</h3>
+              </div>
+              <ul className="hiw-points-list">
+                {PUNTOS_DESCRIPCION_EXTRAS.map((p) => (
                   <li key={p.titulo} className="hiw-points-row">
                     <span className="hiw-points-label">{p.titulo}</span>
                     <span className="hiw-points-leader" aria-hidden="true" />

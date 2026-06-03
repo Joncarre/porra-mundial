@@ -6,7 +6,6 @@ import './auth.css';
 const INITIAL = {
   nombre: '',
   apellidos: '',
-  email: '',
   nickname: '',
   password: '',
   passwordConfirm: '',
@@ -28,9 +27,6 @@ export default function Register() {
     const e = {};
     if (!form.nombre.trim()) e.nombre = 'Introduce tu nombre.';
     if (!form.apellidos.trim()) e.apellidos = 'Introduce tus apellidos.';
-    if (!form.email.trim()) e.email = 'Introduce tu email.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = 'Formato de email no válido.';
     if (!form.nickname.trim()) e.nickname = 'Elige un nickname.';
     else if (form.nickname.trim().length < 3)
       e.nickname = 'Debe tener al menos 3 caracteres.';
@@ -54,7 +50,6 @@ export default function Register() {
       await createUser({
         nombre: form.nombre,
         apellidos: form.apellidos,
-        email: form.email,
         nickname: form.nickname,
         password: form.password,
       });
@@ -127,19 +122,6 @@ export default function Register() {
                 </div>
               </div>
 
-              <div className="auth-field">
-                <label className="label" htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  className={`input ${errors.email ? 'is-invalid' : ''}`}
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={form.email}
-                  onChange={updateField('email')}
-                  autoComplete="email"
-                />
-                {errors.email && <span className="field-error">{errors.email}</span>}
-              </div>
             </div>
 
             {/* ------------- Sección 2: Credenciales ------------- */}

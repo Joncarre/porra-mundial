@@ -11,11 +11,11 @@
 
 /* -------- Hero -------- */
 .welcome-hero {
-  padding: var(--space-4xl) 0 var(--space-3xl);
+  padding: var(--space-4xl) 0 var(--space-xl);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 65vh;
+  min-height: 55vh;
 }
 
 .welcome-hero-inner {
@@ -49,36 +49,54 @@
   margin-top: var(--space-md);
 }
 
+/* "¿Cómo funciona esta porra?" — pill premium con acento dorado */
 .welcome-hero-link {
-  margin-top: var(--space-sm);
+  display: inline-flex;
+  align-items: center;
+  margin-top: var(--space-md);
+  padding: 10px 24px;
+  font-family: var(--font-display);
+  font-style: italic;
   font-weight: 500;
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--gold-700);
+  background: var(--grad-gold-soft);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-full);
   position: relative;
-  padding-bottom: 6px;
-  transition: color 0.5s var(--ease);
+  overflow: hidden;
+  transition:
+    color 0.4s var(--ease),
+    border-color 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    transform 0.4s var(--ease);
 }
 
+/* Shimmer dorado que recorre el chip al pasar por encima */
 .welcome-hero-link::after {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: var(--grad-gold);
-  border-radius: 2px;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.6s var(--ease);
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.8s var(--ease);
+  pointer-events: none;
 }
 
 .welcome-hero-link:hover {
-  color: var(--charcoal);
+  color: var(--gold-700);
+  border-color: var(--gold-500);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(184, 148, 90, 0.28);
 }
 
 .welcome-hero-link:hover::after {
-  transform: scaleX(1);
+  transform: translateX(110%);
 }
 
 /* Iniciar sesión — único efecto: borde dorado que se ilumina de
@@ -130,7 +148,32 @@
 
 /* -------- Stats -------- */
 .welcome-stats-section {
-  padding: 0 0 var(--space-4xl);
+  padding: 0 0 var(--space-3xl);
+}
+
+/* Crédito al desarrollador, bajo el panel de stats */
+.welcome-credit {
+  margin: var(--space-lg) auto 0;
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+.welcome-credit a {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold-700);
+  position: relative;
+  padding-bottom: 1px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.welcome-credit a:hover {
+  color: var(--gold-500);
+  border-bottom-color: var(--gold-500);
 }
 
 .welcome-stats {

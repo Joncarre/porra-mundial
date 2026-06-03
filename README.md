@@ -34,7 +34,7 @@ Aplicación web para organizar una porra entre amigos del Mundial de Fútbol 202
 - **+8 puntos** por cada equipo que pase a semifinales.
 - **+10 puntos** por acertar el 3.º puesto.
 - **+10 puntos** por cada equipo que llegue a la final.
-- **+20 puntos** por acertar el ganador del Mundial.
+- **+30 puntos** por acertar el ganador del Mundial.
 
 ## Fases de desarrollo
 

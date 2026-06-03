@@ -64,9 +64,20 @@ export default function Welcome() {
             <div className="welcome-stat-divider" />
             <div className="welcome-stat">
               <div className="welcome-stat-value">11 jun &mdash; 19 jul</div>
-              <div className="welcome-stat-label">Del primer pitido a la final</div>
+              <div className="welcome-stat-label">Días de máxima rivalidad</div>
             </div>
           </div>
+
+          <p className="welcome-credit">
+            Desarrollado por{' '}
+            <a
+              href="https://github.com/Joncarre"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Joncarre
+            </a>
+          </p>
         </div>
       </section>
     </div>
