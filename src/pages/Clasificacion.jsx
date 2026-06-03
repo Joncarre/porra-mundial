@@ -137,9 +137,12 @@ export default function Clasificacion() {
                       <th className="cl-col-pos">#</th>
                       <th className="cl-col-user">Participante</th>
                       <th className="cl-col-pts">Puntos</th>
-                      <th>Partidos acertados</th>
-                      <th>Resultados exactos</th>
-                      <th>Eliminatorias acertadas</th>
+                      <th>Partidos<br />acertados</th>
+                      <th>Resultados<br />exactos</th>
+                      <th className="cl-col-acierto">Aciertos<br />dieciseisavos</th>
+                      <th className="cl-col-acierto">Aciertos<br />octavos</th>
+                      <th className="cl-col-acierto">Aciertos<br />cuartos</th>
+                      <th className="cl-col-acierto">Aciertos<br />semis</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -148,7 +151,7 @@ export default function Clasificacion() {
                         <td className="cl-col-pos">{r.posicion}</td>
                         <td className="cl-col-user">
                           <div className="cl-user">
-                            <Avatar foto={r.user.avatarFoto} name={r.user.nombre || r.user.nickname} size="md" />
+                            <Avatar foto={r.user.avatarFoto} name={r.user.nombre || r.user.nickname} size={72} />
                             <div className="cl-user-text">
                               <span className="cl-user-nick">@{r.user.nickname}</span>
                               <span className="cl-user-name">
@@ -160,7 +163,10 @@ export default function Clasificacion() {
                         <td className="cl-col-pts">{r.puntos}</td>
                         <td>{r.aciertosGanador}</td>
                         <td>{r.aciertosExacto}</td>
-                        <td>{r.aciertosBracket}</td>
+                        <td>{r.aciertosDieciseisavos}</td>
+                        <td>{r.aciertosOctavos}</td>
+                        <td>{r.aciertosCuartos}</td>
+                        <td>{r.aciertosSemis}</td>
                       </tr>
                     ))}
                   </tbody>

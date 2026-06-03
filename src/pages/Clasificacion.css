@@ -125,6 +125,13 @@
   width: 64px;
 }
 
+/* Columnas de aciertos por ronda del bracket: estrechas, cabecera en
+   dos líneas mediante <br /> en el JSX. */
+.cl-col-acierto {
+  min-width: 92px;
+  line-height: 1.25;
+}
+
 /* -------- Cell de usuario -------- */
 .cl-user {
   display: flex;
@@ -135,6 +142,7 @@
 .cl-user-text {
   display: flex;
   flex-direction: column;
+  gap: 4px;
   line-height: 1.2;
   min-width: 0;
 }

@@ -45,6 +45,17 @@ export function calcularPuntos({
   let aciertosBracket = 0;
   let aciertosPremios = 0;
 
+  // Aciertos por ronda del bracket (no afectan al cálculo, son solo
+  // para mostrar en la clasificación):
+  //   dieciseisavos = equipos del usuario entre los 32 reales
+  //   octavos       = equipos del usuario entre los 16 que pasan
+  //   cuartos       = equipos del usuario entre los 8 que pasan
+  //   semis         = equipos del usuario entre los 4 que pasan
+  let aciertosDieciseisavos = 0;
+  let aciertosOctavos = 0;
+  let aciertosCuartos = 0;
+  let aciertosSemis = 0;
+
   // ----------------- Fase de grupos -----------------
   for (const partido of TODOS_LOS_PARTIDOS_GRUPOS) {
     const pred = predGrupos[partido.id];
@@ -91,17 +102,22 @@ export function calcularPuntos({
   const aplicarRonda = (slots, ptsPorAcierto) => {
     const pred = ganadoresDeRonda(slots, predBracket);
     const real = ganadoresDeRonda(slots, resBracket);
+    let count = 0;
     for (const code of pred) {
       if (real.has(code)) {
         puntos += ptsPorAcierto;
         aciertosBracket += 1;
+        count += 1;
       }
     }
+    return count;
   };
-  aplicarRonda(DIECISEISAVOS, PUNTOS.fase_eliminatoria.pasa_a_octavos);   // +4 por equipo en octavos
-  aplicarRonda(OCTAVOS,       PUNTOS.fase_eliminatoria.pasa_a_cuartos);   // +6 por equipo en cuartos
-  aplicarRonda(CUARTOS,       PUNTOS.fase_eliminatoria.pasa_a_semis);     // +8 por equipo en semis
-  aplicarRonda(SEMIS,         PUNTOS.fase_eliminatoria.llega_a_la_final); // +10 por equipo en la final
+  // El contador devuelto es el número de equipos del usuario que llegan
+  // realmente a la SIGUIENTE ronda (los que "pasan").
+  aciertosOctavos = aplicarRonda(DIECISEISAVOS, PUNTOS.fase_eliminatoria.pasa_a_octavos);   // +4
+  aciertosCuartos = aplicarRonda(OCTAVOS,       PUNTOS.fase_eliminatoria.pasa_a_cuartos);   // +6
+  aciertosSemis   = aplicarRonda(CUARTOS,       PUNTOS.fase_eliminatoria.pasa_a_semis);     // +8
+  aplicarRonda(SEMIS,                           PUNTOS.fase_eliminatoria.llega_a_la_final); // +10
 
   // ----------------- 3.º puesto (el 4.º no puntúa) -----------------
   if (predBracket[103] && resBracket[103] && predBracket[103] === resBracket[103]) {
@@ -130,6 +146,7 @@ export function calcularPuntos({
   for (const code of predClasificados) {
     if (realClasificados.has(code)) {
       puntos += PUNTOS.fase_eliminatoria.clasifica_dieciseisavos; // +2
+      aciertosDieciseisavos += 1;
     }
   }
 
@@ -151,5 +168,15 @@ export function calcularPuntos({
     aciertosPremios += 1;
   }
 
-  return { puntos, aciertosGanador, aciertosExacto, aciertosBracket, aciertosPremios };
+  return {
+    puntos,
+    aciertosGanador,
+    aciertosExacto,
+    aciertosBracket,
+    aciertosDieciseisavos,
+    aciertosOctavos,
+    aciertosCuartos,
+    aciertosSemis,
+    aciertosPremios,
+  };
 }

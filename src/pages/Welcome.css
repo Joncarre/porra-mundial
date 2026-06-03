@@ -139,7 +139,7 @@
 /* Footer con crédito al desarrollador, anclado al final de la página */
 .welcome-footer {
   margin-top: auto;
-  padding: var(--space-xl) 0 var(--space-lg);
+  padding: var(--space-xl) 0 var(--space-2xl);
   text-align: center;
 }
 
