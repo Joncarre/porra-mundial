@@ -85,7 +85,7 @@
 }
 
 .cl-table thead th {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.10em;
   text-transform: uppercase;
@@ -93,6 +93,13 @@
   padding: 14px 8px;
   text-align: center;
   border-bottom: 1px solid var(--border-default);
+}
+
+/* La cabecera "PUNTOS" usa la misma fuente que las demás (sans uppercase)
+   pero en color charcoal, no muted. */
+.cl-table thead th.cl-col-pts {
+  font-family: var(--font-sans);
+  color: var(--charcoal);
 }
 
 .cl-table tbody td {
