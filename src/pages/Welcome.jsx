@@ -43,7 +43,9 @@ export default function Welcome() {
             )}
           </div>
           <Link to="/how-it-works" className="welcome-hero-link">
-            ¿Cómo funciona esta porra?
+            <span className="welcome-hero-link-rule" aria-hidden="true" />
+            <span>¿Cómo funciona esta porra?</span>
+            <span className="welcome-hero-link-rule" aria-hidden="true" />
           </Link>
         </div>
       </section>
@@ -67,19 +69,28 @@ export default function Welcome() {
               <div className="welcome-stat-label">Días de máxima rivalidad</div>
             </div>
           </div>
-
-          <p className="welcome-credit">
-            Desarrollado por{' '}
-            <a
-              href="https://github.com/Joncarre"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Joncarre
-            </a>
-          </p>
         </div>
       </section>
+
+      <footer className="welcome-footer">
+        <p className="welcome-credit">
+          Desarrollado por
+          <a
+            className="welcome-credit-link"
+            href="https://github.com/Joncarre"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/github.svg"
+              alt=""
+              className="welcome-credit-logo"
+              aria-hidden="true"
+            />
+            <span>Joncarre</span>
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }

@@ -49,54 +49,39 @@
   margin-top: var(--space-md);
 }
 
-/* "¿Cómo funciona esta porra?" — pill premium con acento dorado */
+/* "¿Cómo funciona esta porra?" — estilo editorial con dos finos
+   rules dorados a cada lado que se extienden al hacer hover. */
 .welcome-hero-link {
   display: inline-flex;
   align-items: center;
+  gap: 16px;
   margin-top: var(--space-md);
-  padding: 10px 24px;
-  font-family: var(--font-display);
-  font-style: italic;
+  padding: 6px 0;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 0.95rem;
+  letter-spacing: 0.02em;
   color: var(--gold-700);
-  background: var(--grad-gold-soft);
-  border: 1px solid var(--border-gold);
-  border-radius: var(--radius-full);
-  position: relative;
-  overflow: hidden;
-  transition:
-    color 0.4s var(--ease),
-    border-color 0.4s var(--ease),
-    box-shadow 0.4s var(--ease),
-    transform 0.4s var(--ease);
+  background: transparent;
+  border: none;
+  transition: color 0.4s var(--ease), gap 0.5s var(--ease);
 }
 
-/* Shimmer dorado que recorre el chip al pasar por encima */
-.welcome-hero-link::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.55) 50%,
-    transparent 70%
-  );
-  transform: translateX(-110%);
-  transition: transform 0.8s var(--ease);
-  pointer-events: none;
+.welcome-hero-link-rule {
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--grad-gold);
+  transition: width 0.5s var(--ease);
 }
 
 .welcome-hero-link:hover {
-  color: var(--gold-700);
-  border-color: var(--gold-500);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(184, 148, 90, 0.28);
+  color: var(--gold-500);
+  gap: 20px;
 }
 
-.welcome-hero-link:hover::after {
-  transform: translateX(110%);
+.welcome-hero-link:hover .welcome-hero-link-rule {
+  width: 56px;
 }
 
 /* Iniciar sesión — único efecto: borde dorado que se ilumina de
@@ -151,29 +136,48 @@
   padding: 0 0 var(--space-3xl);
 }
 
-/* Crédito al desarrollador, bajo el panel de stats */
-.welcome-credit {
-  margin: var(--space-lg) auto 0;
+/* Footer con crédito al desarrollador, anclado al final de la página */
+.welcome-footer {
+  margin-top: auto;
+  padding: var(--space-xl) 0 var(--space-lg);
   text-align: center;
-  font-size: 0.84rem;
+}
+
+.welcome-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
   color: var(--text-muted);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
-.welcome-credit a {
-  font-family: var(--font-display);
-  font-style: italic;
+.welcome-credit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  font-family: var(--font-sans);
   font-weight: 500;
-  color: var(--gold-700);
-  position: relative;
-  padding-bottom: 1px;
-  border-bottom: 1px solid transparent;
-  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+  font-size: 0.85rem;
+  color: var(--charcoal);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  transition: all var(--transition);
 }
 
-.welcome-credit a:hover {
-  color: var(--gold-500);
-  border-bottom-color: var(--gold-500);
+.welcome-credit-link:hover {
+  color: var(--charcoal);
+  border-color: var(--charcoal);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome-credit-logo {
+  width: 16px;
+  height: 16px;
+  opacity: 0.9;
 }
 
 .welcome-stats {
