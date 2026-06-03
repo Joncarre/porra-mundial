@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader.jsx';
+import DeadlineNotice from '../components/DeadlineNotice.jsx';
 import { GRUPO_LETRAS, partidosDelGrupo, TODOS_LOS_PARTIDOS_GRUPOS } from '../data/grupos.js';
 import { getPrediccionesFase1, savePrediccionesFase1 } from '../services/predicciones.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -151,6 +152,8 @@ export default function Apuestas() {
             <div className="ap-loading">Cargando tus apuestas…</div>
           ) : (
             <div className="ap-panel">
+              <DeadlineNotice />
+
               {/* Progreso global */}
               <div className="ap-progress">
                 <div className="ap-progress-text">

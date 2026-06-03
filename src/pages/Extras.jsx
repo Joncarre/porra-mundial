@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader.jsx';
+import DeadlineNotice from '../components/DeadlineNotice.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
   getPrediccionesExtras,
@@ -151,6 +152,8 @@ export default function Extras() {
             <div className="ex-loading">Cargando tus apuestas…</div>
           ) : (
             <div className="ex-panel">
+              <DeadlineNotice />
+
               <div className="ex-progress">
                 <div className="ex-progress-text">
                   <span className="ex-progress-count">{completados}</span>

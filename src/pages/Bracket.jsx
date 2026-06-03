@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader.jsx';
 import BracketEditor from '../components/BracketEditor.jsx';
+import DeadlineNotice from '../components/DeadlineNotice.jsx';
 import GroupStandingsCard from '../components/GroupStandingsCard.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { GRUPO_LETRAS } from '../data/grupos.js';
@@ -125,6 +126,8 @@ export default function Bracket() {
             <div className="brk-loading">Cargando tu bracket…</div>
           ) : (
             <div className="brk-panel">
+              <DeadlineNotice />
+
               <BracketEditor
                 grupoStandings={grupoStandings}
                 ganadores={ganadores}
