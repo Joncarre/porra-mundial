@@ -205,3 +205,44 @@
 .brk-locked-detail {
   margin-bottom: var(--space-xl);
 }
+
+/* ============================================================
+   Responsive — móvil
+   El árbol del bracket mantiene su min-width y hace scroll
+   horizontal dentro de .be-tree-wrap (manejado en BracketEditor.css).
+   ============================================================ */
+@media (max-width: 540px) {
+  .brk-main { padding: var(--space-xl) 0 var(--space-2xl); }
+  .brk-page-header { margin-bottom: var(--space-lg); }
+
+  .brk-panel {
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+
+  .brk-actions {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+  .brk-actions .btn { width: 100%; }
+  .brk-saved-pill {
+    margin-right: 0;
+    text-align: center;
+  }
+  .brk-cerradas-notice {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .brk-groups { margin-top: var(--space-2xl); }
+  .brk-groups-header { margin-bottom: var(--space-lg); }
+  .brk-groups-sub { font-size: 0.88rem; }
+  .brk-groups-grid { gap: var(--space-md); }
+
+  .brk-locked {
+    padding: var(--space-xl);
+    margin: var(--space-2xl) auto;
+  }
+  .brk-locked-title { font-size: 1.3rem; }
+}

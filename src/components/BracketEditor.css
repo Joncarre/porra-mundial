@@ -388,3 +388,20 @@
     padding-right: var(--space-md);
   }
 }
+
+/* Móvil — chips de progreso más compactas */
+@media (max-width: 540px) {
+  .be-progress {
+    padding: 6px var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+  .be-progress-item {
+    padding: 3px 10px;
+    gap: 2px;
+  }
+  .be-progress-item-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+  .be-progress-item-count { font-size: 0.85rem; }
+}

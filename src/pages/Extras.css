@@ -189,3 +189,40 @@
 .ex-locked-detail {
   margin-bottom: var(--space-xl);
 }
+
+/* ============================================================
+   Responsive — móvil
+   ============================================================ */
+@media (max-width: 540px) {
+  .ex-main { padding: var(--space-xl) 0 var(--space-2xl); }
+  .ex-page-header { margin-bottom: var(--space-lg); }
+
+  .ex-panel {
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+  .ex-progress-count { font-size: 1.2rem; }
+  .ex-fields { gap: var(--space-md); }
+  .ex-field-hint { font-size: 0.75rem; }
+
+  .ex-actions {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+  .ex-actions .btn { width: 100%; }
+  .ex-saved-pill {
+    margin-right: 0;
+    text-align: center;
+  }
+  .ex-cerradas-notice {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .ex-locked {
+    padding: var(--space-xl);
+    margin: var(--space-2xl) auto;
+  }
+  .ex-locked-title { font-size: 1.3rem; }
+}
