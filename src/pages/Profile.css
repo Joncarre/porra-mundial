@@ -212,9 +212,9 @@
 
 .profile-data-value {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.15rem;
   color: var(--charcoal);
   margin: 0;
   word-break: break-word;

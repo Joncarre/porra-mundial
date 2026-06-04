@@ -16,4 +16,4 @@ export function apuestasCerradas(now = new Date()) {
 }
 
 /** Texto humano completo del cierre, para mostrar en los avisos. */
-export const APUESTAS_DEADLINE_LABEL = '11 de junio a las 00:00 (hora de España)';
+export const APUESTAS_DEADLINE_LABEL = '11 de junio a las 00:00';

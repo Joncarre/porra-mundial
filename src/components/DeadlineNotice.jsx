@@ -15,7 +15,7 @@ export default function DeadlineNotice() {
       <span className="deadline-notice-label">Recuerda</span>
       <p className="deadline-notice-text">
         Tienes hasta el <strong>{APUESTAS_DEADLINE_LABEL}</strong> para modificar
-        tus apuestas. A partir de ese momento quedarán bloqueadas.
+        tus apuestas. En ese momento quedarán bloqueadas.
       </p>
     </div>
   );
