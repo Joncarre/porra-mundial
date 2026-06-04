@@ -231,8 +231,8 @@
 
 /* ============================================================
    Responsive — móvil
-   La tabla mantiene su min-width y se hace scroll horizontal
-   dentro de .gs-table-wrap. El resto de la tarjeta sí se adapta.
+   La tabla se compacta para caber sin scroll horizontal: fuente
+   más pequeña, columnas numéricas estrechas y menos separación.
    ============================================================ */
 @media (max-width: 540px) {
   .gs-group { padding: var(--space-md); }
@@ -242,6 +242,35 @@
   }
   .gs-group-title { font-size: 1.2rem; }
   .gs-group-letter { font-size: 0.78rem; }
+
+  /* -------- Tabla compacta -------- */
+  .gs-table-wrap {
+    overflow-x: auto;
+    margin: 0;
+  }
+  .gs-table {
+    min-width: 0;
+    font-size: 0.66rem;
+  }
+  .gs-table th:not(.gs-col-pos):not(.gs-col-team),
+  .gs-table td:not(.gs-col-pos):not(.gs-col-team) {
+    width: 22px;
+  }
+  .gs-table thead th {
+    font-size: 0.55rem;
+    letter-spacing: 0.02em;
+    padding: 6px 1px;
+  }
+  .gs-table tbody td {
+    padding: 7px 1px;
+  }
+  .gs-col-pos { width: 15px; }
+  .gs-col-pts { font-size: 0.74rem; }
+  .gs-team-name { font-size: 0.62rem; }
+  .gs-team-code {
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+  }
 
   .gs-matches {
     margin-top: var(--space-md);

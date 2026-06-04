@@ -155,6 +155,7 @@ export default function Profile() {
 
   const checklist = buildChecklist(user);
   const previewing = !!preview;
+  const initials = `${user.nombre?.[0] ?? ''}${user.apellidos?.[0] ?? ''}`.toUpperCase();
 
   return (
     <div className="profile-page">
@@ -205,20 +206,36 @@ export default function Profile() {
                 <h2>Datos de la cuenta</h2>
               </header>
 
-              <dl className="profile-data-list">
-                <div className="profile-data-row">
-                  <dt className="profile-data-label">Nombre</dt>
-                  <dd className="profile-data-value">{user.nombre}</dd>
+              <div className="account-card">
+                <div className="account-id">
+                  <span className="account-monogram" aria-hidden="true">
+                    {initials}
+                  </span>
+                  <div className="account-id-text">
+                    <span className="account-id-name">
+                      {user.nombre} {user.apellidos}
+                    </span>
+                    <span className="account-id-handle">@{user.nickname}</span>
+                  </div>
                 </div>
-                <div className="profile-data-row">
-                  <dt className="profile-data-label">Apellidos</dt>
-                  <dd className="profile-data-value">{user.apellidos}</dd>
-                </div>
-                <div className="profile-data-row">
-                  <dt className="profile-data-label">Nickname</dt>
-                  <dd className="profile-data-value">@{user.nickname}</dd>
-                </div>
-              </dl>
+
+                <dl className="account-fields">
+                  <div className="account-field">
+                    <dt className="account-field-label">Nombre</dt>
+                    <dd className="account-field-value">{user.nombre}</dd>
+                  </div>
+                  <div className="account-field">
+                    <dt className="account-field-label">Apellidos</dt>
+                    <dd className="account-field-value">{user.apellidos}</dd>
+                  </div>
+                  <div className="account-field account-field--full">
+                    <dt className="account-field-label">Nickname</dt>
+                    <dd className="account-field-value account-field-value--handle">
+                      @{user.nickname}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </section>
 
             {/* -------- Estado en la porra (solo participantes) -------- */}
