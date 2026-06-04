@@ -211,10 +211,10 @@
 }
 
 .profile-data-value {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: normal;
   font-weight: 400;
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: var(--charcoal);
   margin: 0;
   word-break: break-word;
