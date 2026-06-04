@@ -191,27 +191,31 @@
 .account-card::before { top: 0; }
 .account-card::after { bottom: 0; }
 
+/* Rejilla de dos columnas centrada como bloque: etiquetas a la
+   izquierda, valores a la derecha, alineados entre filas. */
 .account-fields {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: baseline;
+  column-gap: var(--space-2xl);
   margin: 0;
 }
 
-.account-field {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: var(--space-lg);
-  padding: 14px var(--space-sm);
+.account-field { display: contents; }
+
+.account-field-label,
+.account-field-value {
+  padding: 14px 0;
 }
 
-.account-field + .account-field {
+.account-field + .account-field .account-field-label,
+.account-field + .account-field .account-field-value {
   border-top: 1px solid var(--border-subtle);
 }
 
 .account-field-label {
-  flex-shrink: 0;
-  text-align: right;
+  text-align: left;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -226,6 +230,7 @@
   font-size: 0.95rem;
   color: var(--charcoal);
   margin: 0;
+  text-align: right;
   word-break: break-word;
   line-height: 1.2;
 }
@@ -564,10 +569,9 @@
 
   /* -------- Datos de la cuenta -------- */
   .account-card { padding: var(--space-sm) 2px; }
-  .account-field {
-    padding: 11px var(--space-xs);
-    gap: var(--space-md);
-  }
+  .account-fields { column-gap: var(--space-xl); }
+  .account-field-label,
+  .account-field-value { padding: 11px 0; }
   .account-field-label {
     font-size: 0.52rem;
     letter-spacing: 0.16em;
