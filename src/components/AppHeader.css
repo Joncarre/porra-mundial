@@ -151,52 +151,67 @@
   .app-mobile-nav {
     display: block;
     border-top: 1px solid var(--border-subtle);
-    border-bottom: 1px solid var(--border-default);
-    background: rgba(251, 248, 241, 0.97);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: var(--shadow-md);
-    animation: dropdown-in 0.2s var(--ease-out);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(251, 248, 241, 0.95) 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-lg);
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    animation: dropdown-in 0.22s var(--ease-out);
   }
 
   .app-mobile-nav-inner {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding-top: var(--space-sm);
-    padding-bottom: var(--space-sm);
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
   }
 }
 
 .app-mobile-nav-link {
-  display: block;
-  padding: 13px 14px;
-  font-size: 1rem;
-  font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 11px 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   color: var(--text-secondary);
-  border-radius: var(--radius-sm);
-  border-left: 3px solid transparent;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: background var(--transition-fast), color var(--transition-fast),
+    padding-left var(--transition-fast);
 }
 
 .app-mobile-nav-link:hover {
   background: var(--bg-soft);
   color: var(--charcoal);
+  padding-left: 19px;
 }
 
 .app-mobile-nav-link.is-active {
-  color: var(--charcoal);
-  background: var(--bg-soft);
-  border-left-color: var(--gold-500);
-  font-weight: 500;
+  color: var(--gold-700);
+  background: var(--grad-gold-soft);
+  padding-left: 19px;
+}
+
+/* Filo dorado a la izquierda del enlace activo */
+.app-mobile-nav-link.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 16px;
+  border-radius: 0 2px 2px 0;
+  background: var(--grad-gold);
 }
 
 .app-mobile-nav-link--admin {
   color: var(--gold-700);
-}
-
-.app-mobile-nav-link--admin.is-active {
-  border-left-color: var(--gold-600);
 }
 
 /* -------- User menu -------- */
