@@ -91,8 +91,112 @@
   padding: 10px 16px;
 }
 
+/* -------- Acciones a la derecha (menú de usuario + hamburguesa) -------- */
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* -------- Botón hamburguesa (solo tablet/móvil) -------- */
+.app-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0 11px;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.app-nav-toggle:hover {
+  background: var(--bg-soft);
+  border-color: var(--border-strong);
+}
+
+.app-nav-toggle-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--charcoal);
+  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+
+.app-nav-toggle.is-open .app-nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.app-nav-toggle.is-open .app-nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+.app-nav-toggle.is-open .app-nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* -------- Panel de navegación desplegable (tablet/móvil) -------- */
+.app-mobile-nav {
+  display: none;
+}
+
 @media (max-width: 720px) {
+  /* La barra de escritorio se oculta y aparece la hamburguesa. */
   .app-nav { display: none; }
+  .app-nav-toggle { display: flex; }
+
+  .app-mobile-nav {
+    display: block;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-default);
+    background: rgba(251, 248, 241, 0.97);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md);
+    animation: dropdown-in 0.2s var(--ease-out);
+  }
+
+  .app-mobile-nav-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-sm);
+  }
+}
+
+.app-mobile-nav-link {
+  display: block;
+  padding: 13px 14px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.app-mobile-nav-link:hover {
+  background: var(--bg-soft);
+  color: var(--charcoal);
+}
+
+.app-mobile-nav-link.is-active {
+  color: var(--charcoal);
+  background: var(--bg-soft);
+  border-left-color: var(--gold-500);
+  font-weight: 500;
+}
+
+.app-mobile-nav-link--admin {
+  color: var(--gold-700);
+}
+
+.app-mobile-nav-link--admin.is-active {
+  border-left-color: var(--gold-600);
 }
 
 /* -------- User menu -------- */
@@ -133,8 +237,18 @@
   text-transform: uppercase;
 }
 
+@media (max-width: 720px) {
+  .app-header-inner {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .app-brand { font-size: 1.25rem; }
+}
+
 @media (max-width: 540px) {
   .app-user-info { display: none; }
+  .app-user-trigger { padding: 4px; }
+  .app-brand { font-size: 1.15rem; }
 }
 
 /* -------- Dropdown -------- */
