@@ -163,62 +163,70 @@
   color: var(--charcoal);
 }
 
-/* -------- Datos de la cuenta — tarjetas con acento dorado -------- */
-.profile-data-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-md);
-}
-
-.profile-data-item {
+/* -------- Datos de la cuenta — editorial premium con filas -------- */
+.profile-data-list {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 16px 18px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border-subtle);
+  margin: 0;
+  padding: var(--space-lg) var(--space-xl);
+  background:
+    radial-gradient(ellipse 70% 100% at 100% 0%, rgba(216, 182, 122, 0.10), transparent 65%),
+    var(--bg-soft);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   overflow: hidden;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
 }
 
-.profile-data-item:hover {
-  border-color: var(--border-gold);
-  box-shadow: var(--shadow-sm);
-}
-
-.profile-data-item::before {
+.profile-data-list::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 18px;
-  width: 28px;
+  left: var(--space-xl);
+  width: 38px;
   height: 2px;
   background: var(--grad-gold);
   border-radius: 0 0 2px 2px;
 }
 
+.profile-data-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: baseline;
+  gap: var(--space-lg);
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.profile-data-row:first-child { padding-top: 6px; }
+.profile-data-row:last-child { padding-bottom: 4px; border-bottom: none; }
+
 .profile-data-label {
-  display: block;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  background: var(--grad-gold);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--gold-700);
+  margin: 0;
 }
 
 .profile-data-value {
-  display: block;
-  font-size: 0.98rem;
+  font-family: var(--font-display);
+  font-style: italic;
   font-weight: 500;
+  font-size: 1.2rem;
   color: var(--charcoal);
+  margin: 0;
   word-break: break-word;
-  text-align: left;
+  line-height: 1.2;
+}
+
+@media (max-width: 480px) {
+  .profile-data-list { padding: var(--space-md) var(--space-lg); }
+  .profile-data-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
 }
 
 /* ============================================================

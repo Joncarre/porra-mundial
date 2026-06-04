@@ -205,20 +205,20 @@ export default function Profile() {
                 <h2>Datos de la cuenta</h2>
               </header>
 
-              <div className="profile-data-grid">
-                <div className="profile-data-item">
-                  <span className="profile-data-label">Nombre</span>
-                  <span className="profile-data-value">{user.nombre}</span>
+              <dl className="profile-data-list">
+                <div className="profile-data-row">
+                  <dt className="profile-data-label">Nombre</dt>
+                  <dd className="profile-data-value">{user.nombre}</dd>
                 </div>
-                <div className="profile-data-item">
-                  <span className="profile-data-label">Apellidos</span>
-                  <span className="profile-data-value">{user.apellidos}</span>
+                <div className="profile-data-row">
+                  <dt className="profile-data-label">Apellidos</dt>
+                  <dd className="profile-data-value">{user.apellidos}</dd>
                 </div>
-                <div className="profile-data-item">
-                  <span className="profile-data-label">Nickname</span>
-                  <span className="profile-data-value">@{user.nickname}</span>
+                <div className="profile-data-row">
+                  <dt className="profile-data-label">Nickname</dt>
+                  <dd className="profile-data-value">@{user.nickname}</dd>
                 </div>
-              </div>
+              </dl>
             </section>
 
             {/* -------- Estado en la porra (solo participantes) -------- */}
