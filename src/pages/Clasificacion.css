@@ -107,6 +107,7 @@
   text-align: center;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
 }
 
 .cl-table tbody tr:last-child td { border-bottom: none; }
@@ -119,6 +120,17 @@
   color: var(--text-muted);
 }
 
+/* Más aire entre la columna # y la columna Participante */
+.cl-table thead th.cl-col-pos,
+.cl-table tbody td.cl-col-pos {
+  padding-right: var(--space-lg);
+}
+
+.cl-table thead th.cl-col-user,
+.cl-table tbody td.cl-col-user {
+  padding-left: var(--space-md);
+}
+
 .cl-col-user {
   text-align: left !important;
   min-width: 220px;
@@ -127,7 +139,7 @@
 .cl-col-pts {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: var(--charcoal);
   width: 64px;
 }

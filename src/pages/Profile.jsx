@@ -205,7 +205,7 @@ export default function Profile() {
                 <h2>Datos de la cuenta</h2>
               </header>
 
-              <div className="profile-data-list">
+              <div className="profile-data-grid">
                 <div className="profile-data-item">
                   <span className="profile-data-label">Nombre</span>
                   <span className="profile-data-value">{user.nombre}</span>

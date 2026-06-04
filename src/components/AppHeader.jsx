@@ -33,9 +33,9 @@ export default function AppHeader() {
   return (
     <header className="app-header">
       <div className="container app-header-inner">
-        <Link to="/perfil" className="app-brand">
+        <span className="app-brand">
           Porra <span className="text-gold">Mundial</span>
-        </Link>
+        </span>
 
         <nav className="app-nav">
           <NavLink
@@ -48,7 +48,7 @@ export default function AppHeader() {
             to="/grupos"
             className={({ isActive }) => `app-nav-link ${isActive ? 'is-active' : ''}`}
           >
-            Grupos
+            Resultados
           </NavLink>
           {!user?.isAdmin && (
             <>
