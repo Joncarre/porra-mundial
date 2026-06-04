@@ -1,53 +1,50 @@
 /* ============================================================
-   Aviso de deadline — paleta coral/terracota pastel premium
+   Aviso de deadline — minimalista con hairlines difuminadas
    ============================================================ */
 
 .deadline-notice {
   position: relative;
-  padding: 18px 24px 18px 28px;
+  padding: 18px 0;
   margin-bottom: var(--space-lg);
-  background:
-    radial-gradient(ellipse 70% 90% at 0% 100%, rgba(224, 132, 112, 0.10), transparent 60%),
-    radial-gradient(ellipse 80% 90% at 100% 0%, rgba(216, 152, 122, 0.14), transparent 60%),
-    linear-gradient(135deg, #fef4ee 0%, #fceae0 100%);
-  border: 1px solid rgba(210, 130, 100, 0.32);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.65),
-    0 1px 2px rgba(180, 80, 50, 0.05),
-    0 10px 28px -10px rgba(180, 80, 50, 0.18);
   display: flex;
   flex-direction: column;
   gap: 6px;
+  background: transparent;
 }
 
-/* Acento superior izquierdo: línea con gradiente coral */
+/* Hairline superior, difuminada en los bordes */
 .deadline-notice::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 24px;
-  width: 38px;
-  height: 2px;
-  background: linear-gradient(90deg, #d97757 0%, #b3411c 100%);
-  border-radius: 0 0 2px 2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(168, 56, 32, 0.50) 50%,
+    transparent 100%
+  );
 }
 
-/* Esquina decorativa con brillo coral suave (efecto premium) */
+/* Hairline inferior, mismo difuminado */
 .deadline-notice::after {
   content: '';
   position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(224, 132, 112, 0.16), transparent 70%);
-  pointer-events: none;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(168, 56, 32, 0.50) 50%,
+    transparent 100%
+  );
 }
 
 .deadline-notice-label {
-  position: relative;
   display: inline-block;
   font-size: 0.62rem;
   font-weight: 700;
@@ -61,7 +58,6 @@
 }
 
 .deadline-notice-text {
-  position: relative;
   font-size: 0.9rem;
   color: #5b2c1c;
   line-height: 1.55;
