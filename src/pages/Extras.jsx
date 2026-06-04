@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader.jsx';
 import DeadlineNotice from '../components/DeadlineNotice.jsx';
+import ExtrasNamesNotice from '../components/ExtrasNamesNotice.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
   getPrediccionesExtras,
@@ -153,6 +154,7 @@ export default function Extras() {
           ) : (
             <div className="ex-panel">
               <DeadlineNotice />
+              <ExtrasNamesNotice />
 
               <div className="ex-progress">
                 <div className="ex-progress-text">

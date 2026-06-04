@@ -1,8 +1,8 @@
 /* ============================================================
-   Aviso de deadline — minimalista con hairlines difuminadas
+   Aviso en Extras — hairlines difuminadas, violeta pastel
    ============================================================ */
 
-.deadline-notice {
+.extras-names-notice {
   position: relative;
   padding: 18px 0;
   margin-bottom: var(--space-lg);
@@ -12,59 +12,45 @@
   background: transparent;
 }
 
-/* Hairline superior, difuminada en los bordes */
-.deadline-notice::before {
+.extras-names-notice::before,
+.extras-names-notice::after {
   content: '';
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
   height: 2px;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(168, 56, 32, 0.50) 50%,
+    rgba(124, 92, 178, 0.55) 50%,
     transparent 100%
   );
 }
 
-/* Hairline inferior, mismo difuminado */
-.deadline-notice::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(168, 56, 32, 0.50) 50%,
-    transparent 100%
-  );
-}
+.extras-names-notice::before { top: 0; }
+.extras-names-notice::after { bottom: 0; }
 
-.deadline-notice-label {
+.extras-names-notice-label {
   display: inline-block;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #d97757 0%, #a83820 100%);
+  background: linear-gradient(135deg, #a48be0 0%, #6242a3 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 
-.deadline-notice-text {
+.extras-names-notice-text {
   font-size: 0.9rem;
-  color: #5b2c1c;
+  color: #3b2860;
   line-height: 1.55;
   margin: 0;
 }
 
-.deadline-notice-text strong {
-  color: #a83820;
+.extras-names-notice-text strong {
+  color: #5a3d8c;
   font-weight: 600;
 }
