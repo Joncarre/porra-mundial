@@ -54,7 +54,7 @@ export const PUNTOS_DESCRIPCION_EXTRAS = [
   },
   {
     titulo: 'Balón de oro / plata / bronce',
-    valor: '+20 puntos cada uno',
+    valor: '+20 puntos',
     detalle: 'Acertar a los tres mejores jugadores del Mundial.',
   },
 ];

@@ -529,14 +529,21 @@
 @media (max-width: 540px) {
   .profile-main { padding: var(--space-xl) 0 var(--space-2xl); }
 
+  /* -------- Hero -------- */
   .profile-hero-content {
     padding: var(--space-lg);
     gap: var(--space-md);
   }
-  .profile-hero-name { font-size: 1.5rem; }
-  .profile-hero-nick { font-size: 0.95rem; }
-  .profile-hero-since { font-size: 0.78rem; }
+  .profile-hero-name { font-size: 1.25rem; }
+  .profile-hero-nick { font-size: 0.82rem; }
+  .profile-hero-since { font-size: 0.7rem; }
+  .profile-pill {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    padding: 3px 9px;
+  }
 
+  /* -------- Sections wrappers -------- */
   .profile-grid {
     gap: var(--space-md);
     margin-top: var(--space-lg);
@@ -546,8 +553,9 @@
     margin-bottom: var(--space-md);
     padding-bottom: var(--space-sm);
   }
-  .profile-section-header h2 { font-size: 1.05rem; }
+  .profile-section-header h2 { font-size: 0.95rem; }
 
+  /* -------- Datos de la cuenta -------- */
   .profile-data-list { padding: var(--space-md) var(--space-lg); }
   .profile-data-list::before { left: var(--space-lg); }
   .profile-data-row {
@@ -555,22 +563,33 @@
     gap: var(--space-md);
     padding: 12px 0;
   }
-  .profile-data-value { font-size: 0.95rem; }
+  .profile-data-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+  }
+  .profile-data-value { font-size: 0.85rem; }
 
+  /* -------- Timeline (estado en la porra) -------- */
   .tl-step {
     grid-template-columns: 22px 1fr;
     gap: var(--space-sm);
     padding-bottom: var(--space-md);
   }
-  .tl-title { font-size: 1rem; }
-  .tl-detail { font-size: 0.85rem; }
+  .tl-title { font-size: 0.92rem; }
+  .tl-detail { font-size: 0.78rem; }
   .tl-header { gap: var(--space-sm); }
   .tl-status {
-    font-size: 0.6rem;
-    padding: 4px 10px 4px 9px;
-    letter-spacing: 0.12em;
+    font-size: 0.54rem;
+    padding: 3px 9px 3px 8px;
+    letter-spacing: 0.10em;
+    gap: 5px;
+  }
+  .tl-status::before {
+    width: 5px;
+    height: 5px;
   }
 
+  /* -------- Modal de foto -------- */
   .profile-modal { padding: var(--space-lg); }
   .profile-modal-header { margin-bottom: var(--space-md); }
   .profile-modal-header h3 { font-size: 1.2rem; }

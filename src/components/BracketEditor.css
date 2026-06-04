@@ -389,19 +389,24 @@
   }
 }
 
-/* Móvil — chips de progreso más compactas */
+/* Móvil — chips de progreso bastante más pequeñas */
 @media (max-width: 540px) {
   .be-progress {
-    padding: 6px var(--space-sm);
+    padding: 4px 6px;
     margin-bottom: var(--space-md);
   }
+  .be-progress::before {
+    width: 32px;
+  }
   .be-progress-item {
-    padding: 3px 10px;
-    gap: 2px;
+    padding: 2px 6px;
+    gap: 1px;
   }
   .be-progress-item-label {
-    font-size: 0.5rem;
-    letter-spacing: 0.1em;
+    font-size: 0.42rem;
+    letter-spacing: 0.08em;
   }
-  .be-progress-item-count { font-size: 0.85rem; }
+  .be-progress-item-count {
+    font-size: 0.7rem;
+  }
 }
