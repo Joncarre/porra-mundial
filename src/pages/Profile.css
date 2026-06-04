@@ -176,12 +176,14 @@
   position: absolute;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 3px;
+  border-radius: var(--radius-full);
   background: linear-gradient(
     to right,
     transparent 0%,
-    var(--border-strong) 20%,
-    var(--border-strong) 80%,
+    var(--gold-400) 22%,
+    var(--gold-500) 50%,
+    var(--gold-400) 78%,
     transparent 100%
   );
 }
@@ -198,8 +200,7 @@
 .account-field {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-lg);
+  gap: var(--space-md);
   padding: 14px var(--space-sm);
 }
 
@@ -208,6 +209,8 @@
 }
 
 .account-field-label {
+  flex-shrink: 0;
+  min-width: 90px;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -222,7 +225,6 @@
   font-size: 0.95rem;
   color: var(--charcoal);
   margin: 0;
-  text-align: right;
   word-break: break-word;
   line-height: 1.2;
 }
@@ -563,9 +565,10 @@
   .account-card { padding: var(--space-sm) 2px; }
   .account-field {
     padding: 11px var(--space-xs);
-    gap: var(--space-md);
+    gap: var(--space-sm);
   }
   .account-field-label {
+    min-width: 72px;
     font-size: 0.52rem;
     letter-spacing: 0.16em;
   }
