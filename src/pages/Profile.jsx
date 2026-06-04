@@ -155,7 +155,6 @@ export default function Profile() {
 
   const checklist = buildChecklist(user);
   const previewing = !!preview;
-  const initials = `${user.nombre?.[0] ?? ''}${user.apellidos?.[0] ?? ''}`.toUpperCase();
 
   return (
     <div className="profile-page">
@@ -207,18 +206,6 @@ export default function Profile() {
               </header>
 
               <div className="account-card">
-                <div className="account-id">
-                  <span className="account-monogram" aria-hidden="true">
-                    {initials}
-                  </span>
-                  <div className="account-id-text">
-                    <span className="account-id-name">
-                      {user.nombre} {user.apellidos}
-                    </span>
-                    <span className="account-id-handle">@{user.nickname}</span>
-                  </div>
-                </div>
-
                 <dl className="account-fields">
                   <div className="account-field">
                     <dt className="account-field-label">Nombre</dt>
@@ -228,7 +215,7 @@ export default function Profile() {
                     <dt className="account-field-label">Apellidos</dt>
                     <dd className="account-field-value">{user.apellidos}</dd>
                   </div>
-                  <div className="account-field account-field--full">
+                  <div className="account-field">
                     <dt className="account-field-label">Nickname</dt>
                     <dd className="account-field-value account-field-value--handle">
                       @{user.nickname}
