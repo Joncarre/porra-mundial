@@ -112,6 +112,11 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Reserva el espacio del scrollbar siempre que el viewport lo necesite,
+     incluso si la página actual no desborda — evita que la navbar se mueva
+     ligeramente al navegar entre rutas con distinta altura de contenido. */
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 
 body {

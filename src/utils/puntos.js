@@ -20,8 +20,27 @@ import { clasificados, clasificacionTodosLosGrupos } from './bracket.js';
 
 const resultadoTipo = (gl, gv) => (gl > gv ? 'L' : gl < gv ? 'V' : 'E');
 
-const compararPremio = (a, b) =>
-  !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
+/**
+ * Normaliza un nombre de jugador para compararlo de forma robusta:
+ * - quita acentos/diacríticos (Pedrí → Pedri)
+ * - pasa a minúsculas
+ * - recorta espacios al inicio/final
+ * - colapsa espacios internos múltiples a uno solo
+ * Preserva espacios entre palabras ("Lamine Yamal") y puntos ("B. Iglesias").
+ */
+const normalizarPremio = (s) =>
+  (s || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ');
+
+const compararPremio = (a, b) => {
+  const na = normalizarPremio(a);
+  const nb = normalizarPremio(b);
+  return !!na && !!nb && na === nb;
+};
 
 /**
  * @param {Object} predGrupos    - map partidoId → { golesLocal, golesVisitante }
