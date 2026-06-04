@@ -290,3 +290,28 @@
   color: var(--text-muted);
   margin-top: 4px;
 }
+
+/* ============================================================
+   Responsive — móvil
+   La tabla principal mantiene min-width 640px y se hace scroll
+   horizontal dentro de .cl-table-wrap. El resto se compacta.
+   ============================================================ */
+@media (max-width: 540px) {
+  .cl-main { padding: var(--space-xl) 0 var(--space-2xl); }
+  .cl-page-header { margin-bottom: var(--space-xl); }
+
+  .cl-table-wrap { padding: var(--space-sm); }
+  .cl-table tbody td { padding: 14px 6px; }
+  .cl-table thead th { padding: 10px 6px; }
+
+  .cl-footer-cards {
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+  .cl-card { padding: var(--space-lg); }
+  .cl-card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.10em;
+  }
+  .cl-card-hint { font-size: 0.78rem; }
+}

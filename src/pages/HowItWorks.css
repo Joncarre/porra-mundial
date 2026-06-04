@@ -246,3 +246,36 @@
   .hiw-points-cards { grid-template-columns: 1fr; }
   .hiw-points-card { padding: var(--space-xl); }
 }
+
+/* ============================================================
+   Responsive — móvil
+   ============================================================ */
+@media (max-width: 540px) {
+  .hiw-back {
+    margin-top: var(--space-xl);
+    font-size: 0.85rem;
+  }
+  .hiw-hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hiw-hero-sub { font-size: 1rem; }
+  .hiw-section { padding: var(--space-xl) 0 var(--space-2xl); }
+  .hiw-block-header { margin-bottom: var(--space-xl); }
+  .hiw-step {
+    padding: var(--space-lg);
+    gap: var(--space-sm);
+  }
+  .hiw-step-number { font-size: 2.25rem; }
+  .hiw-step-title { font-size: 1.05rem; }
+  .hiw-step-text { font-size: 0.88rem; }
+  .hiw-points-card { padding: var(--space-lg); }
+  .hiw-points-card-head h3 { font-size: 1.15rem; }
+  .hiw-points-label { font-size: 0.88rem; }
+  .hiw-points-value { font-size: 0.95rem; }
+}
+
+@media (max-width: 380px) {
+  /* En pantallas muy estrechas, dejamos menos hueco entre etiqueta y valor
+     para que la fila quepa sin desbordar */
+  .hiw-points-leader { margin: 0 8px; }
+  .hiw-points-label { font-size: 0.82rem; }
+  .hiw-points-value { font-size: 0.9rem; }
+}

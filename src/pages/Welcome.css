@@ -234,3 +234,40 @@
     height: 1px;
   }
 }
+
+/* ============================================================
+   Responsive — móvil
+   ============================================================ */
+@media (max-width: 540px) {
+  .welcome-hero {
+    padding: var(--space-2xl) 0 var(--space-lg);
+    min-height: auto;
+  }
+  .welcome-hero-inner { gap: var(--space-md); }
+  .welcome-hero-subtitle { font-size: 1rem; }
+  .welcome-hero-link {
+    font-size: 0.85rem;
+    gap: 12px;
+  }
+  .welcome-hero-link-rule { width: 22px; }
+  .welcome-hero-link:hover .welcome-hero-link-rule { width: 36px; }
+  .welcome-stats-section { padding-bottom: var(--space-2xl); }
+  .welcome-footer { padding: var(--space-md) 0 var(--space-xl); }
+  .welcome-user-chip {
+    padding: 6px 20px 6px 6px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .welcome-hero-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .welcome-hero-actions > .btn,
+  .welcome-hero-actions > .welcome-user-chip {
+    width: 100%;
+    justify-content: center;
+  }
+}

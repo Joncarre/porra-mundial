@@ -228,3 +228,42 @@
   color: var(--text-muted);
   font-weight: 400;
 }
+
+/* ============================================================
+   Responsive — móvil
+   La tabla mantiene su min-width y se hace scroll horizontal
+   dentro de .gs-table-wrap. El resto de la tarjeta sí se adapta.
+   ============================================================ */
+@media (max-width: 540px) {
+  .gs-group { padding: var(--space-md); }
+  .gs-group-header {
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-sm);
+  }
+  .gs-group-title { font-size: 1.2rem; }
+  .gs-group-letter { font-size: 0.78rem; }
+
+  .gs-matches {
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+  }
+  .gs-jornada { margin-bottom: var(--space-sm); }
+  .gs-jornada-label {
+    letter-spacing: 0.15em;
+    font-size: 0.55rem;
+  }
+  .gs-match {
+    padding: 6px 10px;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+  .gs-match-team { font-size: 0.76rem; }
+  .gs-match-code {
+    font-size: 0.6rem;
+    margin-right: 4px;
+  }
+  .gs-match-score {
+    font-size: 0.95rem;
+    gap: 6px;
+  }
+}
