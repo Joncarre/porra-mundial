@@ -3,6 +3,7 @@ import AppHeader from '../components/AppHeader.jsx';
 import Avatar from '../components/Avatar.jsx';
 import BracketEditor from '../components/BracketEditor.jsx';
 import { getAllUsers, updateUser } from '../services/users.js';
+import { getAllPrediccionesExtras } from '../services/predicciones.js';
 import {
   getResultadosGrupos,
   saveResultadosPartidos,
@@ -19,6 +20,7 @@ import './Admin.css';
 
 const TABS = [
   { id: 'usuarios', label: 'Usuarios' },
+  { id: 'extras', label: 'Apuestas extra' },
   { id: 'resultados', label: 'Resultados de grupos' },
   { id: 'eliminatoria', label: 'Eliminatoria' },
   { id: 'premios', label: 'Premios' },
@@ -58,6 +60,7 @@ export default function Admin() {
           </nav>
 
           {tab === 'usuarios' && <UsersPanel />}
+          {tab === 'extras' && <ExtrasPanel />}
           {tab === 'resultados' && <ResultsPanel />}
           {tab === 'eliminatoria' && <EliminatoriaPanel />}
           {tab === 'premios' && <PremiosPanel />}
@@ -158,6 +161,93 @@ function ToggleRow({ label, checked, onClick, disabled }) {
         <span className="admin-switch-thumb" />
       </button>
     </label>
+  );
+}
+
+/* ============================================================
+   Extras panel — predicciones extra de cada participante
+   ============================================================ */
+const EXTRAS_COLS = [
+  { key: 'maxGoleador', label: 'Máx. goleador' },
+  { key: 'balonOro', label: 'Balón de Oro' },
+  { key: 'balonPlata', label: 'Balón de Plata' },
+  { key: 'balonBronce', label: 'Balón de Bronce' },
+];
+
+function ExtrasPanel() {
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const [users, extras] = await Promise.all([
+        getAllUsers(),
+        getAllPrediccionesExtras(),
+      ]);
+      const participantes = users
+        .filter((u) => !u.isAdmin)
+        .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es'))
+        .map((u) => ({
+          id: u.id,
+          nombre: `${u.nombre} ${u.apellidos}`.trim(),
+          nickname: u.nickname,
+          avatarFoto: u.avatarFoto,
+          extras: extras[u.id] || {},
+        }));
+      setRows(participantes);
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div className="admin-loading">Cargando apuestas extra…</div>;
+
+  if (rows.length === 0) {
+    return <div className="admin-empty">Aún no hay participantes en la porra.</div>;
+  }
+
+  return (
+    <div className="admin-panel">
+      <div className="admin-panel-head">
+        <h2>Apuestas extra por participante</h2>
+        <span className="admin-count">{rows.length} participantes</span>
+      </div>
+
+      <div className="admin-extras-wrap">
+        <table className="admin-extras-table">
+          <thead>
+            <tr>
+              <th className="admin-extras-col-user">Participante</th>
+              {EXTRAS_COLS.map((c) => (
+                <th key={c.key}>{c.label}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.id}>
+                <td className="admin-extras-col-user">
+                  <div className="admin-extras-user">
+                    <Avatar foto={r.avatarFoto} name={r.nombre || r.nickname} size="xs" />
+                    <div className="admin-extras-user-text">
+                      <span className="admin-extras-name">{r.nombre}</span>
+                      <span className="admin-extras-nick">@{r.nickname}</span>
+                    </div>
+                  </div>
+                </td>
+                {EXTRAS_COLS.map((c) => {
+                  const value = r.extras[c.key]?.trim();
+                  return (
+                    <td key={c.key} className={value ? '' : 'admin-extras-empty'}>
+                      {value || '—'}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
 

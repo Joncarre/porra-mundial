@@ -9,7 +9,7 @@
  * la colección correspondiente, con el id del usuario como id del documento.
  */
 
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db, DEMO_MODE } from '../firebase.js';
 
 const STORE_KEY_FASE1 = 'porra:predicciones_fase1';
@@ -115,6 +115,24 @@ export async function getPrediccionesExtras(userId) {
   }
   const snap = await getDoc(doc(db, 'predicciones_extras', userId));
   return snap.exists() ? { ...EXTRAS_DEFAULT, ...snap.data() } : { ...EXTRAS_DEFAULT };
+}
+
+/**
+ * Devuelve todas las predicciones extra, indexadas por id de usuario.
+ * Pensado para el panel de administración (ver de un vistazo qué ha
+ * apostado cada participante).
+ * @returns {Promise<Object>} map userId → { maxGoleador, balonOro, balonPlata, balonBronce }
+ */
+export async function getAllPrediccionesExtras() {
+  if (DEMO_MODE) {
+    return readDemoStore(STORE_KEY_EXTRAS);
+  }
+  const snap = await getDocs(collection(db, 'predicciones_extras'));
+  const map = {};
+  snap.docs.forEach((d) => {
+    map[d.id] = d.data();
+  });
+  return map;
 }
 
 export async function savePrediccionesExtras(userId, extras) {
