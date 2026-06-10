@@ -28,13 +28,17 @@ export default function Clasificacion() {
 
   useEffect(() => {
     (async () => {
-      const [users, resGruposDoc, resEliDoc, resPremiosDoc, cfg] = await Promise.all([
+      const [usersAll, resGruposDoc, resEliDoc, resPremiosDoc, cfg] = await Promise.all([
         getAllUsers(),
         getResultadosGrupos(),
         getResultadosEliminatoria(),
         getResultadosPremios(),
         getTorneoConfig(),
       ]);
+
+      // El administrador no participa en la porra: no aparece en la
+      // clasificación ni cuenta para el bote recaudado.
+      const users = usersAll.filter((u) => !u.isAdmin);
 
       const resGrupos = resGruposDoc.partidos || {};
       const resBracket = resEliDoc.ganadores || {};
