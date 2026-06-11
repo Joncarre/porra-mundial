@@ -139,7 +139,7 @@
 /* Footer con crédito al desarrollador, anclado al final de la página */
 .welcome-footer {
   margin-top: auto;
-  padding: var(--space-xl) 0 var(--space-2xl);
+  padding: var(--space-xl) 0 var(--space-4xl);
   text-align: center;
 }
 
@@ -226,11 +226,22 @@
 @media (max-width: 720px) {
   .welcome-stats {
     flex-direction: column;
-    gap: var(--space-md);
-    padding: var(--space-lg);
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    max-width: 320px;
+  }
+  .welcome-stat {
+    padding: 3px 0;
+  }
+  .welcome-stat-value {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+  .welcome-stat-label {
+    font-size: 0.66rem;
   }
   .welcome-stat-divider {
-    width: 60%;
+    width: 50%;
     height: 1px;
   }
 }
@@ -252,7 +263,7 @@
   .welcome-hero-link-rule { width: 22px; }
   .welcome-hero-link:hover .welcome-hero-link-rule { width: 36px; }
   .welcome-stats-section { padding-bottom: var(--space-2xl); }
-  .welcome-footer { padding: var(--space-md) 0 var(--space-xl); }
+  .welcome-footer { padding: var(--space-md) 0 var(--space-3xl); }
   .welcome-user-chip {
     padding: 6px 20px 6px 6px;
     font-size: 0.9rem;
