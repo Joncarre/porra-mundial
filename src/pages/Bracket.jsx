@@ -12,7 +12,7 @@ import {
   savePrediccionesFase2,
 } from '../services/predicciones.js';
 import { clasificacionTodosLosGrupos, bracketCompleto, progresoBracket } from '../utils/bracket.js';
-import { apuestasCerradas, APUESTAS_DEADLINE_LABEL } from '../utils/deadlines.js';
+import { apuestasCerradas } from '../utils/deadlines.js';
 import './Bracket.css';
 
 export default function Bracket() {
@@ -138,8 +138,7 @@ export default function Bracket() {
               {cerradas ? (
                 <footer className="brk-actions brk-actions--cerradas">
                   <span className="brk-cerradas-notice">
-                    Las apuestas se cerraron el {APUESTAS_DEADLINE_LABEL}. Tu
-                    bracket queda como estaba guardado.
+                    Las apuestas se cerraron el día 11/06/26 a las 18:00 horas
                   </span>
                 </footer>
               ) : (

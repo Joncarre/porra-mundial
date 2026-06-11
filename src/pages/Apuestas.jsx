@@ -5,7 +5,7 @@ import DeadlineNotice from '../components/DeadlineNotice.jsx';
 import { GRUPO_LETRAS, partidosDelGrupo, TODOS_LOS_PARTIDOS_GRUPOS } from '../data/grupos.js';
 import { getPrediccionesFase1, savePrediccionesFase1 } from '../services/predicciones.js';
 import { useAuth } from '../context/AuthContext.jsx';
-import { apuestasCerradas, APUESTAS_DEADLINE_LABEL } from '../utils/deadlines.js';
+import { apuestasCerradas } from '../utils/deadlines.js';
 import './Apuestas.css';
 
 const TOTAL_PARTIDOS = TODOS_LOS_PARTIDOS_GRUPOS.length; // 72
@@ -247,8 +247,7 @@ export default function Apuestas() {
               {cerradas ? (
                 <footer className="ap-actions ap-actions--cerradas">
                   <span className="ap-cerradas-notice">
-                    Las apuestas se cerraron el {APUESTAS_DEADLINE_LABEL}. Tus
-                    pronósticos quedan como estaban guardados.
+                    Las apuestas se cerraron el día 11/06/26 a las 18:00 horas
                   </span>
                 </footer>
               ) : (

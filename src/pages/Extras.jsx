@@ -2,13 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader.jsx';
 import DeadlineNotice from '../components/DeadlineNotice.jsx';
-import ExtrasNamesNotice from '../components/ExtrasNamesNotice.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
   getPrediccionesExtras,
   savePrediccionesExtras,
 } from '../services/predicciones.js';
-import { apuestasCerradas, APUESTAS_DEADLINE_LABEL } from '../utils/deadlines.js';
+import { apuestasCerradas } from '../utils/deadlines.js';
 import './Extras.css';
 
 const CAMPOS = [
@@ -154,7 +153,6 @@ export default function Extras() {
           ) : (
             <div className="ex-panel">
               <DeadlineNotice />
-              <ExtrasNamesNotice />
 
               <div className="ex-progress">
                 <div className="ex-progress-text">
@@ -192,8 +190,7 @@ export default function Extras() {
               {cerradas ? (
                 <footer className="ex-actions ex-actions--cerradas">
                   <span className="ex-cerradas-notice">
-                    Las apuestas se cerraron el {APUESTAS_DEADLINE_LABEL}. Tus
-                    apuestas quedan como estaban guardadas.
+                    Las apuestas se cerraron el día 11/06/26 a las 18:00 horas
                   </span>
                 </footer>
               ) : (
