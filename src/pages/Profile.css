@@ -279,7 +279,7 @@
 
 .jstep {
   display: grid;
-  grid-template-columns: 16px 1fr;
+  grid-template-columns: 22px 1fr;
   gap: var(--space-md);
   padding: var(--space-md) 0;
 }
@@ -289,6 +289,7 @@
 }
 
 .jstep-marker {
+  justify-self: center;
   width: 14px;
   height: 14px;
   margin-top: 5px;
@@ -299,10 +300,27 @@
   transition: all var(--transition);
 }
 
+/* Paso completado: check verde elegante (dibujado en CSS). */
 .jstep.is-done .jstep-marker {
-  background: var(--gold-500);
-  border-color: var(--gold-500);
-  box-shadow: 0 0 0 4px rgba(184, 148, 90, 0.16);
+  position: relative;
+  width: 21px;
+  height: 21px;
+  margin-top: 1px;
+  background: linear-gradient(135deg, #8bbf8f 0%, #5d9560 100%);
+  border-color: transparent;
+  box-shadow: 0 3px 8px rgba(111, 156, 114, 0.32);
+}
+
+.jstep.is-done .jstep-marker::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -55%) rotate(45deg);
 }
 
 .jstep.is-pending .jstep-marker {

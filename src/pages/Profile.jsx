@@ -62,7 +62,7 @@ function buildChecklist(user) {
       state: stateOf(otras, elim),
       to: '/extras',
       copy: {
-        done: 'Máximo goleador, balones y ganador guardados.',
+        done: 'Máximo goleador y balones.',
         pending: 'Lista para rellenar.',
         locked: 'Se desbloquea al completar el bracket eliminatorio.',
       },
@@ -261,7 +261,7 @@ export default function Profile() {
                       <div className="jstep-body">
                         <div className="jstep-top">
                           <span className="jstep-title">{item.title}</span>
-                          {item.state === 'pending' && item.to ? (
+                          {item.state === 'done' ? null : item.state === 'pending' && item.to ? (
                             <Link to={item.to} className="jstep-status jstep-status--link">
                               {STATE_LABEL[item.state]}
                             </Link>
