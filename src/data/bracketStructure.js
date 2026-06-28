@@ -37,6 +37,29 @@ export const DIECISEISAVOS = [
   { id: 88, local: ref2('D'), visitante: ref2('G') },
 ];
 
+/**
+ * Preferencia de colocación de terceros (cuadro oficial).
+ *
+ * El reparto de los 8 mejores terceros a sus 8 huecos tiene varias
+ * soluciones válidas; el reparto automático elegía la primera que
+ * encontraba, que no siempre coincide con el cruce oficial. Aquí fijamos,
+ * para los huecos cuyo 1.º de grupo ya está decidido, qué grupo debe
+ * aportar el tercero:
+ *
+ *   74: 1.º E vs 3.º D   ·   77: 1.º I vs 3.º F
+ *   82: 1.º G vs 3.º I   ·   85: 1.º B vs 3.º J
+ *
+ * Si el tercero de ese grupo no se clasifica, el hueco se reparte
+ * normalmente. Cada grupo (D, F, I, J) ya figura entre los elegibles del
+ * hueco correspondiente, así que esto no rompe la validez del cuadro.
+ */
+export const PREFERENCIAS_TERCEROS = {
+  74: 'D',
+  77: 'F',
+  82: 'I',
+  85: 'J',
+};
+
 export const OCTAVOS = [
   { id: 89, prev1: 74, prev2: 77 },
   { id: 90, prev1: 73, prev2: 75 },

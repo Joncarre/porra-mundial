@@ -15,6 +15,7 @@
 import { GRUPO_LETRAS, buscarEquipo } from '../data/grupos.js';
 import {
   DIECISEISAVOS,
+  PREFERENCIAS_TERCEROS,
   OCTAVOS,
   CUARTOS,
   SEMIS,
@@ -121,9 +122,25 @@ function asignarTercerosASlots(cl) {
   const asignacion = {};
   const usados = new Set();
 
+  // 1) Preferencias del cuadro oficial: el tercero del grupo indicado se
+  //    coloca en su hueco siempre que se haya clasificado y sea elegible.
+  //    Así fijamos los cruces de 1.º vs 3.º que el reparto automático no
+  //    siempre dejaba como manda el cuadro oficial.
+  for (const slot of slots) {
+    const grupoPref = PREFERENCIAS_TERCEROS[slot.matchId];
+    if (!grupoPref || !slot.grupos.includes(grupoPref)) continue;
+    const t = terceros.find((x) => !usados.has(x.code) && x.grupo === grupoPref);
+    if (t) {
+      asignacion[slot.matchId] = t;
+      usados.add(t.code);
+    }
+  }
+
+  // 2) Backtracking para los huecos que no fija ninguna preferencia.
+  const restantes = slots.filter((s) => !(s.matchId in asignacion));
   const backtrack = (i) => {
-    if (i === slots.length) return true;
-    const slot = slots[i];
+    if (i === restantes.length) return true;
+    const slot = restantes[i];
     for (const t of terceros) {
       if (usados.has(t.code)) continue;
       if (!slot.grupos.includes(t.grupo)) continue;
@@ -139,17 +156,16 @@ function asignarTercerosASlots(cl) {
   if (backtrack(0)) return asignacion;
 
   // Sin emparejamiento completo (grupos incompletos): asignación voraz
-  // respetando la elegibilidad; los slots sin tercero quedan vacíos.
-  const parcial = {};
-  const usados2 = new Set();
-  for (const slot of slots) {
-    const t = terceros.find((x) => !usados2.has(x.code) && slot.grupos.includes(x.grupo));
+  // respetando la elegibilidad y partiendo de las preferencias ya fijadas;
+  // los slots sin tercero quedan vacíos.
+  for (const slot of restantes) {
+    const t = terceros.find((x) => !usados.has(x.code) && slot.grupos.includes(x.grupo));
     if (t) {
-      parcial[slot.matchId] = t;
-      usados2.add(t.code);
+      asignacion[slot.matchId] = t;
+      usados.add(t.code);
     }
   }
-  return parcial;
+  return asignacion;
 }
 
 /**
