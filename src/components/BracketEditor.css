@@ -302,83 +302,6 @@
 }
 
 /* ============================================================
-   Progress chips
-   ============================================================ */
-/* Panel único de progreso, compacto y centrado bajo el cuadro */
-.be-progress {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto var(--space-lg);
-  padding: 7px var(--space-md);
-  background: var(--grad-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Acento dorado superior centrado */
-.be-progress::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 54px;
-  height: 2px;
-  background: var(--grad-gold);
-  border-radius: 0 0 3px 3px;
-}
-
-.be-progress-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 3px 16px;
-  border-left: 1px solid var(--border-subtle);
-}
-
-.be-progress-item:first-child {
-  border-left: none;
-}
-
-.be-progress-item-label {
-  font-size: 0.54rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  text-align: center;
-  white-space: nowrap;
-}
-
-.be-progress-item-count {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--charcoal);
-  letter-spacing: 0.02em;
-}
-
-.be-progress-item-sep {
-  color: var(--text-muted);
-  font-weight: 400;
-  margin: 0 1px;
-}
-
-.be-progress-item.is-done .be-progress-item-label,
-.be-progress-item.is-done .be-progress-item-count {
-  color: var(--gold-700);
-}
-
-/* ============================================================
    Responsive — en pantallas estrechas, scroll horizontal
    ============================================================ */
 @media (max-width: 1400px) {
@@ -389,24 +312,3 @@
   }
 }
 
-/* Móvil — chips de progreso bastante más pequeñas */
-@media (max-width: 540px) {
-  .be-progress {
-    padding: 4px 6px;
-    margin-bottom: var(--space-md);
-  }
-  .be-progress::before {
-    width: 32px;
-  }
-  .be-progress-item {
-    padding: 2px 6px;
-    gap: 1px;
-  }
-  .be-progress-item-label {
-    font-size: 0.42rem;
-    letter-spacing: 0.08em;
-  }
-  .be-progress-item-count {
-    font-size: 0.7rem;
-  }
-}

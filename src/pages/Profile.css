@@ -107,8 +107,8 @@
 .profile-hero-name {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
-  line-height: 1.08;
+  font-size: clamp(1.75rem, 4.4vw, 2.75rem);
+  line-height: 1.05;
   color: var(--charcoal);
   margin-top: 2px;
 }
@@ -117,7 +117,7 @@
   font-family: var(--font-display);
   font-style: italic;
   color: var(--gold-600);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 500;
 }
 
@@ -175,258 +175,205 @@
 }
 
 /* ============================================================
-   Grid de secciones
+   Estado en la porra — progreso segmentado + pasos
    ============================================================ */
-.profile-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.35fr;
-  gap: var(--space-lg);
+.profile-status {
   margin-top: var(--space-lg);
-}
-
-.profile-grid--single {
-  grid-template-columns: minmax(0, 720px);
-  justify-content: center;
-}
-
-@media (max-width: 900px) {
-  .profile-grid { grid-template-columns: 1fr; }
-}
-
-.profile-section {
   background: var(--surface-1);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-md);
 }
 
-.profile-section-header {
-  margin-bottom: var(--space-lg);
-}
-
-.profile-section-header .eyebrow {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.profile-section-header h2 {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--charcoal);
-}
-
-.profile-section-header--status {
+.profile-status-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-md);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
 }
 
-/* ============================================================
-   Datos de la cuenta — filas con divisores sutiles
-   ============================================================ */
-.account-fields {
+.profile-status-head .eyebrow { display: block; }
+
+.profile-status-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 500;
+  color: var(--charcoal);
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+/* Medidor N/4 */
+.profile-status-meter {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  margin: 0;
+  align-items: flex-end;
+  text-align: right;
 }
 
-.account-field {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-lg);
-  padding: 15px 2px;
+.profile-status-meter-value {
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gold-600);
+  font-variant-numeric: tabular-nums;
 }
 
-.account-field + .account-field {
-  border-top: 1px solid var(--border-subtle);
+.profile-status-meter-value span {
+  color: var(--text-muted);
+  font-size: 1.35rem;
+  font-weight: 500;
 }
 
-.account-field-label {
-  font-size: 0.64rem;
+.profile-status-meter-label {
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin: 0;
-  flex-shrink: 0;
+  margin-top: 5px;
 }
 
-.account-field-value {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 0.98rem;
-  color: var(--charcoal);
-  margin: 0;
-  text-align: right;
-  word-break: break-word;
-  line-height: 1.3;
+/* Pista de progreso segmentada */
+.profile-status-track {
+  display: flex;
+  gap: 6px;
+  margin-bottom: var(--space-2xl);
 }
 
-.account-field-value--handle {
-  font-family: var(--font-display);
-  font-style: italic;
-  color: var(--gold-600);
-}
-
-/* ============================================================
-   Progreso (estado en la porra)
-   ============================================================ */
-.profile-progress-count {
-  flex-shrink: 0;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.profile-progress-count strong {
-  color: var(--gold-600);
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.profile-progress-bar {
-  height: 8px;
+.profile-seg {
+  flex: 1;
+  height: 6px;
   border-radius: var(--radius-full);
   background: var(--surface-3);
-  overflow: hidden;
-  margin-bottom: var(--space-xl);
+  transition: background var(--transition);
 }
 
-.profile-progress-fill {
-  display: block;
-  height: 100%;
-  border-radius: var(--radius-full);
+.profile-seg.is-done {
   background: var(--grad-gold);
   box-shadow: var(--shadow-gold);
-  transition: width 0.6s var(--ease);
 }
 
-/* ============================================================
-   Timeline de estado en la porra
-   ============================================================ */
-.profile-timeline {
+.profile-seg.is-pending {
+  background: var(--gold-100);
+  animation: seg-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes seg-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Tarjetas de paso */
+.profile-steps {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-}
-
-.tl-step {
-  display: grid;
-  grid-template-columns: 28px 1fr;
   gap: var(--space-md);
-  padding-bottom: var(--space-lg);
-  position: relative;
 }
 
-.tl-step:last-child { padding-bottom: 0; }
-
-.tl-rail {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
+.pstep {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition), background var(--transition);
 }
 
-.tl-dot {
-  position: relative;
-  width: 14px;
-  height: 14px;
+.pstep.is-done {
+  background: var(--surface-1);
+}
+
+.pstep.is-pending {
+  background: var(--grad-gold-soft);
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.pstep.is-locked {
+  opacity: 0.7;
+}
+
+/* Número del paso */
+.pstep-index {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-muted);
   background: var(--surface-1);
-  border: 2px solid var(--border-default);
-  z-index: 1;
-  transition: all var(--transition);
-  flex-shrink: 0;
-}
-
-.tl-line {
-  position: absolute;
-  top: 26px;
-  bottom: -10px;
-  left: 50%;
-  width: 1px;
-  background: var(--border-default);
-  transform: translateX(-50%);
+  border: 1px solid var(--border-default);
+  font-variant-numeric: tabular-nums;
   transition: all var(--transition);
 }
 
-/* Estados */
-.tl-step.is-done .tl-dot {
-  background: var(--gold-500);
-  border-color: var(--gold-500);
-  box-shadow: 0 0 0 4px rgba(184, 148, 90, 0.16);
-}
-
-.tl-step.is-done .tl-line {
+.pstep.is-done .pstep-index {
   background: var(--grad-gold);
-  width: 2px;
+  color: var(--text-on-dark);
+  border-color: transparent;
+  box-shadow: var(--shadow-gold);
 }
 
-.tl-step.is-pending .tl-dot {
-  background: var(--surface-1);
-  border-color: var(--gold-500);
-  animation: tl-pulse 2.4s ease-in-out infinite;
+.pstep.is-pending .pstep-index {
+  color: var(--gold-700);
+  border-color: var(--border-gold);
 }
 
-.tl-step.is-locked .tl-dot {
-  background: var(--surface-1);
-  border-color: var(--border-default);
-}
+.pstep-body { min-width: 0; }
 
-@keyframes tl-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 148, 90, 0.45); }
-  50%      { box-shadow: 0 0 0 10px rgba(184, 148, 90, 0); }
-}
-
-/* Contenido */
-.tl-content { padding-bottom: 2px; }
-
-.tl-header {
+.pstep-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  margin-bottom: 4px;
   flex-wrap: wrap;
+  margin-bottom: 3px;
 }
 
-.tl-title {
+.pstep-title {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   color: var(--charcoal);
 }
 
-.tl-step.is-locked .tl-title { color: var(--text-muted); }
+.pstep.is-locked .pstep-title { color: var(--text-muted); }
 
-.tl-detail {
+.pstep-detail {
   font-size: 0.88rem;
   color: var(--text-secondary);
-  line-height: 1.55;
+  line-height: 1.5;
   margin: 0;
 }
 
-.tl-step.is-locked .tl-detail { color: var(--text-muted); }
+.pstep.is-locked .pstep-detail { color: var(--text-muted); }
 
-/* Status pill — diseño premium con gradiente, dot interno y sombra */
-.tl-status {
+/* Pill de estado */
+.pstep-status {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 5px 13px 5px 11px;
+  padding: 5px 12px 5px 10px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-default);
   background: var(--surface-1);
@@ -435,7 +382,7 @@
   transition: all var(--transition);
 }
 
-.tl-status::before {
+.pstep-status::before {
   content: '';
   width: 6px;
   height: 6px;
@@ -445,35 +392,32 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
 }
 
-.tl-step.is-done .tl-status {
+.pstep.is-done .pstep-status {
   background: linear-gradient(135deg, #8bbf8f 0%, #5d9560 100%);
   color: #ffffff;
   border-color: rgba(72, 130, 80, 0.40);
   box-shadow: 0 4px 10px rgba(111, 156, 114, 0.28);
 }
 
-.tl-step.is-pending .tl-status {
+.pstep.is-pending .pstep-status {
   background: linear-gradient(135deg, #fff5dc 0%, #f0dfb0 100%);
   color: var(--gold-700);
   border-color: var(--border-gold);
   box-shadow: 0 4px 10px rgba(184, 148, 90, 0.22);
 }
 
-.tl-step.is-locked .tl-status {
+.pstep.is-locked .pstep-status {
   background: var(--surface-2);
   color: var(--text-muted);
-  border-color: var(--border-default);
   box-shadow: none;
-  opacity: 0.75;
 }
 
-/* Variante clickable: lleva a la pantalla donde se rellena esa plantilla */
-.tl-status--link {
+.pstep-status--link {
   cursor: pointer;
   text-decoration: none;
 }
 
-.tl-step.is-pending .tl-status--link:hover {
+.pstep.is-pending .pstep-status--link:hover {
   background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-500) 100%);
   color: var(--text-on-dark);
   border-color: var(--gold-500);
@@ -518,7 +462,7 @@
 }
 
 .profile-modal-header h3 {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 500;
   margin-bottom: 4px;
   color: var(--charcoal);
@@ -614,8 +558,8 @@
     padding: var(--space-lg);
     gap: var(--space-md);
   }
-  .profile-hero-name { font-size: 1.5rem; }
-  .profile-hero-nick { font-size: 0.95rem; }
+  .profile-hero-name { font-size: 1.6rem; }
+  .profile-hero-nick { font-size: 1rem; }
   .profile-hero-since { font-size: 0.78rem; }
   .profile-avatar-edit { font-size: 0.64rem; padding: 4px 12px; }
   .profile-pill {
@@ -624,44 +568,36 @@
     padding: 4px 10px;
   }
 
-  /* -------- Sections wrappers -------- */
-  .profile-grid {
-    gap: var(--space-md);
+  /* -------- Estado / progreso -------- */
+  .profile-status {
     margin-top: var(--space-md);
+    padding: var(--space-lg);
   }
-  .profile-section { padding: var(--space-lg); }
-  .profile-section-header { margin-bottom: var(--space-md); }
-  .profile-section-header h2 { font-size: 1.05rem; }
+  .profile-status-head { gap: var(--space-md); }
+  .profile-status-meter-value { font-size: 1.9rem; }
+  .profile-status-meter-value span { font-size: 1.1rem; }
+  .profile-status-track { margin-bottom: var(--space-lg); }
 
-  /* -------- Datos de la cuenta -------- */
-  .account-field { padding: 13px 0; gap: var(--space-md); }
-  .account-field-label {
-    font-size: 0.56rem;
-    letter-spacing: 0.14em;
-  }
-  .account-field-value { font-size: 0.9rem; }
-
-  /* -------- Progreso -------- */
-  .profile-progress-bar { margin-bottom: var(--space-lg); }
-  .profile-progress-count { font-size: 0.85rem; }
-  .profile-progress-count strong { font-size: 1.1rem; }
-
-  /* -------- Timeline (estado en la porra) -------- */
-  .tl-step {
-    grid-template-columns: 22px 1fr;
+  .pstep {
+    grid-template-columns: 34px 1fr;
     gap: var(--space-sm);
-    padding-bottom: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
   }
-  .tl-title { font-size: 0.92rem; }
-  .tl-detail { font-size: 0.8rem; }
-  .tl-header { gap: var(--space-sm); }
-  .tl-status {
+  .pstep-index {
+    width: 32px;
+    height: 32px;
+    font-size: 0.95rem;
+  }
+  .pstep-title { font-size: 0.98rem; }
+  .pstep-detail { font-size: 0.8rem; }
+  .pstep-top { gap: var(--space-sm); }
+  .pstep-status {
     font-size: 0.56rem;
     padding: 4px 9px 4px 8px;
     letter-spacing: 0.1em;
     gap: 5px;
   }
-  .tl-status::before {
+  .pstep-status::before {
     width: 5px;
     height: 5px;
   }
@@ -669,7 +605,7 @@
   /* -------- Modal de foto -------- */
   .profile-modal { padding: var(--space-lg); }
   .profile-modal-header { margin-bottom: var(--space-md); }
-  .profile-modal-header h3 { font-size: 1.2rem; }
+  .profile-modal-header h3 { font-size: 1.25rem; }
   .profile-modal-header p { font-size: 0.82rem; }
   .profile-upload-actions { width: 100%; flex-direction: column; }
   .profile-upload-actions .btn { width: 100%; }

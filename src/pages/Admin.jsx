@@ -472,6 +472,7 @@ function EliminatoriaPanel() {
         grupoStandings={grupoStandings}
         ganadores={ganadores}
         onChange={handleChange}
+        preferenciasTerceros
       />
 
       <div className="admin-eli-actions">

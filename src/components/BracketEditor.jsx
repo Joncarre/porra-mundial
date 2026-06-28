@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { bracketCompleto, progresoBracket, aplicarPick } from '../utils/bracket.js';
+import { bracketCompleto, aplicarPick } from '../utils/bracket.js';
 import './BracketEditor.css';
 
 /**
@@ -36,18 +36,23 @@ const BOTTOM_HALF = {
   sf: [102],
 };
 
-export default function BracketEditor({ grupoStandings, ganadores, onChange, readOnly = false }) {
+export default function BracketEditor({
+  grupoStandings,
+  ganadores,
+  onChange,
+  readOnly = false,
+  preferenciasTerceros = false,
+}) {
   const bracket = useMemo(
-    () => bracketCompleto(grupoStandings, ganadores),
-    [grupoStandings, ganadores],
+    () => bracketCompleto(grupoStandings, ganadores, { preferenciasTerceros }),
+    [grupoStandings, ganadores, preferenciasTerceros],
   );
-  const progreso = useMemo(() => progresoBracket(bracket, ganadores), [bracket, ganadores]);
 
   const handlePick = (matchId, code) => {
     if (readOnly) return;
     const current = ganadores[matchId];
     const nextCode = current === code ? null : code;
-    const next = aplicarPick(grupoStandings, ganadores, matchId, nextCode);
+    const next = aplicarPick(grupoStandings, ganadores, matchId, nextCode, { preferenciasTerceros });
     onChange(next);
   };
 
@@ -56,15 +61,6 @@ export default function BracketEditor({ grupoStandings, ganadores, onChange, rea
 
   return (
     <div className="be">
-      <div className="be-progress">
-        <ProgressItem label="Dieciseisavos" {...progreso.d32} />
-        <ProgressItem label="Octavos" {...progreso.o16} />
-        <ProgressItem label="Cuartos" {...progreso.qf} />
-        <ProgressItem label="Semifinales" {...progreso.sf} />
-        <ProgressItem label="3.º puesto" {...progreso.tercer} />
-        <ProgressItem label="Final" {...progreso.final} />
-      </div>
-
       <div className={`be-tree-wrap ${readOnly ? 'is-readonly' : ''}`}>
       <div className="be-tree">
         {/* ============== LEFT HALF ============== */}
@@ -280,18 +276,6 @@ function ThirdPlaceCard({ match, winner, onPick }) {
         <div className="be-empty">Completa las semifinales para desbloquearlo.</div>
       )}
     </section>
-  );
-}
-
-function ProgressItem({ label, hechos, total }) {
-  const done = total > 0 && hechos === total;
-  return (
-    <div className={`be-progress-item ${done ? 'is-done' : ''}`}>
-      <span className="be-progress-item-label">{label}</span>
-      <span className="be-progress-item-count">
-        {hechos} <span className="be-progress-item-sep">/</span> {total || '—'}
-      </span>
-    </div>
   );
 }
 

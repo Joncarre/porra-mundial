@@ -108,7 +108,7 @@ export function clasificados(grupoStandings) {
  *
  * @returns {Object} map matchId → equipo tercero
  */
-function asignarTercerosASlots(cl) {
+function asignarTercerosASlots(cl, usarPreferencias = false) {
   const slots = DIECISEISAVOS
     .map((s) => {
       const ref = s.local.tipo === '3' ? s.local
@@ -126,13 +126,20 @@ function asignarTercerosASlots(cl) {
   //    coloca en su hueco siempre que se haya clasificado y sea elegible.
   //    Así fijamos los cruces de 1.º vs 3.º que el reparto automático no
   //    siempre dejaba como manda el cuadro oficial.
-  for (const slot of slots) {
-    const grupoPref = PREFERENCIAS_TERCEROS[slot.matchId];
-    if (!grupoPref || !slot.grupos.includes(grupoPref)) continue;
-    const t = terceros.find((x) => !usados.has(x.code) && x.grupo === grupoPref);
-    if (t) {
-      asignacion[slot.matchId] = t;
-      usados.add(t.code);
+  //
+  //    SOLO se aplica al bracket oficial del admin (Eliminatoria). Los
+  //    brackets de los usuarios usan el reparto automático original para
+  //    no alterar los cuadros que ya tienen guardados. Como la puntuación
+  //    es por conjuntos, esta diferencia de colocación no afecta a nadie.
+  if (usarPreferencias) {
+    for (const slot of slots) {
+      const grupoPref = PREFERENCIAS_TERCEROS[slot.matchId];
+      if (!grupoPref || !slot.grupos.includes(grupoPref)) continue;
+      const t = terceros.find((x) => !usados.has(x.code) && x.grupo === grupoPref);
+      if (t) {
+        asignacion[slot.matchId] = t;
+        usados.add(t.code);
+      }
     }
   }
 
@@ -174,9 +181,9 @@ function asignarTercerosASlots(cl) {
  * Si la fase de grupos no está suficientemente decidida, algún slot
  * puede venir como null.
  */
-export function construirDieciseisavos(grupoStandings) {
+export function construirDieciseisavos(grupoStandings, { preferenciasTerceros = false } = {}) {
   const cl = clasificados(grupoStandings);
-  const tercerosPorSlot = asignarTercerosASlots(cl);
+  const tercerosPorSlot = asignarTercerosASlots(cl, preferenciasTerceros);
 
   const resolveSlot = (ref, matchId) => {
     if (ref.tipo === '1') return cl.primeros[ref.grupo] || null;
@@ -234,8 +241,8 @@ function teamLoser(prevMatch, ganadorCode) {
  *   - 103: ganador del partido 3.º/4.º puesto (el otro es 4.º)
  *   - 104: campeón
  */
-export function bracketCompleto(grupoStandings, ganadores = {}) {
-  const d32 = indexById(construirDieciseisavos(grupoStandings));
+export function bracketCompleto(grupoStandings, ganadores = {}, opts = {}) {
+  const d32 = indexById(construirDieciseisavos(grupoStandings, opts));
   const o16 = indexById(construirRondaSiguiente(OCTAVOS, d32, ganadores));
   const qf  = indexById(construirRondaSiguiente(CUARTOS, o16, ganadores));
   const sf  = indexById(construirRondaSiguiente(SEMIS, qf, ganadores));
@@ -278,7 +285,7 @@ function indexById(matches) {
  * @param {string|null} code - code del equipo elegido, o null para limpiar
  * @returns {Object} nuevos ganadores ya limpios
  */
-export function aplicarPick(grupoStandings, ganadores, matchId, code) {
+export function aplicarPick(grupoStandings, ganadores, matchId, code, opts = {}) {
   const next = { ...ganadores };
   if (code == null) {
     delete next[matchId];
@@ -291,7 +298,7 @@ export function aplicarPick(grupoStandings, ganadores, matchId, code) {
   let stable = false;
   while (!stable) {
     stable = true;
-    const b = bracketCompleto(grupoStandings, next);
+    const b = bracketCompleto(grupoStandings, next, opts);
     for (const id of Object.keys(next).map(Number)) {
       const m = findMatch(b, id);
       if (!m) continue;

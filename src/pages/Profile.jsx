@@ -157,7 +157,6 @@ export default function Profile() {
   const previewing = !!preview;
   const completados = checklist.filter((c) => c.state === 'done').length;
   const totalPasos = checklist.length;
-  const progresoPct = Math.round((completados / totalPasos) * 100);
 
   return (
     <div className="profile-page">
@@ -206,84 +205,57 @@ export default function Profile() {
             </div>
           </section>
 
-          <div className={`profile-grid ${user.isAdmin ? 'profile-grid--single' : ''}`}>
-            {/* -------- Datos personales -------- */}
-            <section className="profile-section">
-              <header className="profile-section-header">
-                <span className="eyebrow">Cuenta</span>
-                <h2>Datos personales</h2>
+          {/* -------- Estado en la porra (solo participantes) -------- */}
+          {!user.isAdmin && (
+            <section className="profile-status">
+              <header className="profile-status-head">
+                <div>
+                  <span className="eyebrow">Tu progreso</span>
+                  <h2 className="profile-status-title">Tu camino en la porra</h2>
+                </div>
+                <div className="profile-status-meter">
+                  <span className="profile-status-meter-value">
+                    {completados}<span>/{totalPasos}</span>
+                  </span>
+                  <span className="profile-status-meter-label">completado</span>
+                </div>
               </header>
 
-              <dl className="account-fields">
-                <div className="account-field">
-                  <dt className="account-field-label">Nombre</dt>
-                  <dd className="account-field-value">{user.nombre}</dd>
-                </div>
-                <div className="account-field">
-                  <dt className="account-field-label">Apellidos</dt>
-                  <dd className="account-field-value">{user.apellidos}</dd>
-                </div>
-                <div className="account-field">
-                  <dt className="account-field-label">Nickname</dt>
-                  <dd className="account-field-value account-field-value--handle">
-                    @{user.nickname}
-                  </dd>
-                </div>
-              </dl>
+              <div
+                className="profile-status-track"
+                role="progressbar"
+                aria-valuenow={completados}
+                aria-valuemin={0}
+                aria-valuemax={totalPasos}
+                aria-label={`${completados} de ${totalPasos} pasos completados`}
+              >
+                {checklist.map((item) => (
+                  <span key={item.key} className={`profile-seg is-${item.state}`} />
+                ))}
+              </div>
+
+              <ol className="profile-steps">
+                {checklist.map((item, i) => (
+                  <li key={item.key} className={`pstep is-${item.state}`}>
+                    <span className="pstep-index">{i + 1}</span>
+                    <div className="pstep-body">
+                      <div className="pstep-top">
+                        <span className="pstep-title">{item.title}</span>
+                        {item.state === 'pending' && item.to ? (
+                          <Link to={item.to} className="pstep-status pstep-status--link">
+                            {STATE_LABEL[item.state]}
+                          </Link>
+                        ) : (
+                          <span className="pstep-status">{STATE_LABEL[item.state]}</span>
+                        )}
+                      </div>
+                      <p className="pstep-detail">{item.copy[item.state]}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </section>
-
-            {/* -------- Estado en la porra (solo participantes) -------- */}
-            {!user.isAdmin && (
-              <section className="profile-section">
-                <header className="profile-section-header profile-section-header--status">
-                  <div>
-                    <span className="eyebrow">Progreso</span>
-                    <h2>Tu estado en la porra</h2>
-                  </div>
-                  <span className="profile-progress-count">
-                    <strong>{completados}</strong> / {totalPasos}
-                  </span>
-                </header>
-
-                <div
-                  className="profile-progress-bar"
-                  role="progressbar"
-                  aria-valuenow={completados}
-                  aria-valuemin={0}
-                  aria-valuemax={totalPasos}
-                >
-                  <span
-                    className="profile-progress-fill"
-                    style={{ width: `${progresoPct}%` }}
-                  />
-                </div>
-
-                <ol className="profile-timeline">
-                  {checklist.map((item, i) => (
-                    <li key={item.key} className={`tl-step is-${item.state}`}>
-                      <div className="tl-rail">
-                        <span className="tl-dot" />
-                        {i < checklist.length - 1 && <span className="tl-line" />}
-                      </div>
-                      <div className="tl-content">
-                        <div className="tl-header">
-                          <span className="tl-title">{item.title}</span>
-                          {item.state === 'pending' && item.to ? (
-                            <Link to={item.to} className="tl-status tl-status--link">
-                              {STATE_LABEL[item.state]}
-                            </Link>
-                          ) : (
-                            <span className="tl-status">{STATE_LABEL[item.state]}</span>
-                          )}
-                        </div>
-                        <p className="tl-detail">{item.copy[item.state]}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </section>
-            )}
-          </div>
+          )}
         </div>
       </main>
 
