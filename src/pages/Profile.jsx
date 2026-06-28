@@ -78,6 +78,10 @@ const STATE_LABEL = {
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
+// Radio del anillo de progreso (debe coincidir con el r= del <circle>).
+const RING_R = 77;
+const RING_CIRC = 2 * Math.PI * RING_R;
+
 export default function Profile() {
   const { user, patchUser } = useAuth();
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -207,53 +211,70 @@ export default function Profile() {
 
           {/* -------- Estado en la porra (solo participantes) -------- */}
           {!user.isAdmin && (
-            <section className="profile-status">
-              <header className="profile-status-head">
-                <div>
-                  <span className="eyebrow">Tu progreso</span>
-                  <h2 className="profile-status-title">Tu camino en la porra</h2>
-                </div>
-                <div className="profile-status-meter">
-                  <span className="profile-status-meter-value">
-                    {completados}<span>/{totalPasos}</span>
-                  </span>
-                  <span className="profile-status-meter-label">completado</span>
-                </div>
+            <section className="profile-journey">
+              <header className="profile-journey-head">
+                <span className="eyebrow">Tu progreso</span>
+                <h2 className="profile-journey-title">Tu camino en la porra</h2>
               </header>
 
-              <div
-                className="profile-status-track"
-                role="progressbar"
-                aria-valuenow={completados}
-                aria-valuemin={0}
-                aria-valuemax={totalPasos}
-                aria-label={`${completados} de ${totalPasos} pasos completados`}
-              >
-                {checklist.map((item) => (
-                  <span key={item.key} className={`profile-seg is-${item.state}`} />
-                ))}
-              </div>
+              <div className="profile-journey-body">
+                <div
+                  className="profile-ring"
+                  role="progressbar"
+                  aria-valuenow={completados}
+                  aria-valuemin={0}
+                  aria-valuemax={totalPasos}
+                  aria-label={`${completados} de ${totalPasos} pasos completados`}
+                >
+                  <svg viewBox="0 0 168 168" className="profile-ring-svg" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="profileRingGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#d8b67a" />
+                        <stop offset="55%" stopColor="#b8945a" />
+                        <stop offset="100%" stopColor="#9b7838" />
+                      </linearGradient>
+                    </defs>
+                    <circle className="profile-ring-track" cx="84" cy="84" r="77" />
+                    <circle
+                      className="profile-ring-fill"
+                      cx="84"
+                      cy="84"
+                      r="77"
+                      style={{
+                        strokeDasharray: RING_CIRC,
+                        strokeDashoffset: RING_CIRC * (1 - completados / totalPasos),
+                      }}
+                    />
+                  </svg>
+                  <div className="profile-ring-center">
+                    <span className="profile-ring-value">
+                      {completados}<span>/{totalPasos}</span>
+                    </span>
+                    <span className="profile-ring-label">completado</span>
+                  </div>
+                </div>
 
-              <ol className="profile-steps">
-                {checklist.map((item, i) => (
-                  <li key={item.key} className={`pstep is-${item.state}`}>
-                    <span className="pstep-index">{i + 1}</span>
-                    <div className="pstep-body">
-                      <div className="pstep-top">
-                        <span className="pstep-title">{item.title}</span>
-                        {item.state === 'pending' && item.to ? (
-                          <Link to={item.to} className="pstep-status pstep-status--link">
-                            {STATE_LABEL[item.state]}
-                          </Link>
-                        ) : (
-                          <span className="pstep-status">{STATE_LABEL[item.state]}</span>
-                        )}
+                <ol className="profile-journey-steps">
+                  {checklist.map((item) => (
+                    <li key={item.key} className={`jstep is-${item.state}`}>
+                      <span className="jstep-marker" />
+                      <div className="jstep-body">
+                        <div className="jstep-top">
+                          <span className="jstep-title">{item.title}</span>
+                          {item.state === 'pending' && item.to ? (
+                            <Link to={item.to} className="jstep-status jstep-status--link">
+                              {STATE_LABEL[item.state]}
+                            </Link>
+                          ) : (
+                            <span className="jstep-status">{STATE_LABEL[item.state]}</span>
+                          )}
+                        </div>
+                        <p className="jstep-detail">{item.copy[item.state]}</p>
                       </div>
-                      <p className="pstep-detail">{item.copy[item.state]}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </section>
           )}
         </div>

@@ -175,168 +175,149 @@
 }
 
 /* ============================================================
-   Estado en la porra — progreso segmentado + pasos
+   Estado en la porra — anillo de progreso + recorrido
    ============================================================ */
-.profile-status {
+.profile-journey {
   margin-top: var(--space-lg);
-  background: var(--surface-1);
+  background: var(--grad-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
   padding: var(--space-2xl);
   box-shadow: var(--shadow-md);
 }
 
-.profile-status-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-lg);
-  margin-bottom: var(--space-lg);
-}
+.profile-journey-head { margin-bottom: var(--space-xl); }
+.profile-journey-head .eyebrow { display: block; }
 
-.profile-status-head .eyebrow { display: block; }
-
-.profile-status-title {
+.profile-journey-title {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 500;
   color: var(--charcoal);
   line-height: 1.1;
   margin-top: 6px;
 }
 
-/* Medidor N/4 */
-.profile-status-meter {
-  flex-shrink: 0;
+.profile-journey-body {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
+  align-items: center;
+  gap: var(--space-2xl);
 }
 
-.profile-status-meter-value {
+/* -------- Anillo de progreso (SVG) -------- */
+.profile-ring {
+  position: relative;
+  width: 172px;
+  height: 172px;
+  flex-shrink: 0;
+}
+
+.profile-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.profile-ring-track {
+  fill: none;
+  stroke: var(--surface-3);
+  stroke-width: 13;
+}
+
+.profile-ring-fill {
+  fill: none;
+  stroke: url(#profileRingGold);
+  stroke-width: 13;
+  stroke-linecap: round;
+  filter: drop-shadow(0 3px 7px rgba(184, 148, 90, 0.30));
+  transition: stroke-dashoffset 0.9s var(--ease);
+}
+
+.profile-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-ring-value {
   font-family: var(--font-display);
-  font-size: 2.3rem;
+  font-size: 2.7rem;
   font-weight: 600;
   line-height: 1;
   color: var(--gold-600);
   font-variant-numeric: tabular-nums;
 }
 
-.profile-status-meter-value span {
+.profile-ring-value span {
   color: var(--text-muted);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 500;
 }
 
-.profile-status-meter-label {
-  font-size: 0.6rem;
+.profile-ring-label {
+  font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
-/* Pista de progreso segmentada */
-.profile-status-track {
-  display: flex;
-  gap: 6px;
-  margin-bottom: var(--space-2xl);
-}
-
-.profile-seg {
-  flex: 1;
-  height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--surface-3);
-  transition: background var(--transition);
-}
-
-.profile-seg.is-done {
-  background: var(--grad-gold);
-  box-shadow: var(--shadow-gold);
-}
-
-.profile-seg.is-pending {
-  background: var(--gold-100);
-  animation: seg-pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes seg-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* Tarjetas de paso */
-.profile-steps {
+/* -------- Recorrido (pasos) -------- */
+.profile-journey-steps {
   list-style: none;
   margin: 0;
   padding: 0;
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
 }
 
-.pstep {
+.jstep {
   display: grid;
-  grid-template-columns: 44px 1fr;
+  grid-template-columns: 16px 1fr;
   gap: var(--space-md);
-  align-items: center;
-  padding: var(--space-md) var(--space-lg);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  background: var(--surface-2);
-  transition: transform var(--transition), box-shadow var(--transition),
-    border-color var(--transition), background var(--transition);
+  padding: var(--space-md) 0;
 }
 
-.pstep.is-done {
-  background: var(--surface-1);
+.jstep + .jstep {
+  border-top: 1px solid var(--border-subtle);
 }
 
-.pstep.is-pending {
-  background: var(--grad-gold-soft);
-  border-color: var(--border-gold);
-  box-shadow: var(--shadow-sm);
-}
-
-.pstep.is-locked {
-  opacity: 0.7;
-}
-
-/* Número del paso */
-.pstep-index {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
+.jstep-marker {
+  width: 14px;
+  height: 14px;
+  margin-top: 5px;
   border-radius: 50%;
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-muted);
   background: var(--surface-1);
-  border: 1px solid var(--border-default);
-  font-variant-numeric: tabular-nums;
+  border: 2px solid var(--border-default);
+  flex-shrink: 0;
   transition: all var(--transition);
 }
 
-.pstep.is-done .pstep-index {
-  background: var(--grad-gold);
-  color: var(--text-on-dark);
-  border-color: transparent;
-  box-shadow: var(--shadow-gold);
+.jstep.is-done .jstep-marker {
+  background: var(--gold-500);
+  border-color: var(--gold-500);
+  box-shadow: 0 0 0 4px rgba(184, 148, 90, 0.16);
 }
 
-.pstep.is-pending .pstep-index {
-  color: var(--gold-700);
-  border-color: var(--border-gold);
+.jstep.is-pending .jstep-marker {
+  border-color: var(--gold-500);
+  animation: marker-pulse 2.4s ease-in-out infinite;
 }
 
-.pstep-body { min-width: 0; }
+@keyframes marker-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184, 148, 90, 0.45); }
+  50%      { box-shadow: 0 0 0 9px rgba(184, 148, 90, 0); }
+}
 
-.pstep-top {
+.jstep-body { min-width: 0; }
+
+.jstep-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -345,26 +326,26 @@
   margin-bottom: 3px;
 }
 
-.pstep-title {
+.jstep-title {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 1.12rem;
   color: var(--charcoal);
 }
 
-.pstep.is-locked .pstep-title { color: var(--text-muted); }
+.jstep.is-locked .jstep-title { color: var(--text-muted); }
 
-.pstep-detail {
-  font-size: 0.88rem;
+.jstep-detail {
+  font-size: 0.86rem;
   color: var(--text-secondary);
   line-height: 1.5;
   margin: 0;
 }
 
-.pstep.is-locked .pstep-detail { color: var(--text-muted); }
+.jstep.is-locked .jstep-detail { color: var(--text-muted); }
 
 /* Pill de estado */
-.pstep-status {
+.jstep-status {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -382,7 +363,7 @@
   transition: all var(--transition);
 }
 
-.pstep-status::before {
+.jstep-status::before {
   content: '';
   width: 6px;
   height: 6px;
@@ -392,37 +373,45 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
 }
 
-.pstep.is-done .pstep-status {
+.jstep.is-done .jstep-status {
   background: linear-gradient(135deg, #8bbf8f 0%, #5d9560 100%);
   color: #ffffff;
   border-color: rgba(72, 130, 80, 0.40);
   box-shadow: 0 4px 10px rgba(111, 156, 114, 0.28);
 }
 
-.pstep.is-pending .pstep-status {
+.jstep.is-pending .jstep-status {
   background: linear-gradient(135deg, #fff5dc 0%, #f0dfb0 100%);
   color: var(--gold-700);
   border-color: var(--border-gold);
   box-shadow: 0 4px 10px rgba(184, 148, 90, 0.22);
 }
 
-.pstep.is-locked .pstep-status {
+.jstep.is-locked .jstep-status {
   background: var(--surface-2);
   color: var(--text-muted);
   box-shadow: none;
 }
 
-.pstep-status--link {
+.jstep-status--link {
   cursor: pointer;
   text-decoration: none;
 }
 
-.pstep.is-pending .pstep-status--link:hover {
+.jstep.is-pending .jstep-status--link:hover {
   background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-500) 100%);
   color: var(--text-on-dark);
   border-color: var(--gold-500);
   box-shadow: 0 6px 14px rgba(184, 148, 90, 0.40);
   transform: translateY(-1px);
+}
+
+@media (max-width: 720px) {
+  .profile-journey-body {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+  .profile-journey-steps { width: 100%; }
 }
 
 /* ============================================================
@@ -568,36 +557,28 @@
     padding: 4px 10px;
   }
 
-  /* -------- Estado / progreso -------- */
-  .profile-status {
+  /* -------- Estado / recorrido -------- */
+  .profile-journey {
     margin-top: var(--space-md);
     padding: var(--space-lg);
   }
-  .profile-status-head { gap: var(--space-md); }
-  .profile-status-meter-value { font-size: 1.9rem; }
-  .profile-status-meter-value span { font-size: 1.1rem; }
-  .profile-status-track { margin-bottom: var(--space-lg); }
+  .profile-ring {
+    width: 148px;
+    height: 148px;
+  }
+  .profile-ring-value { font-size: 2.3rem; }
+  .profile-ring-value span { font-size: 1.2rem; }
 
-  .pstep {
-    grid-template-columns: 34px 1fr;
-    gap: var(--space-sm);
-    padding: var(--space-sm) var(--space-md);
-  }
-  .pstep-index {
-    width: 32px;
-    height: 32px;
-    font-size: 0.95rem;
-  }
-  .pstep-title { font-size: 0.98rem; }
-  .pstep-detail { font-size: 0.8rem; }
-  .pstep-top { gap: var(--space-sm); }
-  .pstep-status {
+  .jstep-title { font-size: 0.98rem; }
+  .jstep-detail { font-size: 0.8rem; }
+  .jstep-top { gap: var(--space-sm); }
+  .jstep-status {
     font-size: 0.56rem;
     padding: 4px 9px 4px 8px;
     letter-spacing: 0.1em;
     gap: 5px;
   }
-  .pstep-status::before {
+  .jstep-status::before {
     width: 5px;
     height: 5px;
   }

@@ -52,7 +52,8 @@ export default function AppHeader() {
   // reutilizados tanto en la barra de escritorio como en el menú móvil.
   const links = [
     { to: '/perfil', label: 'Perfil' },
-    { to: '/grupos', label: 'Resultados' },
+    { to: '/grupos', label: 'R. Grupos' },
+    { to: '/resultados-bracket', label: 'R. Bracket' },
     ...(!user?.isAdmin
       ? [
           { to: '/apuestas', label: 'Apuestas' },

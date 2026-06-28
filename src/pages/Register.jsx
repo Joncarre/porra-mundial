@@ -11,6 +11,10 @@ const INITIAL = {
   passwordConfirm: '',
 };
 
+// El registro está cerrado: la porra ya está en marcha y no se admiten
+// nuevas cuentas. Mantiene la pantalla pero bloquea la creación.
+const REGISTRO_CERRADO = true;
+
 export default function Register() {
   const navigate = useNavigate();
   const [form, setForm] = useState(INITIAL);
@@ -41,6 +45,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (REGISTRO_CERRADO) return;
     const newErrors = validateAll();
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
@@ -182,9 +187,16 @@ export default function Register() {
             {errors._global && <div className="auth-error">{errors._global}</div>}
 
             <div className="auth-actions">
-              <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
+              <button
+                type="submit"
+                className="btn btn-primary btn-lg"
+                disabled={submitting || REGISTRO_CERRADO}
+              >
                 {submitting ? 'Creando cuenta…' : 'Crear cuenta'}
               </button>
+              {REGISTRO_CERRADO && (
+                <p className="auth-closed-note">El registro está cerrado.</p>
+              )}
             </div>
           </form>
 

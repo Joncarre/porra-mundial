@@ -33,9 +33,14 @@ export default function Welcome() {
               </Link>
             ) : (
               <>
-                <Link to="/register" className="btn btn-primary btn-lg">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-lg"
+                  disabled
+                  title="El registro está cerrado"
+                >
                   Crear cuenta
-                </Link>
+                </button>
                 <Link to="/login" className="btn btn-secondary btn-lg welcome-login-btn">
                   Iniciar sesión
                 </Link>

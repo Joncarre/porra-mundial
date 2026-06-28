@@ -173,6 +173,13 @@
 
 .auth-actions .btn { width: 100%; }
 
+.auth-closed-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
 .auth-footer-text {
   text-align: center;
   margin-top: var(--space-lg);

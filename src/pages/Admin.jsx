@@ -23,8 +23,7 @@ const TABS = [
   { id: 'extras', label: 'Apuestas extra' },
   { id: 'resultados', label: 'Resultados de grupos' },
   { id: 'eliminatoria', label: 'Eliminatoria' },
-  { id: 'premios', label: 'Premios' },
-  { id: 'torneo', label: 'Goleador actual' },
+  { id: 'resultados-extra', label: 'Resultados extra' },
 ];
 
 export default function Admin() {
@@ -63,8 +62,12 @@ export default function Admin() {
           {tab === 'extras' && <ExtrasPanel />}
           {tab === 'resultados' && <ResultsPanel />}
           {tab === 'eliminatoria' && <EliminatoriaPanel />}
-          {tab === 'premios' && <PremiosPanel />}
-          {tab === 'torneo' && <TorneoPanel />}
+          {tab === 'resultados-extra' && (
+            <div className="admin-extra-stack">
+              <PremiosPanel />
+              <TorneoPanel />
+            </div>
+          )}
         </div>
       </main>
     </div>

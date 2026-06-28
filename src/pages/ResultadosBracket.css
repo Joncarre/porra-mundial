@@ -1,0 +1,57 @@
+/* ============================================================
+   ResultadosBracket — réplica de solo lectura del cuadro oficial
+   (el árbol vive en BracketEditor.css)
+   ============================================================ */
+
+.rb-page {
+  flex: 1;
+  background: var(--grad-hero);
+  display: flex;
+  flex-direction: column;
+}
+
+.rb-main {
+  flex: 1;
+  padding: var(--space-2xl) 0 var(--space-3xl);
+}
+
+.rb-page-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.rb-page-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  color: var(--charcoal);
+  margin-top: var(--space-sm);
+}
+
+.rb-page-sub {
+  max-width: 640px;
+}
+
+.rb-loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-3xl) 0;
+}
+
+.rb-panel {
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 540px) {
+  .rb-main { padding: var(--space-xl) 0 var(--space-2xl); }
+  .rb-page-header { margin-bottom: var(--space-xl); }
+  .rb-panel { padding: var(--space-md); }
+}

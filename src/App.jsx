@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
 import ResultadosGrupos from './pages/ResultadosGrupos.jsx';
+import ResultadosBracket from './pages/ResultadosBracket.jsx';
 import Apuestas from './pages/Apuestas.jsx';
 import Bracket from './pages/Bracket.jsx';
 import Extras from './pages/Extras.jsx';
@@ -35,6 +36,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <ResultadosGrupos />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/resultados-bracket"
+        element={
+          <ProtectedRoute>
+            <ResultadosBracket />
           </ProtectedRoute>
         }
       />

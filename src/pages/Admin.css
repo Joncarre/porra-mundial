@@ -90,6 +90,13 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* Apila los dos sub-paneles de "Resultados extra" (premios + goleador). */
+.admin-extra-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
 .admin-panel-head {
   display: flex;
   justify-content: space-between;
