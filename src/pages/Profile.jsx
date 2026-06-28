@@ -155,6 +155,9 @@ export default function Profile() {
 
   const checklist = buildChecklist(user);
   const previewing = !!preview;
+  const completados = checklist.filter((c) => c.state === 'done').length;
+  const totalPasos = checklist.length;
+  const progresoPct = Math.round((completados / totalPasos) * 100);
 
   return (
     <div className="profile-page">
@@ -164,6 +167,7 @@ export default function Profile() {
         <div className="container">
           {/* -------- Hero del perfil -------- */}
           <section className="profile-hero">
+            <span className="profile-hero-glow" aria-hidden="true" />
             <div className="profile-hero-content">
               <button
                 type="button"
@@ -171,14 +175,22 @@ export default function Profile() {
                 onClick={openPicker}
                 title="Cambiar foto"
               >
-                <Avatar
-                  foto={user.avatarFoto}
-                  name={user.nombre || user.nickname}
-                  size="xl"
-                />
+                <span className="profile-avatar-ring">
+                  <Avatar
+                    foto={user.avatarFoto}
+                    name={user.nombre || user.nickname}
+                    size="xl"
+                  />
+                </span>
+                <span className="profile-avatar-edit">Cambiar foto</span>
               </button>
               <div className="profile-hero-info">
-                <div className="profile-hero-pills">
+                <span className="eyebrow">Mi perfil</span>
+                <h1 className="profile-hero-name">
+                  {user.nombre} {user.apellidos}
+                </h1>
+                <div className="profile-hero-nick">@{user.nickname}</div>
+                <div className="profile-hero-meta">
                   {user.isAdmin ? (
                     <span className="profile-pill profile-pill--admin">Administrador</span>
                   ) : (
@@ -188,12 +200,8 @@ export default function Profile() {
                       {user.pagado ? 'Pagado' : 'Pago pendiente'}
                     </span>
                   )}
+                  <span className="profile-hero-since">Miembro desde {fechaAlta}</span>
                 </div>
-                <h1 className="profile-hero-name">
-                  {user.nombre} {user.apellidos}
-                </h1>
-                <div className="profile-hero-nick">@{user.nickname}</div>
-                <div className="profile-hero-since">Miembro desde {fechaAlta}</div>
               </div>
             </div>
           </section>
@@ -202,35 +210,53 @@ export default function Profile() {
             {/* -------- Datos personales -------- */}
             <section className="profile-section">
               <header className="profile-section-header">
-                <h2>Datos de la cuenta</h2>
+                <span className="eyebrow">Cuenta</span>
+                <h2>Datos personales</h2>
               </header>
 
-              <div className="account-card">
-                <dl className="account-fields">
-                  <div className="account-field">
-                    <dt className="account-field-label">Nombre</dt>
-                    <dd className="account-field-value">{user.nombre}</dd>
-                  </div>
-                  <div className="account-field">
-                    <dt className="account-field-label">Apellidos</dt>
-                    <dd className="account-field-value">{user.apellidos}</dd>
-                  </div>
-                  <div className="account-field">
-                    <dt className="account-field-label">Nickname</dt>
-                    <dd className="account-field-value account-field-value--handle">
-                      @{user.nickname}
-                    </dd>
-                  </div>
-                </dl>
-              </div>
+              <dl className="account-fields">
+                <div className="account-field">
+                  <dt className="account-field-label">Nombre</dt>
+                  <dd className="account-field-value">{user.nombre}</dd>
+                </div>
+                <div className="account-field">
+                  <dt className="account-field-label">Apellidos</dt>
+                  <dd className="account-field-value">{user.apellidos}</dd>
+                </div>
+                <div className="account-field">
+                  <dt className="account-field-label">Nickname</dt>
+                  <dd className="account-field-value account-field-value--handle">
+                    @{user.nickname}
+                  </dd>
+                </div>
+              </dl>
             </section>
 
             {/* -------- Estado en la porra (solo participantes) -------- */}
             {!user.isAdmin && (
               <section className="profile-section">
-                <header className="profile-section-header">
-                  <h2>Tu estado en la porra</h2>
+                <header className="profile-section-header profile-section-header--status">
+                  <div>
+                    <span className="eyebrow">Progreso</span>
+                    <h2>Tu estado en la porra</h2>
+                  </div>
+                  <span className="profile-progress-count">
+                    <strong>{completados}</strong> / {totalPasos}
+                  </span>
                 </header>
+
+                <div
+                  className="profile-progress-bar"
+                  role="progressbar"
+                  aria-valuenow={completados}
+                  aria-valuemin={0}
+                  aria-valuemax={totalPasos}
+                >
+                  <span
+                    className="profile-progress-fill"
+                    style={{ width: `${progresoPct}%` }}
+                  />
+                </div>
 
                 <ol className="profile-timeline">
                   {checklist.map((item, i) => (

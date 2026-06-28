@@ -243,14 +243,8 @@ export default function Apuestas() {
                 })}
               </div>
 
-              {/* Acciones */}
-              {cerradas ? (
-                <footer className="ap-actions ap-actions--cerradas">
-                  <span className="ap-cerradas-notice">
-                    Las apuestas se cerraron el día 11/06/26 a las 18:00 horas
-                  </span>
-                </footer>
-              ) : (
+              {/* Acciones — ocultas cuando las apuestas están cerradas */}
+              {!cerradas && (
                 <footer className="ap-actions">
                   {savedAt && <span className="ap-saved-pill">Progreso guardado</span>}
                   <button

@@ -131,20 +131,6 @@
   margin-right: auto;
 }
 
-.brk-actions--cerradas { justify-content: center; }
-
-.brk-cerradas-notice {
-  font-size: 0.82rem;
-  letter-spacing: 0.01em;
-  color: var(--danger);
-  background: var(--danger-bg);
-  border: 1px solid rgba(184, 92, 82, 0.18);
-  border-radius: var(--radius-md);
-  padding: 10px 22px;
-  text-align: center;
-  max-width: 560px;
-}
-
 /* -------- Simulación de grupos según las apuestas del usuario -------- */
 .brk-groups {
   margin-top: var(--space-3xl);
@@ -230,10 +216,6 @@
   .brk-saved-pill {
     margin-right: 0;
     text-align: center;
-  }
-  .brk-cerradas-notice {
-    font-size: 0.78rem;
-    padding: 9px 16px;
   }
 
   .brk-groups { margin-top: var(--space-2xl); }

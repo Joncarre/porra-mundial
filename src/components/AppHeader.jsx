@@ -66,91 +66,93 @@ export default function AppHeader() {
 
   return (
     <header className="app-header">
-      <div className="container app-header-inner">
-        <span className="app-brand">
-          Porra <span className="text-gold">Mundial</span>
-        </span>
+      <div className="container">
+        <div className="app-header-bar">
+          <span className="app-brand">
+            Porra <span className="text-gold">Mundial</span>
+          </span>
 
-        <nav className="app-nav">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `app-nav-link ${link.admin ? 'app-nav-link--admin' : ''} ${isActive ? 'is-active' : ''}`
-              }
-            >
-              {link.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        <div className="app-header-actions">
-          <div className="app-user-menu" ref={menuRef}>
-            <button
-              type="button"
-              className="app-user-trigger"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              <Avatar foto={user?.avatarFoto} name={user?.nombre || user?.nickname} size={44} />
-              <div className="app-user-info">
-                <span className="app-user-nick">@{user?.nickname}</span>
-                {user?.isAdmin && <span className="app-user-role">Admin</span>}
-              </div>
-            </button>
-
-            {menuOpen && (
-              <div className="app-user-dropdown">
-                <Link
-                  to="/perfil"
-                  className="app-user-dropdown-item"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Mi perfil
-                </Link>
-                <button
-                  className="app-user-dropdown-item app-user-dropdown-item--danger"
-                  onClick={handleLogout}
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-            )}
-          </div>
-
-          <button
-            type="button"
-            ref={navToggleRef}
-            className={`app-nav-toggle ${navOpen ? 'is-open' : ''}`}
-            aria-label="Abrir menú de navegación"
-            aria-expanded={navOpen}
-            onClick={() => setNavOpen((v) => !v)}
-          >
-            <span className="app-nav-toggle-bar" />
-            <span className="app-nav-toggle-bar" />
-            <span className="app-nav-toggle-bar" />
-          </button>
-        </div>
-      </div>
-
-      {navOpen && (
-        <div className="app-mobile-nav" ref={navRef}>
-          <nav className="container app-mobile-nav-inner">
+          <nav className="app-nav">
             {links.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
-                  `app-mobile-nav-link ${link.admin ? 'app-mobile-nav-link--admin' : ''} ${isActive ? 'is-active' : ''}`
+                  `app-nav-link ${link.admin ? 'app-nav-link--admin' : ''} ${isActive ? 'is-active' : ''}`
                 }
-                onClick={() => setNavOpen(false)}
               >
                 {link.label}
               </NavLink>
             ))}
           </nav>
+
+          <div className="app-header-actions">
+            <div className="app-user-menu" ref={menuRef}>
+              <button
+                type="button"
+                className="app-user-trigger"
+                onClick={() => setMenuOpen((v) => !v)}
+              >
+                <Avatar foto={user?.avatarFoto} name={user?.nombre || user?.nickname} size={42} />
+                <div className="app-user-info">
+                  <span className="app-user-nick">@{user?.nickname}</span>
+                  {user?.isAdmin && <span className="app-user-role">Admin</span>}
+                </div>
+              </button>
+
+              {menuOpen && (
+                <div className="app-user-dropdown">
+                  <Link
+                    to="/perfil"
+                    className="app-user-dropdown-item"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Mi perfil
+                  </Link>
+                  <button
+                    className="app-user-dropdown-item app-user-dropdown-item--danger"
+                    onClick={handleLogout}
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              ref={navToggleRef}
+              className={`app-nav-toggle ${navOpen ? 'is-open' : ''}`}
+              aria-label="Abrir menú de navegación"
+              aria-expanded={navOpen}
+              onClick={() => setNavOpen((v) => !v)}
+            >
+              <span className="app-nav-toggle-bar" />
+              <span className="app-nav-toggle-bar" />
+              <span className="app-nav-toggle-bar" />
+            </button>
+          </div>
         </div>
-      )}
+
+        {navOpen && (
+          <div className="app-mobile-nav" ref={navRef}>
+            <nav className="app-mobile-nav-inner">
+              {links.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `app-mobile-nav-link ${link.admin ? 'app-mobile-nav-link--admin' : ''} ${isActive ? 'is-active' : ''}`
+                  }
+                  onClick={() => setNavOpen(false)}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

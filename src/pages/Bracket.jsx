@@ -135,13 +135,7 @@ export default function Bracket() {
                 readOnly={cerradas}
               />
 
-              {cerradas ? (
-                <footer className="brk-actions brk-actions--cerradas">
-                  <span className="brk-cerradas-notice">
-                    Las apuestas se cerraron el día 11/06/26 a las 18:00 horas
-                  </span>
-                </footer>
-              ) : (
+              {!cerradas && (
                 <footer className="brk-actions">
                   {savedAt && <span className="brk-saved-pill">Progreso guardado</span>}
                   <button

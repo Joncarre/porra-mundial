@@ -187,13 +187,7 @@ export default function Extras() {
                 ))}
               </div>
 
-              {cerradas ? (
-                <footer className="ex-actions ex-actions--cerradas">
-                  <span className="ex-cerradas-notice">
-                    Las apuestas se cerraron el día 11/06/26 a las 18:00 horas
-                  </span>
-                </footer>
-              ) : (
+              {!cerradas && (
                 <footer className="ex-actions">
                   {savedAt && <span className="ex-saved-pill">Progreso guardado</span>}
                   <button
